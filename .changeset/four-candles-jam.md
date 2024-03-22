@@ -1,0 +1,5 @@
+---
+'@initstudio/initweb': minor
+---
+
+Initialisation

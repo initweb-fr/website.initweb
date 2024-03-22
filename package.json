@@ -1,7 +1,7 @@
 {
-  "name": "@initprod/initweb",
+  "name": "@initstudio/initweb",
   "version": "0.0.0",
-  "description": "Developer starter template for Finsweet projects.",
+  "description": "Custom Code pour le site initWeb",
   "homepage": "https://github.com/finsweet/developer-starter#readme",
   "license": "ISC",
   "keywords": [],
