@@ -14,8 +14,6 @@ import { verifyLoad } from '$utils/verify';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  verifyLoad();
-
   revealHeading();
   revealSubHeading();
   revealSupHeading();
