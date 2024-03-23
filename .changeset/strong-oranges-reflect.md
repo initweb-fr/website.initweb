@@ -1,5 +1,0 @@
----
-'@initprod/initweb': minor
----
-
-Initialisation
