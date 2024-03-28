@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.1
+
+### Patch Changes
+
+- ffb720e: Suppression du code dans la console
+
 ## 0.1.0
 
 ### Minor Changes
