@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.2
+
+### Patch Changes
+
+- 442978b: Installation des Sliders
+
 ## 0.1.1
 
 ### Patch Changes
