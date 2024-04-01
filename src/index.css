@@ -125,7 +125,7 @@
     border-radius:0.5rem;
   }
 
-  /* Correction for the ReviewsA Splide Sliders */
+  /* Correction for the ReviewsA Splide Sliders 
   .reviews-a_content .splide__arrows{
     display:none;
   }
@@ -136,7 +136,7 @@
     opacity: 1 !important;
   }
   .reviews-a_content_item .reviews-a_content_grade_verified_text{
-    display:none;
+    display:block;
   }
   .reviews-a_content_item.is-active{
     opacity: 1;
@@ -146,5 +146,4 @@
   .reviews-a_content_item.is-active .reviews-a_content_grade_verified_text{
     display: block;
   }
-
-  
+  */

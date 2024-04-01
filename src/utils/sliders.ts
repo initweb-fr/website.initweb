@@ -2,6 +2,7 @@ import Splide from '@splidejs/splide';
 
 export function SplideProgramA() {
   const chaptersSlides = document.querySelectorAll('.program-a_chapters_item.splide__slide');
+  console.log(chaptersSlides);
 
   // Initialize Spliders
   const main = new Splide('#splide-program-a-contents', {
