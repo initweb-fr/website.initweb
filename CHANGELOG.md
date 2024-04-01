@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.7
+
+### Patch Changes
+
+- 8bc1b6f: Update Slider
+
 ## 0.1.6
 
 ### Patch Changes
