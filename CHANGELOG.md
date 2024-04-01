@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.5
+
+### Patch Changes
+
+- ceffb55: Update Prod Code for Sliders
+
 ## 0.1.4
 
 ### Patch Changes
