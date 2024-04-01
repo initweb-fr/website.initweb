@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.4
+
+### Patch Changes
+
+- 16cd4a0: Mise en prod de la Landing
+
 ## 0.1.3
 
 ### Patch Changes
