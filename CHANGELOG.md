@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.3
+
+### Patch Changes
+
+- 8ce60b8: Suppression du slider Reviews
+
 ## 0.1.2
 
 ### Patch Changes
