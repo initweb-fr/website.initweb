@@ -24,13 +24,3 @@ export function SplideProgramA() {
     });
   });
 }
-
-export function SplideReviewsA() {
-  new Splide('#splide-reviews-a', {
-    loop: true,
-    speed: 800,
-    autoplay: true,
-    interval: 4000,
-    pauseOnHover: false,
-  }).mount();
-}

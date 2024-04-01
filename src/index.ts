@@ -10,7 +10,7 @@ import {
 } from '$utils/manageuserdata';
 import { manageutm } from '$utils/manageutm';
 import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
-import { SplideProgramA, SplideReviewsA } from '$utils/sliders';
+import { SplideProgramA } from '$utils/sliders';
 // import { verifyLoad } from '$utils/verify';
 
 window.Webflow ||= [];
@@ -29,6 +29,5 @@ window.Webflow.push(() => {
   saveCurrentPage();
   addCurrentPageToNav();
 
-  SplideReviewsA();
   SplideProgramA();
 });

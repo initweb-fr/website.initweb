@@ -133,7 +133,7 @@
     display:none;
   }
   .reviews-a_content_item {
-    opacity: 0.15;
+    opacity: 1 !important;
   }
   .reviews-a_content_item .reviews-a_content_grade_verified_text{
     display:none;
