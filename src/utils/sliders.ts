@@ -5,13 +5,13 @@ export function SplideProgramA() {
   console.log(chaptersSlides);
 
   // Initialize Spliders
-  const main = new Splide('#splide-program-a-contents', {
+  const main = new Splide('#program-a-contents', {
     loop: true,
     speed: 400,
     type: 'loop',
   }).mount();
 
-  const chapters = new Splide('#splide-program-a-chapters', {
+  const chapters = new Splide('#program-a-chapters', {
     perPage: 1,
     autoWidth: true,
     speed: 400,
