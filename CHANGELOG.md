@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.8
+
+### Patch Changes
+
+- c87272b: UTM correction
+
 ## 0.1.7
 
 ### Patch Changes
