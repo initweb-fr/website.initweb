@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.9
+
+### Patch Changes
+
+- 4b64f83: Adding UTM Term
+
 ## 0.1.8
 
 ### Patch Changes
