@@ -25,6 +25,9 @@ window.Webflow.push(() => {
   addUserEmail();
   addUserFirstName();
   addUserLastName();
-
-  SplideProgramA();
+  if (window.matchMedia('(min-width: 992px)').matches) {
+    SplideProgramA();
+  } else {
+    /* the view port is less than 400 pixels wide */
+  }
 });

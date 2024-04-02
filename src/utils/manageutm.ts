@@ -6,7 +6,7 @@ export function manageutm() {
   const utm_campaign = url.searchParams.get('utm_campaign');
   const utm_source = url.searchParams.get('utm_source');
   const utm_medium = url.searchParams.get('utm_medium');
-  const utm_test = url.searchParams.get('utm_test');
+  const utm_term = url.searchParams.get('utm_term');
 
   // Insertion des UTMs dans les champs du formulaire
   ///// UTM Campaign
@@ -27,10 +27,10 @@ export function manageutm() {
     //console.log('[FORM] - Param "Medium" trouvé et ajouté.');
     mediumField.value = utm_medium;
   });
-  ///// UTM Test
-  const testFields = document.querySelectorAll('[name="utm_test"]');
-  testFields.forEach((testField) => {
-    //console.log('[FORM] - Param "Test" trouvé et ajouté.');
-    testField.value = utm_test;
+  ///// UTM Term
+  const termFields = document.querySelectorAll('[field="utm_term"]');
+  termFields.forEach((termField) => {
+    //console.log('[FORM] - Param "Term" trouvé et ajouté.');
+    termField.value = utm_term;
   });
 }

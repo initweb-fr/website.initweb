@@ -14,7 +14,7 @@
   }
 /* --- SLIDER ------------------------------------------------------------------------ */
   /* Correction for all the Splide Sliders */
-
+  @media (min-width: 992px) {
   .splide__sr{
     display:none !important;
     visibility: hidden !important;
@@ -147,3 +147,5 @@
     display: block;
   }
   */
+
+}
