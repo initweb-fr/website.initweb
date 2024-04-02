@@ -26,13 +26,5 @@ window.Webflow.push(() => {
   addUserFirstName();
   addUserLastName();
 
-  saveCurrentPage();
-  addCurrentPageToNav();
-
-  const mediaQuery = window.matchMedia('(min-width: 992px)');
-  if (mediaQuery.matches) {
-    // Si la media query est vraie (la fenêtre est de 992px ou plus)
-    console.log('La fenêtre est de 992px ou plus');
-    SplideProgramA();
-  }
+  SplideProgramA();
 });

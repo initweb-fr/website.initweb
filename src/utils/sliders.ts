@@ -9,12 +9,22 @@ export function SplideProgramA() {
     loop: true,
     speed: 400,
     type: 'loop',
+    breakpoints: {
+      992: {
+        destroy: true,
+      },
+    },
   }).mount();
 
   const chapters = new Splide('.program-a_chapters_content.splide', {
     perPage: 1,
     autoWidth: true,
     speed: 400,
+    breakpoints: {
+      992: {
+        destroy: true,
+      },
+    },
   });
 
   chapters.sync(main).mount();

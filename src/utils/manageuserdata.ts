@@ -1,9 +1,9 @@
 export function saveUserData() {
   const webflowForms = Array.from(document.querySelectorAll('.w-form'));
   webflowForms.forEach((webflowForm) => {
-    const emailField = document.querySelector('[name="email"]');
-    const firstNameField = document.querySelector('[name="firstname"]');
-    const lastNameField = document.querySelector('[name="lastname"]');
+    const emailField = document.querySelector('[field="email"]');
+    const firstNameField = document.querySelector('[field="firstname"]');
+    const lastNameField = document.querySelector('[field="lastname"]');
 
     webflowForm.addEventListener('submit', (e) => {
       localStorage.setItem('user_email', emailField.value);
@@ -14,7 +14,7 @@ export function saveUserData() {
 }
 
 export function addUserEmail() {
-  const emailFields = Array.from(document.querySelectorAll('[name="email"]'));
+  const emailFields = Array.from(document.querySelectorAll('[field="email"]'));
   emailFields.forEach((emailField) => {
     const email = localStorage.getItem('user_email');
     if (!!email) {
@@ -24,7 +24,7 @@ export function addUserEmail() {
 }
 
 export function addUserFirstName() {
-  const firstNameFields = Array.from(document.querySelectorAll('[name="firstname"]'));
+  const firstNameFields = Array.from(document.querySelectorAll('[field="firstname"]'));
   firstNameFields.forEach((firstNameField) => {
     const firstname = localStorage.getItem('user_firstname');
     if (!!firstname) {
@@ -33,7 +33,7 @@ export function addUserFirstName() {
   });
 }
 export function addUserLastName() {
-  const lastNameFields = Array.from(document.querySelectorAll('[name="lastname"]'));
+  const lastNameFields = Array.from(document.querySelectorAll('[field="lastname"]'));
   lastNameFields.forEach((lastNameField) => {
     const lastname = localStorage.getItem('user_lastname');
     if (!!lastname) {

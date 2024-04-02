@@ -10,19 +10,19 @@ export function manageutm() {
 
   // Insertion des UTMs dans les champs du formulaire
   ///// UTM Campaign
-  const campaignFields = document.querySelectorAll('[name="utm_campaign"]');
+  const campaignFields = document.querySelectorAll('[field="utm_campaign"]');
   campaignFields.forEach((campaignField) => {
     //console.log('[FORM] - Param "Campaign" trouvé et ajouté.');
     campaignField.value = utm_campaign;
   });
   ///// UTM Source
-  const sourceFields = document.querySelectorAll('[name="utm_source"]');
+  const sourceFields = document.querySelectorAll('[field="utm_source"]');
   sourceFields.forEach((sourceField) => {
     //console.log('[FORM] - Param "Source" trouvé et ajouté.');
     sourceField.value = utm_source;
   });
   ///// UTM Medium
-  const mediumFields = document.querySelectorAll('[name="utm_medium"]');
+  const mediumFields = document.querySelectorAll('[field="utm_medium"]');
   mediumFields.forEach((mediumField) => {
     //console.log('[FORM] - Param "Medium" trouvé et ajouté.');
     mediumField.value = utm_medium;
