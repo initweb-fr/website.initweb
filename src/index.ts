@@ -1,7 +1,5 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import { addCurrentPageToNav, saveCurrentPage } from '$utils/managepagedata';
+
 import {
   addUserEmail,
   addUserFirstName,
@@ -11,23 +9,30 @@ import {
 import { manageutm } from '$utils/manageutm';
 import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
 import { SplideProgramA } from '$utils/sliders';
-// import { verifyLoad } from '$utils/verify';
+
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+
+  // Animate Elements
   revealHeading();
   revealSubHeading();
   revealSupHeading();
   revealText();
+
+  // Get & Insert UTMs in Elements
   manageutm();
 
+  // Save & Use UserData in Elements
   saveUserData();
   addUserEmail();
   addUserFirstName();
   addUserLastName();
+
+
   if (window.matchMedia('(min-width: 992px)').matches) {
     SplideProgramA();
   } else {
-    /* the view port is less than 400 pixels wide */
+    
   }
 });

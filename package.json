@@ -1,13 +1,13 @@
 {
-  "name": "@initprod/initweb",
-  "version": "0.1.9",
+  "name": "@init-platform/initweb",
+  "version": "0.0.0",
   "description": "Custom Code pour le site initWeb",
-  "homepage": "https://github.com/finsweet/developer-starter#readme",
+  "homepage": "",
   "license": "ISC",
   "keywords": [],
   "author": {
-    "name": "Finsweet",
-    "url": "https://finsweet.com/"
+    "name": "initWeb",
+    "url": "https://www.initweb.fr"
   },
   "repository": {
     "type": "git",
