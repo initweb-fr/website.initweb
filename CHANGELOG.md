@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.0
+
+### Minor Changes
+
+- 1e89414: First Upload Online
+
 ## 0.1.9
 
 ### Patch Changes
