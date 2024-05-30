@@ -1,5 +1,3 @@
-
-
 import {
   addUserEmail,
   addUserFirstName,
@@ -10,10 +8,8 @@ import { manageutm } from '$utils/manageutm';
 import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
 import { SplideProgramA } from '$utils/sliders';
 
-
 window.Webflow ||= [];
 window.Webflow.push(() => {
-
   // Animate Elements
   revealHeading();
   revealSubHeading();
@@ -29,10 +25,8 @@ window.Webflow.push(() => {
   addUserFirstName();
   addUserLastName();
 
-
   if (window.matchMedia('(min-width: 992px)').matches) {
     SplideProgramA();
   } else {
-    
   }
 });
