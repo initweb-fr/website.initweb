@@ -8,11 +8,11 @@ gap:0rem;
 
 
 .mod-cont_toc_chapter_component:not(.is-active) .mod-cont_toc_chapter_title{
-    color: var(--text-color--alternate-30);
+    color: var(--text-color--primary-30);
 }
 
 .mod-cont_toc_chapter_component.is-active .mod-cont_toc_chapter_title{
-    color: var(--text-color--alternate-100);
+    color: var(--text-color--primary-100);
 }
 
 

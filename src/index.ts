@@ -1,13 +1,13 @@
 import { manageFixedModal } from '$utils/manageFixedModales';
-import { addCurrentPageToNav } from '$utils/managepagedata';
-import { saveCurrentPreviousPage } from '$utils/managepagedata';
+import { addCurrentPageToNav } from '$utils/managePageData';
+import { saveCurrentPreviousPage } from '$utils/managePageData';
 import {
   addUserEmail,
   addUserFirstName,
   addUserLastName,
   saveUserData,
-} from '$utils/manageuserdata';
-import { manageutm } from '$utils/manageutm';
+} from '$utils/manageUserData';
+import { manageutm } from '$utils/manageUTM';
 import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
 window.Webflow ||= [];
 window.Webflow.push(() => {

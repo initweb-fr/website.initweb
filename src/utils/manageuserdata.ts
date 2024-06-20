@@ -50,6 +50,19 @@ export function addUserLastName() {
     }
   });
 }
+
+export function getMemberEmailOnLoad() {
+  window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+    if (member && member.auth.email) {
+      const { email } = member.auth;
+      const currentUrl = new URL(window.location.href);
+      if (currentUrl.searchParams.get('utm_email') !== email) {
+        currentUrl.searchParams.set('utm_email', email);
+        window.location.href = currentUrl;
+      }
+    }
+  });
+}
 /**
 export function saveUserFavoriteOffer() {
   const btnTarifs = document.querySelectorAll('.tarif_btn a');
