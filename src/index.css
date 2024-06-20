@@ -149,3 +149,21 @@
   */
 
 }
+
+/**
+:not(body)::-webkit-scrollbar {
+  width: 50%; 
+  max-height:4px !important;
+}
+
+:not(body)::-webkit-scrollbar-track {
+  background: red; 
+}
+
+:not(body)::-webkit-scrollbar-thumb {
+  background-color: white; 
+  border-radius: 20px; 
+  margin-block: 20px;
+}
+
+**/

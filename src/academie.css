@@ -1,0 +1,33 @@
+
+
+
+
+.mod-cont_toc_chapter_component:not(:has(.mod-cont_toc_chapter_modules_list.w-dyn-items)){
+gap:0rem;
+}
+
+
+.mod-cont_toc_chapter_component:not(.is-active) .mod-cont_toc_chapter_title{
+    color: var(--text-color--alternate-30);
+}
+
+.mod-cont_toc_chapter_component.is-active .mod-cont_toc_chapter_title{
+    color: var(--text-color--alternate-100);
+}
+
+
+.mod-cont_toc_chapter_component.is-active  .mod-cont_toc_chapter_modules {
+    display:flex;
+}
+
+.mod-cont_toc_chapter_component:not(.is-active) .mod-cont_toc_chapter_modules {
+    display:none;
+}
+
+.mod-cont_toc_chapter_modules_link.is-watched .mod-cont_toc_chapter_modules_check{
+    display:inline-block;
+}
+
+.mod-cont_toc_chapter_modules_link .mod-cont_toc_chapter_modules_check{
+    display:none;
+}

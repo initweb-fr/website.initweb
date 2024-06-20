@@ -13,6 +13,15 @@ export function saveUserData() {
   });
 }
 
+export function formWebflow() {
+  const webflowForms = Array.from(document.querySelectorAll('.w-form'));
+  webflowForms.forEach((webflowForm) => {
+    webflowForm.addEventListener('submit', (e) => {
+      // Custom code ici
+    });
+  });
+}
+
 export function addUserEmail() {
   const emailFields = Array.from(document.querySelectorAll('[field="email"]'));
   emailFields.forEach((emailField) => {
@@ -74,3 +83,124 @@ export function getPreviousPage() {
   });
 }
 */
+export async function updateModuleLecture() {
+  const memberstack = window.$memberstackDom;
+  let memberData;
+
+  try {
+    // Fetch member data once
+    const member = await memberstack.getMemberJSON();
+    memberData = member.data ? member.data : {};
+
+    console.log(memberData);
+  } catch (error) {
+    console.error('Error fetching member data:', error);
+    return; // Stop execution if member data cannot be fetched
+  }
+
+  // Function to mark module complete, now accepts memberData as a parameter
+  async function markModuleComplete(moduleKey, memberData) {
+    const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
+    console.log([subject, approach, chapterNumber, moduleNumber]);
+
+    // Vérifier et initialiser chaque niveau de la hiérarchie si nécessaire
+    if (!memberData[subject]) {
+      memberData[subject] = {};
+    }
+    if (!memberData[subject][approach]) {
+      memberData[subject][approach] = {};
+    }
+    if (!memberData[subject][approach][chapterNumber]) {
+      memberData[subject][approach][chapterNumber] = {};
+    }
+    if (!memberData[subject][approach][chapterNumber][moduleNumber]) {
+      memberData[subject][approach][chapterNumber][moduleNumber] = false;
+    }
+
+    // Marquer le module comme complété
+    memberData[subject][approach][chapterNumber][moduleNumber] = true;
+
+    // Mettre à jour les données du membre sur Memberstack
+    await memberstack.updateMemberJSON({ json: memberData });
+    console.log(`Module ${moduleKey} marked as completed`);
+
+    // Mettre à jour le DOM pour indiquer le statut complété
+    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
+    moduleElements.forEach((moduleElement) => {
+      moduleElement.classList.add('is-watched');
+    });
+  }
+
+  async function markModuleIncomplete(moduleKey, memberData) {
+    const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
+    if (
+      memberData[subject] &&
+      memberData[subject][approach] &&
+      memberData[subject][approach][chapterNumber] &&
+      memberData[subject][approach][chapterNumber][moduleNumber]
+    ) {
+      delete memberData[subject][approach][chapterNumber][moduleNumber];
+
+      await memberstack.updateMemberJSON({ json: memberData });
+      console.log(`Module ${moduleKey} marked as incomplete`);
+    }
+
+    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
+    moduleElements.forEach((moduleElement) => {
+      moduleElement.classList.remove('is-watched');
+    });
+  }
+  async function updatePageFromMemberJSON(
+    subject,
+    approach,
+    chapterNumber,
+    memberData,
+    moduleNumber
+  ) {
+    // Vérifier que chaque niveau de la hiérarchie est défini
+    if (
+      memberData[subject] &&
+      memberData[subject][approach] &&
+      memberData[subject][approach][chapterNumber]
+    ) {
+      console.log('Hiérarchie vérifiée');
+      Object.keys(memberData[subject][approach][chapterNumber]).forEach((moduleNumber) => {
+        const moduleKey = `${subject}-${approach}-${chapterNumber}-${moduleNumber}`;
+        console.log(moduleKey);
+        const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
+        moduleElements.forEach((moduleElement) => {
+          moduleElement.classList.add('is-watched');
+        });
+      });
+    }
+  }
+
+  document.addEventListener('click', async function (event) {
+    const { target } = event;
+    const completeElement = target.closest('[ms-code-mark-complete]');
+    if (completeElement) {
+      event.preventDefault();
+
+      const moduleKey = completeElement.getAttribute('ms-code-mark-complete');
+
+      if (completeElement.classList.contains('yes')) {
+        await markModuleIncomplete(moduleKey, memberData);
+      } else {
+        completeElement.classList.add('yes'); // Optimistically add "yes" class
+        await markModuleComplete(moduleKey, memberData);
+      }
+
+      // Navigate to the href link if it exists after updating JSON
+      if (completeElement.tagName.toLowerCase() === 'a' && completeElement.href) {
+        window.location.href = completeElement.href;
+      }
+    }
+  });
+
+  // Initialize page based on the fetched memberData
+  document.querySelectorAll('[ms-code-mark-complete]').forEach((groupElement) => {
+    const moduleKey = groupElement.getAttribute('ms-code-mark-complete');
+    const [subject, approach, chapterNumber] = moduleKey.split('-');
+    updatePageFromMemberJSON(subject, approach, chapterNumber, memberData);
+  });
+}

@@ -1,5 +1,6 @@
-
-
+import { manageFixedModal } from '$utils/manageFixedModales';
+import { addCurrentPageToNav } from '$utils/managepagedata';
+import { saveCurrentPreviousPage } from '$utils/managepagedata';
 import {
   addUserEmail,
   addUserFirstName,
@@ -8,11 +9,13 @@ import {
 } from '$utils/manageuserdata';
 import { manageutm } from '$utils/manageutm';
 import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
-import { SplideProgramA } from '$utils/sliders';
-
-
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  // Handle NavBar
+  addCurrentPageToNav();
+
+  // Handle Previous/Current Page
+  saveCurrentPreviousPage();
 
   // Animate Elements
   revealHeading();
@@ -29,10 +32,5 @@ window.Webflow.push(() => {
   addUserFirstName();
   addUserLastName();
 
-
-  if (window.matchMedia('(min-width: 992px)').matches) {
-    SplideProgramA();
-  } else {
-    
-  }
+  manageFixedModal();
 });
