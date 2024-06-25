@@ -120,3 +120,8 @@
   [iw-slider-id="situation-themes"] .splide__pagination{
     display:none;
   }
+
+  .splide__sr{
+    visibility: hidden !important;
+    display: none !important;
+  }

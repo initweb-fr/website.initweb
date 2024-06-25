@@ -8,9 +8,11 @@ import {
   saveUserData,
 } from '$utils/manageUserData';
 import { manageutm } from '$utils/manageUTM';
-import { revealHeading, revealSubHeading, revealSupHeading, revealText } from '$utils/reveal';
+import { revealHeading, revealSupHeading, revealText } from '$utils/reveal';
+
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  console.log('Index.ts loaded');
   // Handle NavBar
   addCurrentPageToNav();
 
@@ -19,7 +21,6 @@ window.Webflow.push(() => {
 
   // Animate Elements
   revealHeading();
-  revealSubHeading();
   revealSupHeading();
   revealText();
 

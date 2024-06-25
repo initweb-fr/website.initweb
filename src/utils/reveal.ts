@@ -1,4 +1,6 @@
 import { gsap } from 'gsap';
+gsap.registerPlugin(ScrollTrigger);
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
 export function revealSupHeading() {
@@ -9,18 +11,12 @@ export function revealSupHeading() {
     duration: 1,
     delay: 0.6,
     ease: 'power1.out',
-  });
-}
-
-export function revealSubHeading() {
-  const supHeadingTargets = document.querySelectorAll('[animate="subheading"]');
-  supHeadingTargets.forEach((supHeadingTarget) => {
-    gsap.from(supHeadingTarget, {
-      opacity: 0.15,
-      duration: 1,
-      delay: 0.3,
-      ease: 'power1.out',
-    });
+    scrollTrigger: {
+      trigger: supHeading,
+      start: 'top 65%',
+      end: 'bottom 30%',
+      scrub: true,
+    },
   });
 }
 
@@ -32,17 +28,16 @@ export function revealText() {
       tagName: 'span',
     });
 
-    const textSplitWord = textSplit.words;
+    const textSplitLines = textSplit.lines;
     //console.log(textSplitWord)
 
-    gsap.from(textSplitWord, {
+    gsap.from(textSplitLines, {
       opacity: 0.15,
-      duration: 0.5,
       ease: 'power1.out',
       stagger: 0.1,
-
+      scrub: true,
       scrollTrigger: {
-        trigger: textSplitWord,
+        trigger: textSplitLines,
         start: 'top 65%',
         end: 'bottom 30%',
         scrub: true,
@@ -53,6 +48,7 @@ export function revealText() {
 
 export function revealHeading() {
   const headingTargets = document.querySelectorAll('[animate="heading"]');
+
   //console.log(headingTargets);
   headingTargets.forEach((headingTarget) => {
     const headingSplit = new SplitType(headingTarget, {
@@ -65,10 +61,9 @@ export function revealHeading() {
 
     gsap.from(headingSplitWord, {
       opacity: 0.15,
-      duration: 0.5,
       stagger: 0.1,
       ease: 'power1.out',
-
+      scrub: true,
       scrollTrigger: {
         trigger: headingSplitWord,
         start: 'top 70%',
@@ -77,4 +72,137 @@ export function revealHeading() {
       },
     });
   });
+}
+
+export function revealFormaHero() {
+  const formaHeroTag = document.querySelector('[animate="forma-hero-tag"]');
+  const formaHeroH1 = document.querySelector('[animate="forma-hero-h1"]');
+
+  const formaHeroInfos = document.querySelector('[animate="forma-hero-infos"]');
+  const formaHeroStars = document.querySelector('[animate="forma-hero-stars"]');
+  const formaHeroButtonSecondary = document.querySelector(
+    '[animate="forma-hero-button-secondary"]'
+  );
+  const formaHeroButtonPrimary = document.querySelector('[animate="forma-hero-button-primary"]');
+
+  const formaHeroLogos = document.querySelector('[animate="forma-hero-logos"]');
+
+  const formaHeroVideoAmorce = document.querySelector('[animate="forma-hero-video-amorce"]');
+  const formaHeroVideoTags = document.querySelectorAll('[animate="forma-hero-video-tags"]');
+
+  const formaHeroVideoGradient = document.querySelector('[animate="forma-hero-video-gradient"]');
+  const formaHeroVideo = document.querySelector('[animate="forma-hero-video"]');
+
+  const specDuration = 0.8;
+  const specBaseMoveY = 64;
+  const specBaseOpacity = 0;
+  const specBaseScaleX = 0;
+  const specTargetMoveY = 0;
+  const specTargetOpacity = 1;
+  const specTargetScaleX = 1;
+  const specDelay = 0.7;
+  const specEase = 'expo.Out';
+
+  gsap.set(formaHeroTag, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroH1, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroInfos, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroStars, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroButtonSecondary, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroButtonPrimary, { opacity: specBaseOpacity, y: specBaseMoveY });
+  gsap.set(formaHeroLogos, { opacity: specBaseOpacity });
+  gsap.set(formaHeroVideoAmorce, { opacity: specBaseOpacity, y: specBaseMoveY });
+  formaHeroVideoTags.forEach((formaHeroVideoTag) => {
+    gsap.set(formaHeroVideoTag, { opacity: specBaseOpacity, y: specBaseMoveY });
+  });
+  gsap.set(formaHeroVideoGradient, {
+    scaleX: specBaseScaleX,
+    opacity: specBaseOpacity,
+    y: specBaseMoveY,
+  });
+  gsap.set(formaHeroVideo, { opacity: specBaseOpacity, y: specBaseMoveY });
+
+  const tl = gsap.timeline();
+
+  // Ajoute des animations à la timeline
+  tl.to(formaHeroTag, {
+    duration: specDuration,
+    y: specTargetMoveY,
+    opacity: specTargetOpacity,
+    ease: specEase,
+  })
+    .to(
+      formaHeroH1,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+
+    .to(
+      formaHeroInfos,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroStars,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroButtonSecondary,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroButtonPrimary,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroLogos,
+      { duration: specDuration, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroVideo,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=' + specDelay
+    )
+    .to(
+      formaHeroVideoGradient,
+      {
+        duration: specDuration,
+        y: specTargetMoveY,
+        ease: specEase,
+      },
+      '-=' + specDuration
+    )
+    .to(
+      formaHeroVideoGradient,
+      {
+        duration: specDuration * 1.5,
+        opacity: specTargetOpacity,
+        scaleX: specTargetScaleX,
+        ease: specEase,
+      },
+      '-=0'
+    )
+    .to(
+      formaHeroVideoAmorce,
+      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
+      '-=1'
+    );
+  formaHeroVideoTags.forEach((formaHeroVideoTag) => {
+    tl.to(
+      formaHeroVideoTag,
+      {
+        duration: specDuration,
+        stagger: 0.1,
+        y: specTargetMoveY,
+        opacity: specTargetOpacity,
+        ease: specEase,
+      },
+      '-=' + specDelay
+    );
+  });
+
+  tl.play();
 }

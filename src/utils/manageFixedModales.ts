@@ -1,6 +1,6 @@
 export function manageFixedModal() {
-  const modalOpenBtns = document.querySelectorAll('[iw-modal-element=open-modal]');
-  const modalCloseBtns = document.querySelectorAll('[iw-modal-element=close-modal]');
+  const modalOpenBtns = document.querySelectorAll('[iw-modal-element=modal-open]');
+  const modalCloseBtns = document.querySelectorAll('[iw-modal-element=modal-close]');
   const modalOverlays = document.querySelectorAll('[iw-modal-element=modal-overlay]');
 
   modalOpenBtns.forEach(function (modalOpenBtn) {
@@ -10,10 +10,12 @@ export function manageFixedModal() {
     if (modalOpenBtn !== null) {
       // Ajoutez un gestionnaire d'événements de clic au bouton enfant
       modalOpenBtn.addEventListener('click', () => {
+        console.log('modal opened');
         const modalComponent = document.querySelector(
           '[iw-modal-element=modal-container][iw-modal-id=' + modalID + ']'
         ) as HTMLElement;
         modalComponent.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
       });
     }
   });
@@ -29,6 +31,7 @@ export function manageFixedModal() {
           '[iw-modal-element=modal-container][iw-modal-id=' + modalID + ']'
         ) as HTMLElement;
         modalComponent.style.display = 'none';
+        document.body.style.overflow = 'auto';
       });
     }
   });
@@ -44,6 +47,7 @@ export function manageFixedModal() {
           '[iw-modal-element=modal-container][iw-modal-id=' + modalID + ']'
         ) as HTMLElement;
         modalComponent.style.display = 'none';
+        document.body.style.overflow = 'auto';
       });
     }
   });
