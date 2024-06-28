@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.2
+
+### Patch Changes
+
+- 663cb93: Correctifs sur les Sliders
+
 ## 0.0.1
 
 ### Patch Changes
