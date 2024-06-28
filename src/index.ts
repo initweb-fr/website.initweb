@@ -1,14 +1,14 @@
 import { manageFixedModal } from '$utils/manageFixedModales';
-import { addCurrentPageToNav } from '$utils/managePageData';
-import { saveCurrentPreviousPage } from '$utils/managePageData';
 import {
+  addCurrentPageToNav,
   addUserEmail,
   addUserFirstName,
   addUserLastName,
+  saveCurrentPreviousPage,
   saveUserData,
 } from '$utils/manageUserData';
-import { manageutm } from '$utils/manageUTM';
-import { revealHeading, revealSupHeading, revealText } from '$utils/reveal';
+import { manageUTM } from '$utils/manageUserData';
+import { revealHeaderHeading, revealHeaderText } from '$utils/reveal';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -20,12 +20,11 @@ window.Webflow.push(() => {
   saveCurrentPreviousPage();
 
   // Animate Elements
-  revealHeading();
-  revealSupHeading();
-  revealText();
+  revealHeaderHeading();
+  revealHeaderText();
 
   // Get & Insert UTMs in Elements
-  manageutm();
+  manageUTM();
 
   // Save & Use UserData in Elements
   saveUserData();

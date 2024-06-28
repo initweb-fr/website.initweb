@@ -20,8 +20,8 @@ export function revealSupHeading() {
   });
 }
 
-export function revealText() {
-  const textTargets = document.querySelectorAll('[animate="text"]');
+export function revealHeaderText() {
+  const textTargets = document.querySelectorAll('[animate="header-text"]');
   textTargets.forEach((textTarget) => {
     const textSplit = new SplitType(textTarget, {
       types: 'lines, words, chars',
@@ -46,8 +46,8 @@ export function revealText() {
   });
 }
 
-export function revealHeading() {
-  const headingTargets = document.querySelectorAll('[animate="heading"]');
+export function revealHeaderHeading() {
+  const headingTargets = document.querySelectorAll('[animate="header-heading"]');
 
   //console.log(headingTargets);
   headingTargets.forEach((headingTarget) => {
@@ -93,14 +93,14 @@ export function revealFormaHero() {
   const formaHeroVideoGradient = document.querySelector('[animate="forma-hero-video-gradient"]');
   const formaHeroVideo = document.querySelector('[animate="forma-hero-video"]');
 
-  const specDuration = 0.8;
+  const specDuration = 0.6;
   const specBaseMoveY = 64;
   const specBaseOpacity = 0;
   const specBaseScaleX = 0;
   const specTargetMoveY = 0;
   const specTargetOpacity = 1;
   const specTargetScaleX = 1;
-  const specDelay = 0.7;
+  const specDelay = specDuration - 0.1;
   const specEase = 'expo.Out';
 
   gsap.set(formaHeroTag, { opacity: specBaseOpacity, y: specBaseMoveY });
@@ -178,7 +178,7 @@ export function revealFormaHero() {
     .to(
       formaHeroVideoGradient,
       {
-        duration: specDuration * 1.5,
+        duration: specDuration * 3,
         opacity: specTargetOpacity,
         scaleX: specTargetScaleX,
         ease: specEase,
