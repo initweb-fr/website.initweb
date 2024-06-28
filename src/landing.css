@@ -1,4 +1,4 @@
-
+@media (min-width: 992px) {
   /* Correction for the ProgramContents Splide Sliders */
   [iw-slider-id="program-content"] .splide__arrows{
     display:none;
@@ -125,3 +125,5 @@
     visibility: hidden !important;
     display: none !important;
   }
+
+}
