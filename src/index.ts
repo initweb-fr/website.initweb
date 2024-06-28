@@ -6,8 +6,8 @@ import {
   addUserLastName,
   saveCurrentPreviousPage,
   saveUserData,
-} from '$utils/manageUserData';
-import { manageUTM } from '$utils/manageUserData';
+} from '$utils/manageuserdata';
+import { manageUTM } from '$utils/manageuserdata';
 import { revealHeaderHeading, revealHeaderText } from '$utils/reveal';
 
 window.Webflow ||= [];
