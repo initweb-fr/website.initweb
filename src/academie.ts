@@ -1,5 +1,5 @@
-import { manageModuleTOC } from '$utils/manageCustomElement';
-import { getDeviceType, updateModuleLecture } from '$utils/manageUserData';
+import { manageModuleTOC } from '$utils/manage-custom-element';
+import { getDeviceType, updateModuleLecture } from '$utils/manage-user-data';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {

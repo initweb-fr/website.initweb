@@ -1,13 +1,13 @@
-import { manageFixedModal } from '$utils/manageFixedModales';
+import { manageFixedModal } from '$utils/manage-fixed-modales';
 import {
   addCurrentPageToNav,
   addUserEmail,
   addUserFirstName,
   addUserLastName,
+  manageUTM,
   saveCurrentPreviousPage,
   saveUserData,
-} from '$utils/manageUserData';
-import { manageUTM } from '$utils/manageUserData';
+} from '$utils/manage-user-data';
 import { revealHeaderHeading, revealHeaderText } from '$utils/reveal';
 
 window.Webflow ||= [];
