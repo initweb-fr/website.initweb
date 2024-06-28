@@ -1,5 +1,14 @@
 # @initstudio/initweb
 
+## 0.0.1
+
+### Patch Changes
+
+- e198d2e: Mise en ligne essai 2
+- 1facb3c: Mise en ligne du site
+- 279b08b: Mise en ligne du site
+- 81fbb95: Mise en ligne du site initWeb
+
 ## 0.1.10
 
 ### Patch Changes
