@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.3
+
+### Patch Changes
+
+- 574facb: Correctif sur le suivi des vidéos visionnées - Bouton Marquer comme Terminé corrigé
+
 ## 0.0.2
 
 ### Patch Changes
