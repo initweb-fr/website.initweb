@@ -114,7 +114,7 @@ export async function updateModuleLecture() {
   // Function to mark module complete, now accepts memberData as a parameter
   async function markModuleComplete(moduleKey, memberData) {
     const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
-    console.log([subject, approach, chapterNumber, moduleNumber]);
+    //console.log([subject, approach, chapterNumber, moduleNumber]);
 
     // Vérifier et initialiser chaque niveau de la hiérarchie si nécessaire
     if (!memberData[subject]) {
@@ -143,7 +143,7 @@ export async function updateModuleLecture() {
       moduleElement.classList.add('is-watched');
     });
   }
-
+  /**
   async function markModuleIncomplete(moduleKey, memberData) {
     const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
     if (
@@ -163,6 +163,8 @@ export async function updateModuleLecture() {
       moduleElement.classList.remove('is-watched');
     });
   }
+
+  **/
   async function updatePageFromMemberJSON(
     subject,
     approach,
@@ -176,10 +178,10 @@ export async function updateModuleLecture() {
       memberData[subject][approach] &&
       memberData[subject][approach][chapterNumber]
     ) {
-      console.log('Hiérarchie vérifiée');
+      //console.log('Hiérarchie vérifiée');
       Object.keys(memberData[subject][approach][chapterNumber]).forEach((moduleNumber) => {
         const moduleKey = `${subject}-${approach}-${chapterNumber}-${moduleNumber}`;
-        console.log(moduleKey);
+        //console.log(moduleKey);
         const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
         moduleElements.forEach((moduleElement) => {
           moduleElement.classList.add('is-watched');
@@ -192,7 +194,7 @@ export async function updateModuleLecture() {
     const { target } = event;
     const completeElement = target.closest('[ms-code-mark-complete]');
     if (completeElement) {
-      event.preventDefault();
+      //event.preventDefault();
 
       const moduleKey = completeElement.getAttribute('ms-code-mark-complete');
 
