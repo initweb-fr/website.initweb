@@ -10,30 +10,25 @@ export function SplideFormaProgramA() {
     );
     // console.log(chaptersSlides);
 
-    // Initialize Spliders
     const main = new Splide('[iw-slider-id="program-content"]', {
       loop: true,
       speed: 600,
       drag: true,
       snap: true,
-      /** mediaQuery: 'max',
-    breakpoints: {
-      991: {
-        destroy: true,
+      breakpoints: {
+        991: {},
       },
-    },**/
     }).mount();
 
     const chapters = new Splide('[iw-slider-id="program-chapters"]', {
       perPage: 1,
       autoWidth: true,
       speed: 600,
-      /** mediaQuery: 'max',
-    breakpoints: {
-      991: {
-        destroy: true,
+      breakpoints: {
+        991: {
+          destroy: true,
+        },
       },
-    },**/
     });
 
     chapters.sync(main).mount();
@@ -63,7 +58,7 @@ export function SplideFormaSituationA() {
     // Initialize Spliders
     const main = new Splide('[iw-slider-id="situation-content"]', {
       loop: true,
-      speed: 600,
+      speed: 400,
       drag: true,
       snap: true,
       /** mediaQuery: 'max',

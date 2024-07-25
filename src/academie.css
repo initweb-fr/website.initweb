@@ -1,33 +1,74 @@
+/**
+.is-open | .mod-cont_toc_chapter_component -> .mod-cont_toc_chapter_component.is-open
+.is-watched | .mod-cont_toc_chapter_modules_check -> .mod-cont_toc_chapter_modules_check.is-watched
+.w--current | .mod-cont_toc_chapter_modules_text -> .mod-cont_toc_chapter_modules_text.w--current
+
+**/
 
 
+/** ------------------------------ Affichage pour l'ouverture du TOC ------------------------------ **/
 
 
-.mod-cont_toc_chapter_component:not(:has(.mod-cont_toc_chapter_modules_list.w-dyn-items)){
-gap:0rem;
+/** ------------------------------ Affichage pour le module actuel ------------------------------ **/
+
+.mod-cont_toc_chapter_component:has(.w--current) .mod-cont_toc_chapter_title{
+    opacity:1;
+}
+.mod-cont_toc_chapter_modules_item:has(.w--current) .mod-cont_toc_chapter_modules_text{
+    color: var(--text-color--primary-100)
+}
+.mod-cont_toc_chapter_modules_item:has(.w--current) .mod-cont_toc_chapter_modules_check{
+    border-color: var(--text-color--primary-100)
+}
+
+.mod-cont_toc_chapter_modules:not(:has(.w--current)) {
+    display:none;
 }
 
 
-.mod-cont_toc_chapter_component:not(.is-active) .mod-cont_toc_chapter_title{
+/** ------------------------------ Affichage pour les modules visionnés ------------------------------ **/
+
+.mod-cont_toc_chapter_modules_item:has(.is-watched) .mod-cont_toc_chapter_modules_text{
+    color: var(--text-color--primary-60)
+}
+.mod-cont_toc_chapter_modules_item:has(.is-watched) .mod-cont_toc_chapter_modules_check{
+    border-color: var(--text-color--primary-100);
+    min-width:1Rem;
+    min-height:1Rem;
+    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/65d4dc6a37b074b639c7de93_check-checkbox.svg");
+    background-repeat: no-repeat;
+    background-size: 0.6Rem;
+    background-position: center;
+    border-color: var(--background-color--secondary-60);
+}
+
+
+
+
+
+
+
+
+
+.mod-cont_toc_chapter_component:not(:has(.w--current)) .mod-cont_toc_chapter_title{
     opacity:0.3;
 }
 
-.mod-cont_toc_chapter_component.is-active .mod-cont_toc_chapter_title{
-    opacity:1;
+
+/** Affichage du Curriculum en fonction du visionnage en cours de l'utilisateur **/
+
+.mod-cont_toc_chapter_component.is-open .mod-cont_toc_chapter_modules{
+    display:none;
 }
-
-
-.mod-cont_toc_chapter_component.is-active  .mod-cont_toc_chapter_modules {
+.mod-cont_toc_chapter_component.is-open .mod-cont_toc_chapter_modules{
     display:flex;
 }
 
-.mod-cont_toc_chapter_component:not(.is-active) .mod-cont_toc_chapter_modules {
-    display:none;
-}
 
-.mod-cont_toc_chapter_modules_link.is-watched .mod-cont_toc_chapter_modules_check{
-    display:inline-block;
-}
 
-.mod-cont_toc_chapter_modules_link .mod-cont_toc_chapter_modules_check{
-    display:none;
-}
+
+
+
+
+
+

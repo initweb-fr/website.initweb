@@ -50,7 +50,7 @@ export function addUserLastName() {
     }
   });
 }
-
+// Modifier pour envoyer un webhook
 export function getMemberEmailOnLoad() {
   window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
     if (member && member.auth.email) {
@@ -96,7 +96,7 @@ export function getPreviousPage() {
   });
 }
 */
-export async function updateModuleLecture() {
+/*export async function updateModuleLecture() {
   const memberstack = window.$memberstackDom;
   let memberData;
 
@@ -104,8 +104,6 @@ export async function updateModuleLecture() {
     // Fetch member data once
     const member = await memberstack.getMemberJSON();
     memberData = member.data ? member.data : {};
-
-    console.log(memberData);
   } catch (error) {
     console.error('Error fetching member data:', error);
     return; // Stop execution if member data cannot be fetched
@@ -113,7 +111,7 @@ export async function updateModuleLecture() {
 
   // Function to mark module complete, now accepts memberData as a parameter
   async function markModuleComplete(moduleKey, memberData) {
-    const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
+    const [subject, approach, chapterNumber, subchapterNumber, moduleNumber] = moduleKey.split('-');
     //console.log([subject, approach, chapterNumber, moduleNumber]);
 
     // Vérifier et initialiser chaque niveau de la hiérarchie si nécessaire
@@ -126,12 +124,15 @@ export async function updateModuleLecture() {
     if (!memberData[subject][approach][chapterNumber]) {
       memberData[subject][approach][chapterNumber] = {};
     }
-    if (!memberData[subject][approach][chapterNumber][moduleNumber]) {
-      memberData[subject][approach][chapterNumber][moduleNumber] = false;
+    if (!memberData[subject][approach][chapterNumber][subchapterNumber]) {
+      memberData[subject][approach][chapterNumber][subchapterNumber] = {};
+    }
+    if (!memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber]) {
+      memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber] = false;
     }
 
     // Marquer le module comme complété
-    memberData[subject][approach][chapterNumber][moduleNumber] = true;
+    memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber] = true;
 
     // Mettre à jour les données du membre sur Memberstack
     await memberstack.updateMemberJSON({ json: memberData });
@@ -143,16 +144,16 @@ export async function updateModuleLecture() {
       moduleElement.classList.add('is-watched');
     });
   }
-  /**
   async function markModuleIncomplete(moduleKey, memberData) {
-    const [subject, approach, chapterNumber, moduleNumber] = moduleKey.split('-');
+    const [subject, approach, chapterNumber, subchapterNumber, moduleNumber] = moduleKey.split('-');
     if (
       memberData[subject] &&
       memberData[subject][approach] &&
       memberData[subject][approach][chapterNumber] &&
-      memberData[subject][approach][chapterNumber][moduleNumber]
+      memberData[subject][approach][chapterNumber][subchapterNumber] &&
+      memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber]
     ) {
-      delete memberData[subject][approach][chapterNumber][moduleNumber];
+      delete memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber];
 
       await memberstack.updateMemberJSON({ json: memberData });
       console.log(`Module ${moduleKey} marked as incomplete`);
@@ -164,29 +165,33 @@ export async function updateModuleLecture() {
     });
   }
 
-  **/
   async function updatePageFromMemberJSON(
     subject,
     approach,
     chapterNumber,
-    memberData,
-    moduleNumber
+    subchapterNumber,
+    memberData
   ) {
     // Vérifier que chaque niveau de la hiérarchie est défini
     if (
       memberData[subject] &&
       memberData[subject][approach] &&
-      memberData[subject][approach][chapterNumber]
+      memberData[subject][approach][chapterNumber] &&
+      memberData[subject][approach][chapterNumber][subchapterNumber]
     ) {
       //console.log('Hiérarchie vérifiée');
-      Object.keys(memberData[subject][approach][chapterNumber]).forEach((moduleNumber) => {
-        const moduleKey = `${subject}-${approach}-${chapterNumber}-${moduleNumber}`;
-        //console.log(moduleKey);
-        const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
-        moduleElements.forEach((moduleElement) => {
-          moduleElement.classList.add('is-watched');
-        });
-      });
+      Object.keys(memberData[subject][approach][chapterNumber][subchapterNumber]).forEach(
+        (moduleNumber) => {
+          const moduleKey = `${subject}-${approach}-${chapterNumber}-${subchapterNumber}-${moduleNumber}`;
+          //console.log(moduleKey);
+          const moduleElements = document.querySelectorAll(
+            `[ms-code-mark-complete="${moduleKey}"]`
+          );
+          moduleElements.forEach((moduleElement) => {
+            moduleElement.classList.add('is-watched');
+          });
+        }
+      );
     }
   }
 
@@ -198,10 +203,10 @@ export async function updateModuleLecture() {
 
       const moduleKey = completeElement.getAttribute('ms-code-mark-complete');
 
-      if (completeElement.classList.contains('yes')) {
+      if (completeElement.classList.contains('is-watched')) {
         await markModuleIncomplete(moduleKey, memberData);
       } else {
-        completeElement.classList.add('yes'); // Optimistically add "yes" class
+        completeElement.classList.add('is-watched'); // Optimistically add "yes" class
         await markModuleComplete(moduleKey, memberData);
       }
 
@@ -215,8 +220,148 @@ export async function updateModuleLecture() {
   // Initialize page based on the fetched memberData
   document.querySelectorAll('[ms-code-mark-complete]').forEach((groupElement) => {
     const moduleKey = groupElement.getAttribute('ms-code-mark-complete');
-    const [subject, approach, chapterNumber] = moduleKey.split('-');
-    updatePageFromMemberJSON(subject, approach, chapterNumber, memberData);
+    const [subject, approach, chapterNumber, subchapterNumber] = moduleKey.split('-');
+    updatePageFromMemberJSON(subject, approach, chapterNumber, subchapterNumber, memberData);
+  });
+}*/
+
+export async function updateModuleLecture() {
+  const memberstack = window.$memberstackDom;
+  let memberData;
+
+  try {
+    // Fetch member data once
+    const member = await memberstack.getMemberJSON();
+    memberData = member.data ? member.data : {};
+  } catch (error) {
+    console.error('Error fetching member data:', error);
+    return; // Stop execution if member data cannot be fetched
+  }
+
+  // Function to mark module complete, now accepts memberData as a parameter
+  async function markModuleComplete(moduleKey, memberData) {
+    const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
+      moduleKey.split('-');
+
+    // Vérifier et initialiser chaque niveau de la hiérarchie si nécessaire
+    if (!memberData[subject]) {
+      memberData[subject] = {};
+    }
+    if (!memberData[subject][format]) {
+      memberData[subject][format] = {};
+    }
+    if (!memberData[subject][format][approach]) {
+      memberData[subject][format][approach] = {};
+    }
+    if (!memberData[subject][format][approach][chapterNumber]) {
+      memberData[subject][format][approach][chapterNumber] = {};
+    }
+    if (!memberData[subject][format][approach][chapterNumber][subchapterNumber]) {
+      memberData[subject][format][approach][chapterNumber][subchapterNumber] = {};
+    }
+
+    // Marquer le module comme complété
+    memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber] = true;
+
+    // Update member JSON with modified memberData
+    await memberstack.updateMemberJSON({ json: memberData });
+    console.log(`Module ${moduleKey} marked as completed`);
+
+    // Update the DOM as before
+    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
+    moduleElements.forEach((moduleElement) => {
+      moduleElement.classList.add('is-watched');
+    });
+  }
+
+  async function markModuleIncomplete(moduleKey, memberData) {
+    const [, subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
+      moduleKey.split('-');
+
+    if (
+      memberData[subject] &&
+      memberData[subject][format] &&
+      memberData[subject][format][approach] &&
+      memberData[subject][format][approach][chapterNumber] &&
+      memberData[subject][format][approach][chapterNumber][subchapterNumber] &&
+      memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber]
+    ) {
+      delete memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber];
+
+      await memberstack.updateMemberJSON({ json: memberData });
+      console.log(`Module ${moduleKey} marked as incomplete`);
+    }
+
+    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
+    moduleElements.forEach((moduleElement) => {
+      moduleElement.classList.remove('is-watched');
+    });
+  }
+
+  async function updatePageFromMemberJSON(
+    subject,
+    format,
+    approach,
+    chapterNumber,
+    subchapterNumber,
+    memberData
+  ) {
+    if (
+      memberData[subject] &&
+      memberData[subject][format] &&
+      memberData[subject][format][approach] &&
+      memberData[subject][format][approach][chapterNumber] &&
+      memberData[subject][format][approach][chapterNumber][subchapterNumber]
+    ) {
+      Object.keys(memberData[subject][format][approach][chapterNumber][subchapterNumber]).forEach(
+        (moduleNumber) => {
+          const moduleKey = `${subject}-${format}-${approach}-${chapterNumber}-${subchapterNumber}-${moduleNumber}`;
+          const moduleElements = document.querySelectorAll(
+            `[ms-code-mark-complete="${moduleKey}"]`
+          );
+          moduleElements.forEach((moduleElement) => {
+            moduleElement.classList.add('is-watched');
+          });
+        }
+      );
+    }
+  }
+
+  document.addEventListener('click', async function (event) {
+    const { target } = event;
+    const completeElement = target.closest('[ms-code-mark-complete]');
+    if (completeElement) {
+      event.preventDefault();
+
+      const moduleKey = completeElement.getAttribute('ms-code-mark-complete');
+
+      if (completeElement.classList.contains('is-watched')) {
+        await markModuleIncomplete(moduleKey, memberData);
+      } else {
+        completeElement.classList.add('is-watched'); // Optimistically add "yes" class
+        await markModuleComplete(moduleKey, memberData);
+      }
+
+      // Navigate to the href link if it exists after updating JSON
+      if (completeElement.tagName.toLowerCase() === 'a' && completeElement.href) {
+        window.location.href = completeElement.href;
+      }
+    }
+  });
+
+  // Initialize page based on the fetched memberData
+  document.querySelectorAll('[ms-code-mark-complete]').forEach((groupElement) => {
+    const moduleKey = groupElement.getAttribute('ms-code-mark-complete');
+    const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
+      moduleKey.split('-');
+    updatePageFromMemberJSON(
+      subject,
+      format,
+      approach,
+      chapterNumber,
+      subchapterNumber,
+      memberData
+    );
   });
 }
 

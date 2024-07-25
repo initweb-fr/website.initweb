@@ -8,7 +8,7 @@ import {
   saveCurrentPreviousPage,
   saveUserData,
 } from '$utils/manage-user-data';
-import { revealHeaderHeading, revealHeaderText } from '$utils/reveal';
+import { revealHomeHero, revealSection } from '$utils/reveal';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -20,8 +20,13 @@ window.Webflow.push(() => {
   saveCurrentPreviousPage();
 
   // Animate Elements
-  revealHeaderHeading();
-  revealHeaderText();
+  //revealSupHeading();
+  //revealHeaderHeading();
+  //revealHeaderText();
+  revealSection();
+  if (window.location.pathname === '/') {
+    revealHomeHero();
+  }
 
   // Get & Insert UTMs in Elements
   manageUTM();
@@ -33,4 +38,9 @@ window.Webflow.push(() => {
   addUserLastName();
 
   manageFixedModal();
+
+  // Manage Sliders
+
+  if (window.matchMedia('(min-width: 992px)').matches) {
+  }
 });
