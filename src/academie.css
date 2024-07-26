@@ -50,6 +50,7 @@
 
 
 
+
 .mod-cont_toc_chapter_component:not(:has(.w--current)) .mod-cont_toc_chapter_title{
     opacity:0.3;
 }
