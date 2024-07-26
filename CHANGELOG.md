@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.4
+
+### Patch Changes
+
+- cfd5a01: Mise en ligne rapide pour correctif Explorer Webflow
+
 ## 0.0.3
 
 ### Patch Changes
