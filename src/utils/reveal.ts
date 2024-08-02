@@ -3,118 +3,141 @@ gsap.registerPlugin(ScrollTrigger);
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
-export function revealSection() {
-  const sectionElements = document.querySelectorAll('[animate="section"]');
-
-  sectionElements.forEach((sectionElement) => {
-    // Section of Elements
-
-    const headerComponent = sectionElement.querySelector('[animate="section-header"]');
-    const headerTag = sectionElement.querySelector('[animate="header-tag"]');
-    const headerTitle = sectionElement.querySelector('[animate="header-title"]');
-    const headerTitleSplit = new SplitType(headerTitle, {
-      types: 'lines, words, chars',
-      tagName: 'span',
-    });
-    const headerText = sectionElement.querySelector('[animate="header-text"]');
-    const headerTextSplit = new SplitType(headerText, {
-      types: 'lines, words, chars',
-      tagName: 'span',
-    });
-    const headerButtonPrimary = sectionElement.querySelector('[animate="header-button-primary"]');
-    const headerButtonSecondary = sectionElement.querySelector(
-      '[animate="header-button-secondary"]'
-    );
-    const headerButtonInfos = sectionElement.querySelector('[animate="header-button-infos"]');
-
-    const contentComponent = sectionElement.querySelector('[animate="section-content"]');
-
-    const specDuration = 0.6;
-    const specBaseMoveY = 8;
-    const specBaseOpacity = 0.02;
-    const specDelay = specDuration - 0.1;
-    const specEase = 'circ.Out';
-
-    // Timeline Creation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: headerComponent, // Élément déclencheur
-        start: 'top 70%', // Début de l'animation
-        end: 'top 40%', // Fin de l'animation
-        scrub: true, // Animation synchronisée avec le scroll
-        //markers: true, // Affiche des marqueurs pour le debug
-      },
-    });
-
-    // Animations of Timeline
-    tl.from(
-      headerTag,
-      { opacity: specBaseOpacity, duration: specDuration, ease: specEase },
-      '-=' + specDelay
-    )
-      .from(
-        headerTitleSplit.words,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          stagger: 0.1,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
-      )
-      .from(
-        headerTextSplit.lines,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          stagger: 0.1,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
-      )
-      .from(
-        headerButtonInfos,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
-      )
-      .from(
-        headerButtonSecondary,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
-      )
-      .from(
-        headerButtonPrimary,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
-      )
-      .from(
-        contentComponent,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveY,
-          duration: specDuration,
-          ease: specEase,
-        },
-        '-=' + specDelay
+export function revealHeader() {
+  const headerComponents = document.querySelectorAll('[animate="section-header"]');
+  if (headerComponents) {
+    headerComponents.forEach((headerComponent) => {
+      const headerTag = headerComponent.querySelector('[animate="header-tag"]');
+      const headerTitle = headerComponent.querySelector('[animate="header-title"]');
+      const headerTitleSplit = new SplitType(headerTitle, {
+        types: 'lines, words, chars',
+        tagName: 'span',
+      });
+      const headerText = headerComponent.querySelector('[animate="header-text"]');
+      const headerTextSplit = new SplitType(headerText, {
+        types: 'lines, words, chars',
+        tagName: 'span',
+      });
+      const headerButtonPrimary = headerComponent.querySelector(
+        '[animate="header-button-primary"]'
       );
-  });
+      const headerButtonSecondary = headerComponent.querySelector(
+        '[animate="header-button-secondary"]'
+      );
+      const headerButtonInfos = headerComponent.querySelector('[animate="header-button-infos"]');
+
+      const specDuration = 0.6;
+      const specBaseMoveY = 8;
+      const specBaseOpacity = 0.02;
+      const specDelay = specDuration - 0.1;
+      const specEase = 'circ.Out';
+
+      // Timeline Creation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: headerComponent, // Élément déclencheur
+          start: 'top 70%', // Début de l'animation
+          //end: 'top 40%', // Fin de l'animation
+          //scrub: true, // Animation synchronisée avec le scroll
+          //markers: true, // Affiche des marqueurs pour le debug
+        },
+      });
+
+      // Animations of Timeline
+      tl.from(
+        headerTag,
+        { opacity: specBaseOpacity, duration: specDuration, ease: specEase },
+        '-=' + specDelay
+      )
+        .from(
+          headerTitleSplit.words,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveY,
+            stagger: 0.1,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        )
+        .from(
+          headerTextSplit.lines,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveY,
+            stagger: 0.1,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        )
+        .from(
+          headerButtonInfos,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveY,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        )
+        .from(
+          headerButtonSecondary,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveY,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        )
+        .from(
+          headerButtonPrimary,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveY,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        );
+    });
+  }
+}
+
+export function revealHubContent() {
+  const contentComponents = document.querySelectorAll('[animate="section-content"]');
+  if (contentComponents) {
+    contentComponents.forEach((contentComponent) => {
+      const contentHubItems = contentComponent.querySelectorAll('[animate="hub-card"]');
+
+      // Timeline Creation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: contentComponent, // Élément déclencheur
+          start: 'top 70%', // Début de l'animation
+          //end: 'top 40%', // Fin de l'animation
+          //scrub: true, // Animation synchronisée avec le scroll
+          //markers: true, // Affiche des marqueurs pour le debug
+        },
+      });
+
+      const specDuration = 1;
+      const specBaseMoveY = 16;
+      const specBaseOpacity = 0.02;
+      //const specDelay = specDuration - 0.1;
+      const specEase = 'circ.Out';
+
+      // Animations of Timeline
+      tl.from(contentHubItems, {
+        opacity: specBaseOpacity,
+        y: specBaseMoveY,
+        duration: specDuration,
+        ease: specEase,
+        stagger: 0.2,
+      });
+    });
+  }
 }
 
 export function revealHomeHero() {
@@ -143,77 +166,6 @@ export function revealHomeHero() {
       tl.to(subsectionBackground, { borderRadius: '48px', width: specTargetWidth, x: 32 });
     }
   }
-}
-
-export function revealSupHeading() {
-  const supHeading = document.querySelector('[animate="supheading"]');
-
-  gsap.from(supHeading, {
-    opacity: 0.05,
-    duration: 1,
-    delay: 0.6,
-    ease: 'power1.out',
-    scrollTrigger: {
-      trigger: supHeading,
-      start: 'top 65%',
-      end: 'bottom 30%',
-      scrub: true,
-    },
-  });
-}
-
-export function revealHeaderText() {
-  const textTargets = document.querySelectorAll('[animate="header-text"]');
-  textTargets.forEach((textTarget) => {
-    const textSplit = new SplitType(textTarget, {
-      types: 'lines, words, chars',
-      tagName: 'span',
-    });
-
-    const textSplitLines = textSplit.lines;
-    //console.log(textSplitWord)
-
-    gsap.from(textSplitLines, {
-      opacity: 0.05,
-      ease: 'power1.out',
-      stagger: 0.1,
-      scrub: true,
-      scrollTrigger: {
-        trigger: textSplitLines,
-        start: 'top 65%',
-        end: 'bottom 30%',
-        scrub: true,
-      },
-    });
-  });
-}
-
-export function revealHeaderHeading() {
-  const headingTargets = document.querySelectorAll('[animate="header-heading"]');
-
-  //console.log(headingTargets);
-  headingTargets.forEach((headingTarget) => {
-    const headingSplit = new SplitType(headingTarget, {
-      types: 'lines, words, chars',
-      tagName: 'span',
-    });
-
-    const headingSplitWord = headingSplit.words;
-    //console.log(headingSplitWord)
-
-    gsap.from(headingSplitWord, {
-      opacity: 0.05,
-      stagger: 0.1,
-      ease: 'power1.out',
-      scrub: true,
-      scrollTrigger: {
-        trigger: headingSplitWord,
-        start: 'top 70%',
-        end: 'bottom 30%',
-        scrub: true,
-      },
-    });
-  });
 }
 
 /**

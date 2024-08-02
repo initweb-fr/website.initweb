@@ -8,7 +8,7 @@ import {
   saveCurrentPreviousPage,
   saveUserData,
 } from '$utils/manage-user-data';
-import { revealHomeHero, revealSection } from '$utils/reveal';
+import { revealHeader, revealHomeHero, revealHubContent } from '$utils/reveal';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -23,7 +23,8 @@ window.Webflow.push(() => {
   //revealSupHeading();
   //revealHeaderHeading();
   //revealHeaderText();
-  revealSection();
+  revealHeader();
+  revealHubContent();
   if (window.location.pathname === '/') {
     revealHomeHero();
   }

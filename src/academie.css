@@ -5,71 +5,198 @@
 
 **/
 
-
-/** ------------------------------ Affichage pour l'ouverture du TOC ------------------------------ **/
-
-
-/** ------------------------------ Affichage pour le module actuel ------------------------------ **/
-
-.mod-cont_toc_chapter_component:has(.w--current) .mod-cont_toc_chapter_title{
-    opacity:1;
+@media (min-width: 992px) {
+    .mod-cont_toc_component:not(.all-open) .mod-cont_toc_chapter_item {
+        .mod-cont_toc_chapter_title{
+            opacity: 0.3;
+        }
+        .mod-cont_toc_chapter_chevron{
+            transform: rotate(0deg);
+        }
+        .mod-cont_toc_subchapter_component{
+            display: none;
+        }
+    }
+    .mod-cont_toc_component:not(.all-open) .mod-cont_toc_subchapter_item {
+        .mod-cont_toc_subchapter_title{
+            opacity: 0.3;
+        }
+        .mod-cont_toc_subchapter_chevron{
+            transform: rotate(0deg);
+        }
+        .mod-cont_toc_module_component{
+            display: none;
+        }
+    }
+    .mod-cont_toc_component:not(.all-open) .mod-cont_toc_chapter_item.is-open {
+        .mod-cont_toc_chapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_chapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_subchapter_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_component:not(.all-open) .mod-cont_toc_subchapter_item.is-open {
+        .mod-cont_toc_subchapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_subchapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_module_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_component.all-open .mod-cont_toc_chapter_item {
+        .mod-cont_toc_chapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_chapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_subchapter_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_component.all-open .mod-cont_toc_subchapter_item {
+        .mod-cont_toc_subchapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_subchapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_module_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_chapter_title:hover{
+        opacity: 1 !important;
+    }
+    .mod-cont_toc_subchapter_title:hover{
+        opacity: 1 !important;
+    }
+    .mod-cont_toc_module_title:hover{
+        opacity: 1 !important;
+    }
+    .mod-cont_toc_module_text.w--current{
+        background: linear-gradient(to right, 
+                    rgba(255, 102, 0,0.6) 0%, 
+                    rgba(255, 102, 0,0.05) 3Rem, 
+                    rgba(255, 102, 0,0) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
-.mod-cont_toc_chapter_modules_item:has(.w--current) .mod-cont_toc_chapter_modules_text{
-    color: var(--text-color--primary-100)
+
+@media (max-width: 991px) {
+    .mod-cont_toc_component.all-open .mod-cont_toc_chapter_component{
+        display: flex;
+    }
+    .mod-cont_toc_component.all-open .mod-cont_toc_chapter_item {
+        .mod-cont_toc_chapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_chapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_subchapter_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_component.all-open .mod-cont_toc_subchapter_item {
+        .mod-cont_toc_subchapter_title{
+            opacity: 1;
+        }
+        .mod-cont_toc_subchapter_chevron{
+            transform: rotate(90deg);
+        }
+        .mod-cont_toc_module_component{
+            display: flex;
+        }
+    }
+    .mod-cont_toc_module_text.w--current{
+        background: linear-gradient(to right, 
+                    rgba(255, 102, 0, 0.6) 0%, 
+                    rgba(255, 102, 0, 0.6) 75%, 
+                    rgba(255, 102, 0, 0.05) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
-.mod-cont_toc_chapter_modules_item:has(.w--current) .mod-cont_toc_chapter_modules_check{
-    border-color: var(--text-color--primary-100)
+@media (max-width: 380px) {
+    .mod-cont_toc_module_text.w--current{
+        background: linear-gradient(to right, 
+                    rgba(255, 102, 0, 0.6) 0%, 
+                    rgba(255, 102, 0, 0.05) 3Rem, 
+                    rgba(255, 102, 0, 0) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
 
-.mod-cont_toc_chapter_modules:not(:has(.w--current)) {
-    display:none;
-}
 
 
-/** ------------------------------ Affichage pour les modules visionnés ------------------------------ **/
-
-.mod-cont_toc_chapter_modules_item:has(.is-watched) .mod-cont_toc_chapter_modules_text{
-    color: var(--text-color--primary-60)
-}
-.mod-cont_toc_chapter_modules_item:has(.is-watched) .mod-cont_toc_chapter_modules_check{
-    border-color: var(--text-color--primary-100);
+.mod-cont_toc_module_item:not(:has(.is-watched)) .mod-cont_toc_module_status{
     min-width:1Rem;
     min-height:1Rem;
-    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/65d4dc6a37b074b639c7de93_check-checkbox.svg");
+    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/6672ac7490617cb3883cfae6_placeholder.svg");
     background-repeat: no-repeat;
-    background-size: 0.6Rem;
+    background-size: 1Rem;
     background-position: center;
-    border-color: var(--background-color--secondary-60);
+    opacity: 0.3;
+}
+.mod-cont_toc_module_item:not(:has(.is-watched)) .mod-cont_toc_module_status:hover{
+    min-width:1Rem;
+    min-height:1Rem;
+    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/6672ac7490617cb3883cfae6_placeholder.svg");
+    background-repeat: no-repeat;
+    background-size: 1Rem;
+    background-position: center;
+    opacity: 1;
+}
+.mod-cont_toc_module_item:has(.is-watched) .mod-cont_toc_module_status{
+    min-width:1Rem;
+    min-height:1Rem;
+    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/6672ac5f07522b47489dfa20_check-circle.svg");
+    background-repeat: no-repeat;
+    background-size: 1Rem;
+    background-position: center;
+    margin-left: 1px;
+}
+.mod-cont_toc_module_item:has(.w--current):has(.is-watched) .mod-cont_toc_module_status{
+    width:1Rem;
+    height:1Rem;
+    background-image: url("https://uploads-ssl.webflow.com/65d4dc6937b074b639c7dde9/6673494ac7c617729cc0c0ce_orange--check-circle.svg");
+    background-repeat: no-repeat;
+    background-size: 1Rem;
+    background-position: center;
+    margin-left: 1px;
 }
 
-
-
-
-
-
-
-
-
-
-.mod-cont_toc_chapter_component:not(:has(.w--current)) .mod-cont_toc_chapter_title{
-    opacity:0.3;
-}
-
-
-/** Affichage du Curriculum en fonction du visionnage en cours de l'utilisateur **/
-
-.mod-cont_toc_chapter_component.is-open .mod-cont_toc_chapter_modules{
+.mod-cont_toc_module_title:has(.w--current):has(.is-watched) .mod-cont_toc_module_validate_text[module-status='to-validate']{
     display:none;
 }
-.mod-cont_toc_chapter_component.is-open .mod-cont_toc_chapter_modules{
+.mod-cont_toc_module_title:has(.w--current):has(.is-watched) .mod-cont_toc_module_validate_text[module-status='validated']{
     display:flex;
 }
-
-
-
-
-
-
-
-
-
+.mod-cont_toc_module_title:has(.w--current):not(:has(.is-watched)) .mod-cont_toc_module_validate_text[module-status='to-validate']{
+    display:flex;
+}
+.mod-cont_toc_module_title:has(.w--current):not(:has(.is-watched)) .mod-cont_toc_module_validate_text[module-status='validated']{
+    display:none;
+}
+.button_wrapper .button_text[module-status='to-validate']{
+    display:flex;
+}
+.button_wrapper .button_text[module-status='validated']{
+    display:none;
+}
+.button_wrapper.is-watched .button_text[module-status='to-validate']{
+    display:none;
+}
+.button_wrapper.is-watched .button_text[module-status='validated']{
+    display:flex;
+}

@@ -275,7 +275,7 @@ export async function updateModuleLecture() {
   }
 
   async function markModuleIncomplete(moduleKey, memberData) {
-    const [, subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
+    const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
       moduleKey.split('-');
 
     if (
@@ -288,8 +288,9 @@ export async function updateModuleLecture() {
     ) {
       delete memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber];
 
+      // Update member JSON with modified memberData
       await memberstack.updateMemberJSON({ json: memberData });
-      console.log(`Module ${moduleKey} marked as incomplete`);
+      console.log(`Module ${moduleKey} marked as uncompleted`);
     }
 
     const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
@@ -473,21 +474,44 @@ export function manageFUPEWWTrackingData() {
     console.log("Le cookie existe : pas d'envoi des données.");
   }
 }
+/*
+export function saveFirstModuleSeen() {
+  //www.initweb.fr/academie/explorer/ww-el-pe-modules/bienvenue
 
+  // Au clic, du bouton ToC ou sous vidéo, j'envoie un Webhook
+
+  const currentUrl = window.location.href;
+  if (currentUrl.includes('modules/bienvenue')) {
+    console.log("Le terme 'bienvenue' est présent dans l'URL.");
+
+    fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        MODULE_validation: true,
+      }),
+    });
+    // Ajoutez ici toute autre action que vous souhaitez effectuer
+  } else {
+    console.log("Le terme 'bienvenue' n'est pas présent dans l'URL.");
+  }
+}
+  */
 export function addCurrentPageToNav() {
   // Récupère le code depuis le LocalStorage
   const CurrentPageNameUTM = localStorage.getItem('page_current_name');
   const NavPage = document.querySelector('[pageinfo="current-page"]') as HTMLElement;
 
   //Intègre le Nom de la page.
-  //console.log(NavPage);
+  console.log(NavPage);
   //console.log(CurrentPageNameUTM);
   //console.log(CurrentPageUrlUTM);
   if (NavPage) {
     NavPage.innerHTML = CurrentPageNameUTM;
   }
 }
-
 export function saveCurrentPreviousPage() {
   // Get the URL path of the current page
   const currentPagePath: string = window.location.pathname;
@@ -523,7 +547,6 @@ export function getDeviceType() {
   // Store the device type in a variable for future use
   return deviceType;
 }
-
 export function manageUTM() {
   // Récupération de l'URL
   const url = new URL(location.href);
