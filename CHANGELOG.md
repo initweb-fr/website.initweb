@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.5
+
+### Patch Changes
+
+- 2e6938b: Update du TOC
+
 ## 0.0.4
 
 ### Patch Changes
