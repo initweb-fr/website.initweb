@@ -50,7 +50,7 @@ export function addUserLastName() {
     }
   });
 }
-// Modifier pour envoyer un webhook
+
 export function getMemberEmailOnLoad() {
   window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
     if (member && member.auth.email) {
@@ -63,167 +63,6 @@ export function getMemberEmailOnLoad() {
     }
   });
 }
-/**
-export function saveUserFavoriteOffer() {
-  const btnTarifs = document.querySelectorAll('.tarif_btn a');
-  btnTarifs.forEach((item) => {
-    const offre = item.getAttribute('offre');
-    const href = item.getAttribute('href');
-    item.href = item.href + '&offre=' + offre;
-    console.log('Le nouveau lien est ' + item.href);
-  });
-}
-
-export function addUserFavoriteOffer() {
-  const url_string = window.location.href;
-  const url = new URL(url_string);
-  const offre = url.searchParams.get('offre');
-
-  const inputOffre = document.querySelector('.input-offre');
-  if (inputOffre) {
-    console.log(inputOffre);
-    localStorage.setItem('user-favoriteoffer', offre);
-    inputOffre.value = offre;
-  }
-}
-
-export function getPreviousPage() {
-  const demoLinks = document.querySelectorAll('[href*="/demo"]');
-  demoLinks.forEach((demoLink) => {
-    const previousPage = sessionStorage.getItem('IDPage');
-    demoLink.href = demoLink.href + '?previouspage=' + previousPage;
-    console.log('Le lien est ' + demoLink.href);
-  });
-}
-*/
-/*export async function updateModuleLecture() {
-  const memberstack = window.$memberstackDom;
-  let memberData;
-
-  try {
-    // Fetch member data once
-    const member = await memberstack.getMemberJSON();
-    memberData = member.data ? member.data : {};
-  } catch (error) {
-    console.error('Error fetching member data:', error);
-    return; // Stop execution if member data cannot be fetched
-  }
-
-  // Function to mark module complete, now accepts memberData as a parameter
-  async function markModuleComplete(moduleKey, memberData) {
-    const [subject, approach, chapterNumber, subchapterNumber, moduleNumber] = moduleKey.split('-');
-    //console.log([subject, approach, chapterNumber, moduleNumber]);
-
-    // Vérifier et initialiser chaque niveau de la hiérarchie si nécessaire
-    if (!memberData[subject]) {
-      memberData[subject] = {};
-    }
-    if (!memberData[subject][approach]) {
-      memberData[subject][approach] = {};
-    }
-    if (!memberData[subject][approach][chapterNumber]) {
-      memberData[subject][approach][chapterNumber] = {};
-    }
-    if (!memberData[subject][approach][chapterNumber][subchapterNumber]) {
-      memberData[subject][approach][chapterNumber][subchapterNumber] = {};
-    }
-    if (!memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber]) {
-      memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber] = false;
-    }
-
-    // Marquer le module comme complété
-    memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber] = true;
-
-    // Mettre à jour les données du membre sur Memberstack
-    await memberstack.updateMemberJSON({ json: memberData });
-    console.log(`Module ${moduleKey} marked as completed`);
-
-    // Mettre à jour le DOM pour indiquer le statut complété
-    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
-    moduleElements.forEach((moduleElement) => {
-      moduleElement.classList.add('is-watched');
-    });
-  }
-  async function markModuleIncomplete(moduleKey, memberData) {
-    const [subject, approach, chapterNumber, subchapterNumber, moduleNumber] = moduleKey.split('-');
-    if (
-      memberData[subject] &&
-      memberData[subject][approach] &&
-      memberData[subject][approach][chapterNumber] &&
-      memberData[subject][approach][chapterNumber][subchapterNumber] &&
-      memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber]
-    ) {
-      delete memberData[subject][approach][chapterNumber][subchapterNumber][moduleNumber];
-
-      await memberstack.updateMemberJSON({ json: memberData });
-      console.log(`Module ${moduleKey} marked as incomplete`);
-    }
-
-    const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
-    moduleElements.forEach((moduleElement) => {
-      moduleElement.classList.remove('is-watched');
-    });
-  }
-
-  async function updatePageFromMemberJSON(
-    subject,
-    approach,
-    chapterNumber,
-    subchapterNumber,
-    memberData
-  ) {
-    // Vérifier que chaque niveau de la hiérarchie est défini
-    if (
-      memberData[subject] &&
-      memberData[subject][approach] &&
-      memberData[subject][approach][chapterNumber] &&
-      memberData[subject][approach][chapterNumber][subchapterNumber]
-    ) {
-      //console.log('Hiérarchie vérifiée');
-      Object.keys(memberData[subject][approach][chapterNumber][subchapterNumber]).forEach(
-        (moduleNumber) => {
-          const moduleKey = `${subject}-${approach}-${chapterNumber}-${subchapterNumber}-${moduleNumber}`;
-          //console.log(moduleKey);
-          const moduleElements = document.querySelectorAll(
-            `[ms-code-mark-complete="${moduleKey}"]`
-          );
-          moduleElements.forEach((moduleElement) => {
-            moduleElement.classList.add('is-watched');
-          });
-        }
-      );
-    }
-  }
-
-  document.addEventListener('click', async function (event) {
-    const { target } = event;
-    const completeElement = target.closest('[ms-code-mark-complete]');
-    if (completeElement) {
-      //event.preventDefault();
-
-      const moduleKey = completeElement.getAttribute('ms-code-mark-complete');
-
-      if (completeElement.classList.contains('is-watched')) {
-        await markModuleIncomplete(moduleKey, memberData);
-      } else {
-        completeElement.classList.add('is-watched'); // Optimistically add "yes" class
-        await markModuleComplete(moduleKey, memberData);
-      }
-
-      // Navigate to the href link if it exists after updating JSON
-      if (completeElement.tagName.toLowerCase() === 'a' && completeElement.href) {
-        window.location.href = completeElement.href;
-      }
-    }
-  });
-
-  // Initialize page based on the fetched memberData
-  document.querySelectorAll('[ms-code-mark-complete]').forEach((groupElement) => {
-    const moduleKey = groupElement.getAttribute('ms-code-mark-complete');
-    const [subject, approach, chapterNumber, subchapterNumber] = moduleKey.split('-');
-    updatePageFromMemberJSON(subject, approach, chapterNumber, subchapterNumber, memberData);
-  });
-}*/
 
 export async function updateModuleLecture() {
   const memberstack = window.$memberstackDom;
@@ -474,38 +313,59 @@ export function manageFUPEWWTrackingData() {
     console.log("Le cookie existe : pas d'envoi des données.");
   }
 }
-/*
-export function saveFirstModuleSeen() {
-  //www.initweb.fr/academie/explorer/ww-el-pe-modules/bienvenue
 
-  // Au clic, du bouton ToC ou sous vidéo, j'envoie un Webhook
-
+export async function saveFirstModuleSeen() {
   const currentUrl = window.location.href;
-  if (currentUrl.includes('modules/bienvenue')) {
-    console.log("Le terme 'bienvenue' est présent dans l'URL.");
 
-    fetch('', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        MODULE_validation: true,
-      }),
+  if (currentUrl.includes('modules/bienvenue')) {
+    // console.log('Premier module de la formation');
+
+    // Récupération du module actuel
+    const value = localStorage.getItem('valueCurrentModule');
+
+    // Récupération des infos du member sur Memberstack
+    const memberstack = window.$memberstackDom;
+    const member = await memberstack.getCurrentMember();
+    const memberDatas = member.data ? member.data : {};
+    const email = memberDatas.auth['email'];
+    const id = memberDatas['id'];
+
+    // Fonction envoyant des informations à Pipedrive
+    function handleDatas(event) {
+      console.log('Webhook envoyé');
+
+      fetch('https://hook.eu1.make.com/ytpl7bntjxsiyg1wm7nfbjojemfwopvv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          MODULE_id: value,
+          MEMBERSTACK_id: id,
+          MEMBERSTACK_email: email,
+        }),
+      });
+    }
+
+    // Déclenchement de la fonction
+    const markAsSeenButtons = document.querySelectorAll(
+      '[ms-code-mark-complete=' + value + ']:not(.is-watched)'
+    );
+    markAsSeenButtons.forEach((markAsSeenButton) => {
+      markAsSeenButton.addEventListener('click', handleDatas);
     });
-    // Ajoutez ici toute autre action que vous souhaitez effectuer
   } else {
-    console.log("Le terme 'bienvenue' n'est pas présent dans l'URL.");
+    // console.log("Le terme 'bienvenue' n'est pas présent dans l'URL.");
   }
 }
-  */
+
 export function addCurrentPageToNav() {
   // Récupère le code depuis le LocalStorage
   const CurrentPageNameUTM = localStorage.getItem('page_current_name');
   const NavPage = document.querySelector('[pageinfo="current-page"]') as HTMLElement;
 
   //Intègre le Nom de la page.
-  console.log(NavPage);
+  //console.log(NavPage);
   //console.log(CurrentPageNameUTM);
   //console.log(CurrentPageUrlUTM);
   if (NavPage) {
@@ -523,14 +383,13 @@ export function saveCurrentPreviousPage() {
   // Move the current page path to previousPagePath and set currentPagePath on page load
   if (previousPageToSave) {
     if (previousPageToSave !== currentPagePath) {
-      console.log('set');
       localStorage.setItem('previousPagePath', previousPageToSave);
     }
   }
   localStorage.setItem('currentPagePath', currentPagePath);
 
-  console.log('previousPagePath : ' + localStorage.getItem('previousPagePath'));
-  console.log('currentPagePath : ' + localStorage.getItem('currentPagePath'));
+  //console.log('previousPagePath : ' + localStorage.getItem('previousPagePath'));
+  //console.log('currentPagePath : ' + localStorage.getItem('currentPagePath'));
 }
 export function getDeviceType() {
   const screenWidth = window.innerWidth;

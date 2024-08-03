@@ -12,7 +12,7 @@ import { revealHeader, revealHomeHero, revealHubContent } from '$utils/reveal';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  console.log('Index.ts loaded');
+  // console.log('Index.ts loaded');
   // Handle NavBar
   addCurrentPageToNav();
 

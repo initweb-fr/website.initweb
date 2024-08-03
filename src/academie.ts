@@ -6,7 +6,7 @@ import {
   showProgression,
   surveyProgression,
 } from '$utils/manage-custom-element';
-import { getDeviceType, updateModuleLecture } from '$utils/manage-user-data';
+import { getDeviceType, saveFirstModuleSeen, updateModuleLecture } from '$utils/manage-user-data';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -40,6 +40,7 @@ if (window.$memberstackReady) {
   // Run the code immediately if Memberstack is already ready
   async function loadMemberstackRelated() {
     await updateModuleLecture();
+    await saveFirstModuleSeen();
     setTimeout(showProgression, 1000);
     surveyProgression();
   }
@@ -51,6 +52,7 @@ if (window.$memberstackReady) {
       await updateModuleLecture();
       setTimeout(showProgression, 1000);
       surveyProgression();
+      saveFirstModuleSeen();
     }
     loadMemberstackRelated();
   });
