@@ -25,9 +25,6 @@ window.Webflow.push(() => {
   //revealHeaderText();
   revealHeader();
   revealHubContent();
-  if (window.location.pathname === '/') {
-    revealHomeHero();
-  }
 
   // Get & Insert UTMs in Elements
   manageUTM();
@@ -40,8 +37,9 @@ window.Webflow.push(() => {
 
   manageFixedModal();
 
-  // Manage Sliders
-
   if (window.matchMedia('(min-width: 992px)').matches) {
+    if (window.location.pathname === '/') {
+      revealHomeHero();
+    }
   }
 });
