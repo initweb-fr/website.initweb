@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.6
+
+### Patch Changes
+
+- 67d845a: Sauvegarde du premier module visionné
+
 ## 0.0.5
 
 ### Patch Changes
