@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.7
+
+### Patch Changes
+
+- 45c64b2: Correctif sur le responsive de la Home
+
 ## 0.0.6
 
 ### Patch Changes
