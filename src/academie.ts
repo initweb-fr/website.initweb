@@ -40,7 +40,7 @@ if (window.$memberstackReady) {
   // Run the code immediately if Memberstack is already ready
   async function loadMemberstackRelated() {
     await updateModuleLecture();
-    await saveFirstModuleSeen();
+    saveFirstModuleSeen();
     setTimeout(showProgression, 1000);
     surveyProgression();
   }

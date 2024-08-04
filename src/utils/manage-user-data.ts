@@ -322,6 +322,7 @@ export async function saveFirstModuleSeen() {
 
     // Récupération du module actuel
     const value = localStorage.getItem('valueCurrentModule');
+    console.log(value);
 
     // Récupération des infos du member sur Memberstack
     const memberstack = window.$memberstackDom;
@@ -332,8 +333,6 @@ export async function saveFirstModuleSeen() {
 
     // Fonction envoyant des informations à Pipedrive
     function handleDatas(event) {
-      console.log('Webhook envoyé');
-
       fetch('https://hook.eu1.make.com/ytpl7bntjxsiyg1wm7nfbjojemfwopvv', {
         method: 'POST',
         headers: {
