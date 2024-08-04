@@ -123,7 +123,7 @@ export function revealHubContent() {
       });
 
       const specDuration = 1;
-      const specBaseMoveY = 16;
+      const specBaseMoveY = 0;
       const specBaseOpacity = 0.02;
       //const specDelay = specDuration - 0.1;
       const specEase = 'circ.Out';
