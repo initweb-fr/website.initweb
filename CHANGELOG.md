@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.8
+
+### Patch Changes
+
+- d501207: Amélioration de la sauvegarde de la progression
+
 ## 0.0.7
 
 ### Patch Changes
