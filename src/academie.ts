@@ -6,7 +6,7 @@ import {
   showProgression,
   surveyProgression,
 } from '$utils/manage-custom-element';
-import { getDeviceType, saveFirstModuleSeen, updateModuleLecture } from '$utils/manage-user-data';
+import { getDeviceType, saveModuleSeen, updateModuleLecture } from '$utils/manage-user-data';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -31,7 +31,6 @@ window.fsAttributes.push([
 
     // Initial check
     checkBreakpoint(breakpoint);
-
     // Add a listener for changes in the viewport size
     breakpoint.addListener(checkBreakpoint);
   },
@@ -40,9 +39,9 @@ if (window.$memberstackReady) {
   // Run the code immediately if Memberstack is already ready
   async function loadMemberstackRelated() {
     await updateModuleLecture();
-    saveFirstModuleSeen();
     setTimeout(showProgression, 1000);
     surveyProgression();
+    saveModuleSeen();
   }
   loadMemberstackRelated();
 } else {
@@ -52,7 +51,7 @@ if (window.$memberstackReady) {
       await updateModuleLecture();
       setTimeout(showProgression, 1000);
       surveyProgression();
-      saveFirstModuleSeen();
+      saveModuleSeen();
     }
     loadMemberstackRelated();
   });

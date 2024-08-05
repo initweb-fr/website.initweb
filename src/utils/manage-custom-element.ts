@@ -153,7 +153,7 @@ export function surveyProgression() {
   });
 
   // Sélectionner l'élément à observer (par exemple, le conteneur des vidéos)
-  const modulesContainer = document.querySelector('.mod-cont_toc_component');
+  const modulesContainer = document.querySelector('.page-wrapper');
 
   // Options de l'observateur (observer les attributs des nœuds enfants)
   const config = { attributes: true, subtree: true, attributeOldValue: true };

@@ -188,15 +188,15 @@
 .mod-cont_toc_module_title:has(.w--current):not(:has(.is-watched)) .mod-cont_toc_module_validate_text[module-status='validated']{
     display:none;
 }
-.button_wrapper .button_text[module-status='to-validate']{
+.button .button_text[module-status='to-validate']{
     display:flex;
 }
-.button_wrapper .button_text[module-status='validated']{
+.button .button_text[module-status='validated']{
     display:none;
 }
-.button_wrapper.is-watched .button_text[module-status='to-validate']{
+.button.is-watched .button_text[module-status='to-validate']{
     display:none;
 }
-.button_wrapper.is-watched .button_text[module-status='validated']{
+.button.is-watched .button_text[module-status='validated']{
     display:flex;
 }

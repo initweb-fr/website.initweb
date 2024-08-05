@@ -314,48 +314,49 @@ export function manageFUPEWWTrackingData() {
   }
 }
 
-export async function saveFirstModuleSeen() {
-  const currentUrl = window.location.href;
+export async function saveModuleSeen() {
+  //const value = localStorage.getItem('valueCurrentModule');
+  //console.log(value);
 
-  if (currentUrl.includes('modules/bienvenue')) {
-    // console.log('Premier module de la formation');
+  // Récupération des infos du membr sur Memberstack
+  const memberstack = window.$memberstackDom;
+  const member = await memberstack.getCurrentMember();
+  const memberDatas = member.data ? member.data : {};
+  const {
+    auth: { email },
+    id,
+  } = memberDatas;
 
-    // Récupération du module actuel
-    const value = localStorage.getItem('valueCurrentModule');
-    console.log(value);
+  // Fonction envoyant des informations à Pipedrive
+  function handleDatas(event) {
+    const thisModuleID = event.target.getAttribute('ms-code-mark-complete');
+    //console.log(thisModuleID);
+    console.log('Progression sauvegardée.');
 
-    // Récupération des infos du member sur Memberstack
-    const memberstack = window.$memberstackDom;
-    const member = await memberstack.getCurrentMember();
-    const memberDatas = member.data ? member.data : {};
-    const email = memberDatas.auth['email'];
-    const id = memberDatas['id'];
-
-    // Fonction envoyant des informations à Pipedrive
-    function handleDatas(event) {
-      fetch('https://hook.eu1.make.com/ytpl7bntjxsiyg1wm7nfbjojemfwopvv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          MODULE_id: value,
-          MEMBERSTACK_id: id,
-          MEMBERSTACK_email: email,
-        }),
-      });
-    }
-
-    // Déclenchement de la fonction
-    const markAsSeenButtons = document.querySelectorAll(
-      '[ms-code-mark-complete=' + value + ']:not(.is-watched)'
-    );
-    markAsSeenButtons.forEach((markAsSeenButton) => {
-      markAsSeenButton.addEventListener('click', handleDatas);
+    fetch('https://hook.eu1.make.com/ytpl7bntjxsiyg1wm7nfbjojemfwopvv', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        MODULE_id: thisModuleID,
+        MEMBERSTACK_id: id,
+        MEMBERSTACK_email: email,
+      }),
     });
-  } else {
-    // console.log("Le terme 'bienvenue' n'est pas présent dans l'URL.");
   }
+
+  // Déclenchement de la fonction
+  const markAsSeenButtons = document.querySelectorAll(
+    '[ms-code-mark-complete]:not(.w-condition-invisible'
+  );
+  //console.log(markAsSeenButtons);
+
+  markAsSeenButtons.forEach((markAsSeenButton) => {
+    if (!markAsSeenButton.classList.contains('is-watched')) {
+      markAsSeenButton.addEventListener('click', handleDatas);
+    }
+  });
 }
 
 export function addCurrentPageToNav() {
