@@ -1,3 +1,4 @@
+import { manageNewsBanner } from '$utils/manage-custom-element';
 import { manageFixedModal } from '$utils/manage-fixed-modales';
 import {
   addCurrentPageToNav,
@@ -15,6 +16,7 @@ window.Webflow.push(() => {
   // console.log('Index.ts loaded');
   // Handle NavBar
   addCurrentPageToNav();
+  manageNewsBanner();
 
   // Handle Previous/Current Page
   saveCurrentPreviousPage();
