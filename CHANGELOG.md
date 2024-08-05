@@ -1,5 +1,12 @@
 # @initstudio/initweb
 
+## 0.0.10
+
+### Patch Changes
+
+- 578c9ee: Ajout d'un système de bannière News
+- a2fe310: Sauvegarde de la progression pour tous les modules de la formation Explorer
+
 ## 0.0.9
 
 ### Patch Changes
