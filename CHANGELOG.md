@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.11
+
+### Patch Changes
+
+- dba93bc: Correctif sur la NewsBanner
+
 ## 0.0.10
 
 ### Patch Changes
