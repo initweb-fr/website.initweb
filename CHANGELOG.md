@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.9
+
+### Patch Changes
+
+- d4d94c2: Suppression du bug d'apparition des cards Hub Content
+
 ## 0.0.8
 
 ### Patch Changes
