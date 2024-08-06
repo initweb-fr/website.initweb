@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.12
+
+### Patch Changes
+
+- ecbebf0: Ajout d'un bouton vers le module suivant
+
 ## 0.0.11
 
 ### Patch Changes
