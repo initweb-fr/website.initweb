@@ -8,14 +8,14 @@ export function revealHeader() {
   if (headerComponents) {
     headerComponents.forEach((headerComponent) => {
       const headerTag = headerComponent.querySelector('[animate="header-tag"]');
-      const headerTitle = headerComponent.querySelector('[animate="header-title"]');
+      const headerTitle = headerComponent.querySelector('[animate="header-title"]') as HTMLElement;
       const headerTitleSplit = new SplitType(headerTitle, {
-        types: 'lines, words, chars',
+        types: 'lines,words,chars',
         tagName: 'span',
       });
-      const headerText = headerComponent.querySelector('[animate="header-text"]');
+      const headerText = headerComponent.querySelector('[animate="header-text"]') as HTMLElement;
       const headerTextSplit = new SplitType(headerText, {
-        types: 'lines, words, chars',
+        types: 'lines,words,chars',
         tagName: 'span',
       });
       const headerButtonPrimary = headerComponent.querySelector(

@@ -1,9 +1,11 @@
-import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders';
+import { getFunnelTrackingData } from '$utils/data/dataMemberSource';
+import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
 
 // -- Déclenchement du code au chargement de la page
 window.Webflow ||= [];
 window.Webflow.push(() => {
   loadOnlyOnDesktop();
+  getFunnelTrackingData();
 });
 
 // -- Déclenchement du code au redimensionnement

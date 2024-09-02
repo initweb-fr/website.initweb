@@ -1,15 +1,14 @@
-import { manageNewsBanner } from '$utils/manage-custom-element';
-import { manageFixedModal } from '$utils/manage-fixed-modales';
+import { revealHeader, revealHomeHero, revealHubContent } from '$utils/animate/animateReveal';
 import {
-  addCurrentPageToNav,
-  addUserEmail,
-  addUserFirstName,
-  addUserLastName,
+  addUserData,
   manageUTM,
   saveCurrentPreviousPage,
   saveUserData,
-} from '$utils/manage-user-data';
-import { revealHeader, revealHomeHero, revealHubContent } from '$utils/reveal';
+} from '$utils/data/dataUser';
+import { manageNewsBanner } from '$utils/display/displaySiteBanners';
+import { toggleFixedModal } from '$utils/display/displaySiteModales';
+import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
+import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -33,15 +32,16 @@ window.Webflow.push(() => {
 
   // Save & Use UserData in Elements
   saveUserData();
-  addUserEmail();
-  addUserFirstName();
-  addUserLastName();
+  addUserData();
 
-  manageFixedModal();
+  toggleFixedModal();
 
   if (window.matchMedia('(min-width: 992px)').matches) {
     if (window.location.pathname === '/') {
       revealHomeHero();
     }
   }
+
+  // AFFICHAGE - Instagram Web View
+  instaHideGoogleAuth();
 });
