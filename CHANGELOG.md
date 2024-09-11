@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.13
+
+### Patch Changes
+
+- 0ca55e9: Récupération des UTMs
+
 ## 0.0.12
 
 ### Patch Changes
