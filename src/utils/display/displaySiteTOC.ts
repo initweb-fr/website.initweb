@@ -54,15 +54,14 @@ export function manageChapterTOC() {
 
   // Affichage au clic
   tocChapters.forEach((tocChapter) => {
-    tocChapter.addEventListener('click', function(this: HTMLElement) {
+    tocChapter.addEventListener('click', function (this: HTMLElement) {
       tocChapters.forEach((chapter) => {
         chapter.classList.remove('is-open');
       });
-  
+
       this.classList.toggle('is-open');
     });
   });
-  
 
   // Réinitialisation
   if (resetTOC) {
@@ -107,17 +106,16 @@ export function manageSubChapterTOC() {
   });
 
   tocSubChapters.forEach((tocSubChapter) => {
-  tocSubChapter.addEventListener('click', function(this: HTMLElement) {
-    // Retirer la classe .is-open de tous les dropdowns
-    tocSubChapters.forEach((subChapter) => {
-      subChapter.classList.remove('is-open');
+    tocSubChapter.addEventListener('click', function (this: HTMLElement) {
+      // Retirer la classe .is-open de tous les dropdowns
+      tocSubChapters.forEach((subChapter) => {
+        subChapter.classList.remove('is-open');
+      });
+
+      // Ajouter la classe .is-open sur le dropdown cliqué
+      this.classList.add('is-open');
     });
-
-    // Ajouter la classe .is-open sur le dropdown cliqué
-    this.classList.add('is-open');
   });
-});
-
 
   // Réinitialisation
   if (resetTOC) {
@@ -136,38 +134,52 @@ export function manageSubChapterTOC() {
 }
 
 export function manageGlobalTOC_mobile() {
+  const breakpointDesktop = window.matchMedia('(min-width: 992px)');
+
+  const handleResize = () => {
+    if (breakpointDesktop.matches) {
+      initManageGlobalTOC_mobile();
+    } else {
+      // Gérer le cas mobile si nécessaire
+    }
+  };
+
+  handleResize(); // Appel initial pour configurer l'état correct au chargement
+  window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
   // Initialisation
 
-  const headerTOC = document.querySelector('.mod-cont_toc_header_title') as HTMLElement;
+  function initManageGlobalTOC_mobile() {
+    const headerTOC = document.querySelector('.mod-cont_toc_header_title') as HTMLElement;
 
-  const resetTOC = document.querySelector('.mod-cont_toc_reset') as HTMLElement;
-  const openTOC = document.querySelector('.mod-cont_toc_open-all') as HTMLElement;
+    const resetTOC = document.querySelector('.mod-cont_toc_reset') as HTMLElement;
+    const openTOC = document.querySelector('.mod-cont_toc_open-all') as HTMLElement;
 
-  const tocElement = document.querySelector('.mod-cont_toc_component') as HTMLElement;
+    const tocElement = document.querySelector('.mod-cont_toc_component') as HTMLElement;
 
-  resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
-  resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
-  openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
-  openTOC.style.borderColor = 'var(--border-color--alternate-0)';
+    resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
+    resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
+    openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
+    openTOC.style.borderColor = 'var(--border-color--alternate-0)';
 
-  let clickCount = 0;
-  // Affichage au clic
-  headerTOC.addEventListener('click', function () {
-    clickCount++;
+    let clickCount = 0;
+    // Affichage au clic
+    headerTOC.addEventListener('click', function () {
+      clickCount += 1;
 
-    if (clickCount === 1) {
-      tocElement.classList.add('all-open');
-      resetTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
-      resetTOC.style.borderColor = 'var(--border-color--alternate-0)';
-      openTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
-      openTOC.style.borderColor = 'var(--border-color--alternate-100)';
-    } else if (clickCount === 2) {
-      tocElement.classList.remove('all-open');
-      resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
-      resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
-      openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
-      openTOC.style.borderColor = 'var(--border-color--alternate-0)';
-      clickCount = 0;
-    }
-  });
+      if (clickCount === 1) {
+        tocElement.classList.add('all-open');
+        resetTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
+        resetTOC.style.borderColor = 'var(--border-color--alternate-0)';
+        openTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
+        openTOC.style.borderColor = 'var(--border-color--alternate-100)';
+      } else if (clickCount === 2) {
+        tocElement.classList.remove('all-open');
+        resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
+        resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
+        openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
+        openTOC.style.borderColor = 'var(--border-color--alternate-0)';
+        clickCount = 0;
+      }
+    });
+  }
 }

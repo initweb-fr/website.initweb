@@ -15,7 +15,8 @@ export function surveyProgression() {
     for (const mutation of mutationsList) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
         if (
-          (mutation.target instanceof Element && mutation.target.classList.contains('is-watched')) ||
+          (mutation.target instanceof Element &&
+            mutation.target.classList.contains('is-watched')) ||
           (mutation.oldValue && mutation.oldValue.includes('is-watched'))
         ) {
           showProgression();

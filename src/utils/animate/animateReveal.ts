@@ -109,7 +109,7 @@ export function revealHubContent() {
   const contentComponents = document.querySelectorAll('[animate="section-content"]');
   if (contentComponents) {
     contentComponents.forEach((contentComponent) => {
-      const contentHubItems = contentComponent.querySelectorAll('[animate="hub-card"]');
+      const contentHubItems = contentComponent.querySelectorAll('[animate="content-element"]');
 
       // Timeline Creation
       const tl = gsap.timeline({
@@ -141,29 +141,44 @@ export function revealHubContent() {
 }
 
 export function revealHomeHero() {
-  const subsectionHomeHero = document.querySelector('[animate="subsection-home-hero"]');
+  const breakpointDesktop = window.matchMedia('(min-width: 992px)');
 
-  if (subsectionHomeHero) {
-    const subsectionBackground = subsectionHomeHero.querySelector('.section_background');
-    if (subsectionBackground) {
-      const rect = subsectionBackground.getBoundingClientRect();
-      const { width } = rect;
+  const handleResize = () => {
+    if (breakpointDesktop.matches) {
+      initRevealHomeHero();
+    } else {
+      // Gérer le cas mobile si nécessaire
+    }
+  };
 
-      const specTargetWidth = width - 64;
+  handleResize(); // Appel initial pour configurer l'état correct au chargement
+  window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
 
-      // Timeline Creation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: subsectionHomeHero,
-          start: 'bottom 100%',
-          end: 'bottom 90%',
-          scrub: true,
-          //markers: true,
-        },
-      });
+  function initRevealHomeHero() {
+    const subsectionHomeHero = document.querySelector('[animate="subsection-home-hero"]');
 
-      // Animations of Timeline
-      tl.to(subsectionBackground, { borderRadius: '48px', width: specTargetWidth, x: 32 });
+    if (subsectionHomeHero) {
+      const subsectionBackground = subsectionHomeHero.querySelector('.section_background');
+      if (subsectionBackground) {
+        const rect = subsectionBackground.getBoundingClientRect();
+        const { width } = rect;
+
+        const specTargetWidth = width - 64;
+
+        // Timeline Creation
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: subsectionHomeHero,
+            start: 'bottom 100%',
+            end: 'bottom 90%',
+            scrub: true,
+            //markers: true,
+          },
+        });
+
+        // Animations of Timeline
+        tl.to(subsectionBackground, { borderRadius: '48px', width: specTargetWidth, x: 32 });
+      }
     }
   }
 }

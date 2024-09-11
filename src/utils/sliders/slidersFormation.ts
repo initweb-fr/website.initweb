@@ -1,97 +1,127 @@
 import Splide from '@splidejs/splide';
 
 export function SplideFormaProgramA() {
-  const sliderFormaProgramA = document.querySelector('[iw-slider-id="program-content"]');
-  //console.log(sliderFormaProgramA);
+  const breakpointDesktop = window.matchMedia('(min-width: 992px)');
 
-  if (sliderFormaProgramA !== null) {
-    const chaptersSlides = document.querySelectorAll(
-      '[iw-slider-id="program-chapters"] .splide__slide'
-    );
-    // console.log(chaptersSlides);
+  const handleResize = () => {
+    if (breakpointDesktop.matches) {
+      initSplideFormaProgramA();
+    } else {
+      // Gérer le cas mobile si nécessaire
+    }
+  };
 
-    const main = new Splide('[iw-slider-id="program-content"]', {
-      loop: true,
-      speed: 600,
-      drag: true,
-      snap: true,
-      breakpoints: {
-        991: {},
-      },
-    }).mount();
+  handleResize(); // Appel initial pour configurer l'état correct au chargement
+  window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
 
-    const chapters = new Splide('[iw-slider-id="program-chapters"]', {
-      perPage: 1,
-      autoWidth: true,
-      speed: 600,
-      breakpoints: {
-        991: {
-          destroy: true,
+  function initSplideFormaProgramA() {
+    const sliderFormaProgramA = document.querySelector('[iw-slider-id="program-content"]');
+    //console.log(sliderFormaProgramA);
+
+    if (sliderFormaProgramA !== null) {
+      const chaptersSlides = document.querySelectorAll(
+        '[iw-slider-id="program-chapters"] .splide__slide'
+      );
+      // console.log(chaptersSlides);
+
+      const main = new Splide('[iw-slider-id="program-content"]', {
+        loop: true,
+        speed: 600,
+        drag: true,
+        snap: true,
+        breakpoints: {
+          991: {},
         },
-      },
-    });
+      }).mount();
 
-    chapters.sync(main).mount();
-
-    chaptersSlides.forEach((slide, i) => {
-      slide.addEventListener('click', function () {
-        chapters.go(i);
+      const chapters = new Splide('[iw-slider-id="program-chapters"]', {
+        perPage: 1,
+        autoWidth: true,
+        speed: 600,
+        breakpoints: {
+          991: {
+            destroy: true,
+          },
+        },
       });
-    });
+
+      chapters.sync(main).mount();
+
+      chaptersSlides.forEach((slide, i) => {
+        slide.addEventListener('click', function () {
+          chapters.go(i);
+        });
+      });
+    }
   }
 }
 
 export function SplideFormaSituationA() {
-  const sliderFormaSituationA = document.querySelector('[iw-slider-id="situation-content"]');
-  //console.log(sliderFormaSituationA);
+  const breakpointDesktop = window.matchMedia('(min-width: 992px)');
 
-  if (sliderFormaSituationA !== null) {
-    const themesSlides = document.querySelectorAll(
-      '[iw-slider-id="situation-themes"] .splide__slide'
-    );
-    const contentSlides = document.querySelectorAll(
-      '[iw-slider-id="situation-content"] .splide__slide'
-    );
-    //console.log(themesSlides);
-    //console.log(contentSlides);
+  const handleResize = () => {
+    if (breakpointDesktop.matches) {
+      initSplideFormaSituationA();
+    } else {
+      // Gérer le cas mobile si nécessaire
+    }
+  };
 
-    // Initialize Spliders
-    const main = new Splide('[iw-slider-id="situation-content"]', {
-      loop: true,
-      speed: 400,
-      drag: true,
-      snap: true,
-      /** mediaQuery: 'max',
+  handleResize(); // Appel initial pour configurer l'état correct au chargement
+  window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
+
+  function initSplideFormaSituationA() {
+    const sliderFormaSituationA = document.querySelector('[iw-slider-id="situation-content"]');
+    //console.log(sliderFormaSituationA);
+
+    if (sliderFormaSituationA !== null) {
+      const themesSlides = document.querySelectorAll(
+        '[iw-slider-id="situation-themes"] .splide__slide'
+      );
+      const contentSlides = document.querySelectorAll(
+        '[iw-slider-id="situation-content"] .splide__slide'
+      );
+      //console.log(themesSlides);
+      //console.log(contentSlides);
+
+      // Initialize Spliders
+      const main = new Splide('[iw-slider-id="situation-content"]', {
+        loop: true,
+        speed: 400,
+        drag: true,
+        snap: true,
+        /** mediaQuery: 'max',
     breakpoints: {
       991: {
         destroy: true,
       },
     },**/
-    }).mount();
+      }).mount();
 
-    const theme = new Splide('[iw-slider-id="situation-themes"]', {
-      autoWidth: true,
-      speed: 600,
-      /** mediaQuery: 'max',
+      const theme = new Splide('[iw-slider-id="situation-themes"]', {
+        autoWidth: true,
+        speed: 600,
+        /** mediaQuery: 'max',
     breakpoints: {
       991: {
         destroy: true,
       },
     },**/
-    });
-
-    theme.sync(main).mount();
-
-    themesSlides.forEach((slide, i) => {
-      slide.addEventListener('click', function () {
-        theme.go(i);
       });
-    });
 
-    contentSlides.forEach((slide, i) => {
-      slide.addEventListener('click', function () {
-        theme.go(i);
+      theme.sync(main).mount();
+
+      themesSlides.forEach((slide, i) => {
+        slide.addEventListener('click', function () {
+          theme.go(i);
+        });
       });
-    });
+
+      contentSlides.forEach((slide, i) => {
+        slide.addEventListener('click', function () {
+          theme.go(i);
+        });
+      });
+    }
   }
 }
