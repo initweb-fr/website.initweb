@@ -26,7 +26,6 @@ import {
   manageGlobalTOC_mobile,
   manageSubChapterTOC,
 } from '$utils/display/displaySiteTOC';
-import { createVideoOnLoad } from '$utils/display/displaySiteVideo';
 import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
 import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
 
@@ -44,7 +43,6 @@ window.Webflow.push(() => {
   // ------------------------------------------------------------------------------------------------------------------------
   // - Fonctions globales
 
-  createVideoOnLoad();
   getUserDevice(); // Get user device
   addCurrentPageToNav(); // Add current page to nav
   manageNewsBanner(); // Manage news banner
