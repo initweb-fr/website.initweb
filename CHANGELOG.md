@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.15
+
+### Patch Changes
+
+- c8ca1f9: Mise à jour du code
+
 ## 0.0.14
 
 ### Patch Changes
