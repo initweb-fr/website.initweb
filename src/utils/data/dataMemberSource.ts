@@ -108,7 +108,8 @@ export function sendFunnelTrackingData() {
 
       //
       // ENVOI -- Déclenchement du Webhook
-      fetch('https://hook.eu1.make.com/o0o4flkk9fm8opzyms8fvjtn6diuic31', {
+      // previous hook : https://hook.eu1.make.com/o0o4flkk9fm8opzyms8fvjtn6diuic31
+      fetch(' https://hook.eu1.make.com/jwy2aodfw6bybp7gribq53rpqjwpfyuu', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

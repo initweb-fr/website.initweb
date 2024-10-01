@@ -177,7 +177,7 @@ export function revealHomeHero() {
         });
 
         // Animations of Timeline
-        tl.to(subsectionBackground, { borderRadius: '48px', width: specTargetWidth, x: 32 });
+        tl.to(subsectionBackground, { width: specTargetWidth, x: 32, borderRadius: 64 });
       }
     }
   }

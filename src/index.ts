@@ -1,4 +1,5 @@
 import { revealHeader, revealHomeHero, revealHubContent } from '$utils/animate/animateReveal';
+import { getMemberstackMember } from '$utils/data/dataMember';
 import {} from '$utils/data/dataMemberProgression';
 import {
   saveModuleSeen,
@@ -13,6 +14,7 @@ import {
   saveUserData,
 } from '$utils/data/dataUser';
 import { getUserDevice } from '$utils/data/dataUser';
+import { displayJoinAccess } from '$utils/display/displayJoinAccess';
 import { showProgression } from '$utils/display/displayMemberProgression';
 import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
@@ -24,6 +26,7 @@ import {
   manageGlobalTOC_mobile,
   manageSubChapterTOC,
 } from '$utils/display/displaySiteTOC';
+import { createVideoOnLoad } from '$utils/display/displaySiteVideo';
 import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
 import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
 
@@ -41,6 +44,7 @@ window.Webflow.push(() => {
   // ------------------------------------------------------------------------------------------------------------------------
   // - Fonctions globales
 
+  createVideoOnLoad();
   getUserDevice(); // Get user device
   addCurrentPageToNav(); // Add current page to nav
   manageNewsBanner(); // Manage news banner
@@ -54,42 +58,57 @@ window.Webflow.push(() => {
   instaHideGoogleAuth(); // Hide Google Auth on Instagram
   revealHomeHero();
   manageDropdowns();
+  displayJoinAccess();
 
   // ------------------------------------------------------------------------------------------------------------------------
   // - Fonctions spécifiques selon la typologie page
 
-  function loadLandingFunctions() {
+  function loadCoursesFunctions() {
     getFunnelTrackingData();
     SplideFormaSituationA();
     SplideFormaProgramA();
   }
+  // Vérifier si l'URL contient '/formations'
+  if (
+    window.location.pathname.includes('/formations') &&
+    !window.location.pathname.includes('/rejoindre')
+  ) {
+    loadCoursesFunctions();
+  }
 
-  async function loadAcademyFunctions() {
-    await updateModuleLecture();
-    setTimeout(showProgression, 1000);
-    surveyProgression();
-    await saveModuleSeen();
-    if (window.location.pathname.includes('/bienvenue')) {
-      await sendFunnelTrackingData();
+  // Vérifier que memberstack est chargé
+  // Vérifier que le membre est chargé
+
+  // Déclencher les fonctions nécessitant le script
+
+  async function loadWhenMemberLoggedIn() {
+    const memberData = await getMemberstackMember();
+    if (memberData) {
+      console.log(memberData);
+      if (window.location.pathname.includes('/academie')) {
+        await updateModuleLecture();
+        setTimeout(showProgression, 1000);
+        surveyProgression();
+        await saveModuleSeen();
+        if (window.location.pathname.includes('/bienvenue')) {
+          await sendFunnelTrackingData();
+        }
+      }
     }
   }
+  loadWhenMemberLoggedIn();
 
-  // ------------------------------------------------------------------------------------------------------------------------
-  // - Affichage des fonctions en fonction de l'URL
-
-  // Vérifier si l'URL contient '/formations'
-  if (window.location.pathname.includes('/formations')) {
-    loadLandingFunctions();
-  }
-
+  /**
   // Vérifier si l'URL contient '/academie'
   if (window.location.pathname.includes('/academie')) {
     if (window.$memberstackReady) {
-      loadAcademyFunctions();
+      console.log('test');
+      loadWhenMemberLoggedIn();
     } else {
-      document.addEventListener('memberstack.ready', loadAcademyFunctions);
+      document.addEventListener('memberstack.ready', loadWhenMemberLoggedIn);
     }
   }
+    */
 
   // ------------------------------------------------------------------------------------------------------------------------
   // - Chargement de l'attribut de CMS Nest

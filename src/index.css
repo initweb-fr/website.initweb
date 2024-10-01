@@ -538,3 +538,9 @@
 .mod-cont_complete-video:not(:has(.is-watched)) .button[button-type='to-next-module']{
   display:none;
 }
+
+
+
+.forma-access_list_item.is-current-selection .forma-access_item_popular{
+  background-color:#FF6600;
+}

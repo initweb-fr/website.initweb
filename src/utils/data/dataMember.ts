@@ -1,5 +1,6 @@
 export function getMemberstackUserInfo() {
   // Get the Memberstack token from localStorage
+
   const memberstackToken = localStorage.getItem('_ms-mem');
 
   if (!memberstackToken) {
@@ -24,4 +25,29 @@ export function getMemberstackUserInfo() {
     console.error("Erreur lors de l'analyse du JSON :", error);
     return null;
   }
+}
+
+export async function getMemberstackMember() {
+  // Initialize Memberstack
+  const memberstack = window.$memberstackDom;
+
+  // Check if the user is logged in
+  return memberstack
+    .getCurrentMember()
+    .then(({ data: member }) => {
+      if (member) {
+        return { member };
+      }
+      return null;
+    })
+    .catch((error) => {
+      console.error('Error getting current member:', error);
+      return null;
+    });
+}
+
+export async function tryGetMemberData() {
+  const memberInfo = await getMemberstackMember();
+  //console.log(memberInfo.member);
+  return memberInfo;
 }
