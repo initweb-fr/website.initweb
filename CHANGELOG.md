@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.0.16
+
+### Patch Changes
+
+- cdcba29: Correctif
+
 ## 0.0.15
 
 ### Patch Changes
