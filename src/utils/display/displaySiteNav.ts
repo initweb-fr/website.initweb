@@ -1,15 +1,15 @@
 export function addCurrentPageToNav() {
-  // Récupère le code depuis le LocalStorage
+  // Récupère le nom de la page actuelle depuis le LocalStorage
   const CurrentPageNameUTM = localStorage.getItem('page_current_name');
+  // Sélectionne l'élément du DOM qui affichera le nom de la page actuelle
   const NavPage = document.querySelector('[pageinfo="current-page"]') as HTMLElement;
 
-  //Intègre le Nom de la page.
-  //console.log(NavPage);
-  //console.log(CurrentPageNameUTM);
-  //console.log(CurrentPageUrlUTM);
+  // Vérifie si l'élément NavPage existe
   if (NavPage) {
-    if(CurrentPageNameUTM){
-    NavPage.innerHTML = CurrentPageNameUTM;
+    // Vérifie si le nom de la page actuelle est disponible
+    if (CurrentPageNameUTM) {
+      // Met à jour le contenu HTML de l'élément NavPage avec le nom de la page actuelle
+      NavPage.innerHTML = CurrentPageNameUTM;
     }
   }
 }

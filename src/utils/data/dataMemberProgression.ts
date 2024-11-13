@@ -2,24 +2,27 @@ import { showProgression } from '$utils/display/displayMemberProgression';
 
 import { getMemberstackUserInfo } from './dataMember';
 
+// Déclaration globale pour ajouter une propriété à l'objet Window
 declare global {
   interface Window {
-    $memberstackDom: any;
+    $memberstackDom: any; // Utilisation de 'any' pour éviter les erreurs de typage
   }
 }
 
-//-------
-
+// Fonction pour surveiller les changements de progression
 export function surveyProgression() {
+  // Création d'un observateur de mutations pour surveiller les changements d'attributs
   const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
+      // Vérifier si le changement concerne l'attribut 'class'
       if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        // Vérifier si l'élément a la classe 'is-watched' ou si l'ancienne valeur de la classe contenait 'is-watched'
         if (
           (mutation.target instanceof Element &&
             mutation.target.classList.contains('is-watched')) ||
           (mutation.oldValue && mutation.oldValue.includes('is-watched'))
         ) {
-          showProgression();
+          showProgression(); // Afficher la progression
         }
       }
     }
@@ -36,23 +39,24 @@ export function surveyProgression() {
     observer.observe(modulesContainer, config);
   }
 }
-export async function updateModuleLecture() {
-  // Usage
 
+// Fonction pour mettre à jour la progression des modules
+export async function updateModuleLecture() {
+  // Récupération de l'objet memberstack depuis l'objet Window
   const memberstack = window.$memberstackDom;
   let memberData;
 
   try {
-    // Fetch member data once
+    // Récupérer les données du membre une fois
     const member = await memberstack.getMemberJSON();
     memberData = member.data ? member.data : {};
   } catch (error) {
     console.error('Error fetching member data:', error);
-    return; // Stop execution if member data cannot be fetched
+    return; // Arrêter l'exécution si les données du membre ne peuvent pas être récupérées
   }
 
-  // Function to mark module complete, now accepts memberData as a parameter
-  async function markModuleComplete(moduleKey, memberData) {
+  // Fonction pour marquer un module comme complété, accepte maintenant memberData comme paramètre
+  async function markModuleComplete(moduleKey: string, memberData: any) {
     const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
       moduleKey.split('-');
 
@@ -76,21 +80,23 @@ export async function updateModuleLecture() {
     // Marquer le module comme complété
     memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber] = true;
 
-    // Update member JSON with modified memberData
+    // Mettre à jour le JSON du membre avec les données modifiées
     await memberstack.updateMemberJSON({ json: memberData });
     console.log(`Module ${moduleKey} marked as completed`);
 
-    // Update the DOM as before
+    // Mettre à jour le DOM comme avant
     const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
     moduleElements.forEach((moduleElement) => {
       moduleElement.classList.add('is-watched');
     });
   }
 
-  async function markModuleIncomplete(moduleKey, memberData) {
+  // Fonction pour marquer un module comme incomplet
+  async function markModuleIncomplete(moduleKey: string, memberData: any) {
     const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
       moduleKey.split('-');
 
+    // Vérifier si le module est marqué comme complété et le supprimer
     if (
       memberData[subject] &&
       memberData[subject][format] &&
@@ -101,24 +107,26 @@ export async function updateModuleLecture() {
     ) {
       delete memberData[subject][format][approach][chapterNumber][subchapterNumber][moduleNumber];
 
-      // Update member JSON with modified memberData
+      // Mettre à jour le JSON du membre avec les données modifiées
       await memberstack.updateMemberJSON({ json: memberData });
       console.log(`Module ${moduleKey} marked as uncompleted`);
     }
 
+    // Mettre à jour le DOM pour refléter le changement
     const moduleElements = document.querySelectorAll(`[ms-code-mark-complete="${moduleKey}"]`);
     moduleElements.forEach((moduleElement) => {
       moduleElement.classList.remove('is-watched');
     });
   }
 
+  // Fonction pour mettre à jour la page à partir des données du membre
   async function updatePageFromMemberJSON(
-    subject,
-    format,
-    approach,
-    chapterNumber,
-    subchapterNumber,
-    memberData
+    subject: string,
+    format: string,
+    approach: string,
+    chapterNumber: string,
+    subchapterNumber: string,
+    memberData: any
   ) {
     if (
       memberData[subject] &&
@@ -141,9 +149,10 @@ export async function updateModuleLecture() {
     }
   }
 
+  // Écouteur d'événements pour gérer les clics sur les éléments marqués comme complets
   document.addEventListener('click', async function (event) {
     const { target } = event;
-    const completeElement = target.closest('[ms-code-mark-complete]');
+    const completeElement = (target as HTMLElement).closest('[ms-code-mark-complete]');
     if (completeElement) {
       event.preventDefault();
 
@@ -152,18 +161,18 @@ export async function updateModuleLecture() {
       if (completeElement.classList.contains('is-watched')) {
         await markModuleIncomplete(moduleKey, memberData);
       } else {
-        completeElement.classList.add('is-watched'); // Optimistically add "yes" class
+        completeElement.classList.add('is-watched'); // Ajouter de manière optimiste la classe "is-watched"
         await markModuleComplete(moduleKey, memberData);
       }
 
-      // Navigate to the href link if it exists after updating JSON
+      // Naviguer vers le lien href s'il existe après la mise à jour du JSON
       if (completeElement.tagName.toLowerCase() === 'a' && completeElement.href) {
         window.location.href = completeElement.href;
       }
     }
   });
 
-  // Initialize page based on the fetched memberData
+  // Initialiser la page en fonction des données récupérées du membre
   document.querySelectorAll('[ms-code-mark-complete]').forEach((groupElement) => {
     const moduleKey = groupElement.getAttribute('ms-code-mark-complete');
     const [subject, format, approach, chapterNumber, subchapterNumber, moduleNumber] =
@@ -178,15 +187,18 @@ export async function updateModuleLecture() {
     );
   });
 }
+
+// Fonction pour sauvegarder la progression d'un module vu
 export async function saveModuleSeen() {
   //const value = localStorage.getItem('valueCurrentModule');
   //console.log(value);
 
-  // Récupération des infos du membr sur Memberstack
+  // Récupération des infos du membre sur Memberstack
   const userInfo = getMemberstackUserInfo();
   if (userInfo) {
     const userID = userInfo.id;
     const userEmail = userInfo.email;
+
     // Fonction envoyant des informations à Pipedrive
     function handleDatas(event: MouseEvent) {
       const thisModuleID = (event.target as HTMLElement).getAttribute('ms-code-mark-complete');
@@ -206,7 +218,7 @@ export async function saveModuleSeen() {
       });
     }
 
-    // Déclenchement de la fonction
+    // Déclenchement de la fonction lors du clic sur les boutons marqués comme vus
     const markAsSeenButtons = document.querySelectorAll(
       '[ms-code-mark-complete]:not(.w-condition-invisible'
     );

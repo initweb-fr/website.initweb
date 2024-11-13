@@ -1,32 +1,40 @@
+// Fonction pour gérer le TOC global
 export function manageGlobalTOC() {
-  // Initialisation
-
+  // Initialisation des éléments du TOC
   const resetTOC = document.querySelector('.mod-cont_toc_reset') as HTMLElement;
   const tocElement = document.querySelector('.mod-cont_toc_component') as HTMLElement;
   const openTOC = document.querySelector('.mod-cont_toc_open-all') as HTMLElement;
 
+  // Vérifie si l'élément TOC existe
   if (tocElement) {
+    // Vérifie si le bouton de réinitialisation existe
     if (resetTOC) {
+      // Vérifie si le bouton d'ouverture existe
       if (openTOC) {
+        // Définir les styles initiaux pour les boutons
         resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
         resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
         openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
         openTOC.style.borderColor = 'var(--border-color--alternate-0)';
 
-        // Affichage au clic
+        // Ajouter un événement de clic pour ouvrir tous les éléments du TOC
         openTOC.addEventListener('click', function () {
           if (tocElement) {
             tocElement.classList.add('all-open');
           }
+          // Mettre à jour les styles des boutons après le clic
           resetTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
           resetTOC.style.borderColor = 'var(--border-color--alternate-0)';
           openTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
           openTOC.style.borderColor = 'var(--border-color--alternate-100)';
         });
+
+        // Ajouter un événement de clic pour réinitialiser le TOC
         resetTOC.addEventListener('click', function () {
           if (tocElement) {
             tocElement.classList.remove('all-open');
           }
+          // Mettre à jour les styles des boutons après le clic
           resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
           resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
           openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
@@ -37,8 +45,9 @@ export function manageGlobalTOC() {
   }
 }
 
+// Fonction pour gérer le TOC des chapitres
 export function manageChapterTOC() {
-  // Initialisation
+  // Initialisation des éléments du TOC
   const resetTOC = document.querySelector('.mod-cont_toc_reset') as HTMLElement;
   const currentChapter = document.querySelector(
     '.mod-cont_toc_chapter_item:has(.w--current)'
@@ -47,31 +56,33 @@ export function manageChapterTOC() {
     '.mod-cont_toc_chapter_item'
   ) as NodeListOf<Element>;
 
-  // Affichage selon le module actuel
+  // Ouvrir le chapitre actuel
   if (currentChapter) {
     currentChapter.classList.add('is-open');
   }
 
-  // Affichage au clic
+  // Ajouter un événement de clic pour chaque chapitre
   tocChapters.forEach((tocChapter) => {
     tocChapter.addEventListener('click', function (this: HTMLElement) {
+      // Fermer tous les chapitres
       tocChapters.forEach((chapter) => {
         chapter.classList.remove('is-open');
       });
 
+      // Ouvrir le chapitre cliqué
       this.classList.toggle('is-open');
     });
   });
 
-  // Réinitialisation
+  // Ajouter un événement de clic pour réinitialiser le TOC
   if (resetTOC) {
     resetTOC.addEventListener('click', function () {
-      // Retirer la classe .w--open de tous les dropdowns
+      // Fermer tous les chapitres
       tocChapters.forEach((tocChapter) => {
         tocChapter.classList.remove('is-open');
       });
 
-      // Ajouter la classe .w--open sur le dropdown w--current
+      // Ouvrir le chapitre actuel
       if (currentChapter) {
         currentChapter.classList.add('is-open');
       }
@@ -79,53 +90,55 @@ export function manageChapterTOC() {
   }
 }
 
+// Fonction pour gérer le TOC des sous-chapitres
 export function manageSubChapterTOC() {
-  // Initialisation
+  // Initialisation des éléments du TOC
   const resetTOC = document.querySelector('.mod-cont_toc_reset');
   const currentSubChapter = document.querySelector(
     '.mod-cont_toc_subchapter_item:has(.w--current)'
   );
   const tocSubChapters = document.querySelectorAll('.mod-cont_toc_subchapter_item');
 
-  // Affichage selon le module actuel
+  // Ouvrir le sous-chapitre actuel
   if (currentSubChapter) {
     currentSubChapter.classList.add('is-open');
   }
 
-  // Affichage au clic
+  // Ajouter un événement de clic pour chaque sous-chapitre
   tocSubChapters.forEach((tocSubChapter) => {
     tocSubChapter.addEventListener('click', function (this: HTMLElement) {
-      // Retirer la classe .w--open de tous les dropdowns
+      // Fermer tous les sous-chapitres
       tocSubChapters.forEach((tocSubChapter) => {
         tocSubChapter.classList.remove('is-open');
       });
 
-      // Ajouter la classe .w--open sur le dropdown cliqué
+      // Ouvrir le sous-chapitre cliqué
       this.classList.add('is-open');
     });
   });
 
+  // Ajouter un événement de clic pour chaque sous-chapitre (duplication de code)
   tocSubChapters.forEach((tocSubChapter) => {
     tocSubChapter.addEventListener('click', function (this: HTMLElement) {
-      // Retirer la classe .is-open de tous les dropdowns
+      // Fermer tous les sous-chapitres
       tocSubChapters.forEach((subChapter) => {
         subChapter.classList.remove('is-open');
       });
 
-      // Ajouter la classe .is-open sur le dropdown cliqué
+      // Ouvrir le sous-chapitre cliqué
       this.classList.add('is-open');
     });
   });
 
-  // Réinitialisation
+  // Ajouter un événement de clic pour réinitialiser le TOC
   if (resetTOC) {
     resetTOC.addEventListener('click', function () {
-      // Retirer la classe .w--open de tous les dropdowns
+      // Fermer tous les sous-chapitres
       tocSubChapters.forEach((tocSubChapter) => {
         tocSubChapter.classList.remove('is-open');
       });
 
-      // Ajouter la classe .w--open sur le dropdown w--current
+      // Ouvrir le sous-chapitre actuel
       if (currentSubChapter) {
         currentSubChapter.classList.add('is-open');
       }
@@ -133,9 +146,11 @@ export function manageSubChapterTOC() {
   }
 }
 
+// Fonction pour gérer le TOC global en mode mobile
 export function manageGlobalTOC_mobile() {
   const breakpointDesktop = window.matchMedia('(min-width: 992px)');
 
+  // Fonction pour gérer le redimensionnement de la fenêtre
   const handleResize = () => {
     if (breakpointDesktop.matches) {
       initManageGlobalTOC_mobile();
@@ -146,8 +161,8 @@ export function manageGlobalTOC_mobile() {
 
   handleResize(); // Appel initial pour configurer l'état correct au chargement
   window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
-  // Initialisation
 
+  // Initialisation des éléments du TOC en mode mobile
   function initManageGlobalTOC_mobile() {
     const headerTOC = document.querySelector('.mod-cont_toc_header_title') as HTMLElement;
 
@@ -156,23 +171,26 @@ export function manageGlobalTOC_mobile() {
 
     const tocElement = document.querySelector('.mod-cont_toc_component') as HTMLElement;
 
+    // Définir les styles initiaux pour les boutons
     resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
     resetTOC.style.borderColor = 'var(--border-color--alternate-100)';
     openTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
     openTOC.style.borderColor = 'var(--border-color--alternate-0)';
 
     let clickCount = 0;
-    // Affichage au clic
+    // Ajouter un événement de clic pour le header du TOC
     headerTOC.addEventListener('click', function () {
       clickCount += 1;
 
       if (clickCount === 1) {
+        // Ouvrir tous les éléments du TOC
         tocElement.classList.add('all-open');
         resetTOC.style.backgroundColor = 'var(--background-color--alternate-15)';
         resetTOC.style.borderColor = 'var(--border-color--alternate-0)';
         openTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
         openTOC.style.borderColor = 'var(--border-color--alternate-100)';
       } else if (clickCount === 2) {
+        // Fermer tous les éléments du TOC
         tocElement.classList.remove('all-open');
         resetTOC.style.backgroundColor = 'var(--background-color--alternate-30)';
         resetTOC.style.borderColor = 'var(--border-color--alternate-100)';

@@ -3,14 +3,16 @@ import { getCookie, setCookie } from '$utils/cookie/cookieUtility';
 import { getMemberstackUserInfo } from './dataMember';
 
 // ---------- TRACKING SOURCE ----------
+// Fonction pour obtenir les données de suivi du funnel
 export function getFunnelTrackingData() {
+  // Récupération de l'URL actuelle
   const windowURL = new URL(window.location.href);
   const currentURL = windowURL.href;
   const fullPath = windowURL.pathname;
   const prefix = '/formations/';
   const courseLandingID = fullPath.slice(prefix.length).replace(/\//g, '_');
-  //console.log(courseLandingID);
 
+  // Récupération des paramètres UTM de l'URL
   const urlParams = new URLSearchParams(window.location.search);
   const utmCampaign = urlParams.get('utm_campaign');
   const utmContent = urlParams.get('utm_content');
@@ -18,6 +20,7 @@ export function getFunnelTrackingData() {
   const utmSource = urlParams.get('utm_source');
   const utmTerm = urlParams.get('utm_term');
 
+  // Détermination du type de dispositif en fonction de la largeur de l'écran
   const screenWidth = window.innerWidth;
   let deviceType;
   if (screenWidth > 992) {
@@ -28,6 +31,7 @@ export function getFunnelTrackingData() {
     deviceType = 'phone';
   }
 
+  // Enregistrement des informations dans les cookies
   setCookie('__initweb_' + courseLandingID + '_funnel_id', courseLandingID, 7);
   setCookie('__initweb_' + courseLandingID + '_funnel_landing', currentURL, 7);
   setCookie('__initweb_' + courseLandingID + '_funnel_device', deviceType, 7);
@@ -37,40 +41,37 @@ export function getFunnelTrackingData() {
   setCookie('__initweb_' + courseLandingID + '_funnel_source', utmSource, 7);
   setCookie('__initweb_' + courseLandingID + '_funnel_term', utmTerm, 7);
 }
+
+// Fonction pour envoyer les données de suivi du funnel
 export function sendFunnelTrackingData() {
   // Récupération des informations relatives à la landing liée à la formation
   const currentFunnelID = getCookie('__initweb_currentcourse_landing');
-  // Récupération du statut d'envoi des informations liés à la source du membre
+  // Récupération du statut d'envoi des informations liées à la source du membre
   const currentFunnelDatasState = getCookie('__initweb_' + currentFunnelID + '_funnel_datas_state');
   console.log(currentFunnelDatasState);
 
+  // Vérification si les données n'ont jamais été envoyées
   if (currentFunnelDatasState !== 'send') {
-    //
-    // VERIFICATION -- Si les datas n'ont jamais été envoyé
     console.log('Statut du Tracking -Source- : Inexistant ---> Envoi des données');
 
-    //
-    // RECUPERATION --
+    // Récupération des informations de l'utilisateur
     const userInfo = getMemberstackUserInfo();
     if (userInfo) {
       const userID = userInfo.id;
       const userEmail = userInfo.email;
       const userFirstName = userInfo?.firstName;
 
+      // Récupération des informations du funnel depuis les cookies
       const cookieThisFunnelCourseID = getCookie('__initweb_' + currentFunnelID + '_funnel_id');
-
       let cookieThisFunnelDevice = getCookie('__initweb_' + currentFunnelID + '_funnel_device');
       let cookieThisFunnelLanding = getCookie('__initweb_' + currentFunnelID + '_funnel_landing');
-
       let cookieThisFunnelCampaign = getCookie('__initweb_' + currentFunnelID + '_funnel_campaign');
       let cookieThisFunnelContent = getCookie('__initweb_' + currentFunnelID + '_funnel_content');
       let cookieThisFunnelMedium = getCookie('__initweb_' + currentFunnelID + '_funnel_medium');
       let cookieThisFunnelSource = getCookie('__initweb_' + currentFunnelID + '_funnel_source');
       let cookieThisFunnelTerm = getCookie('__initweb_' + currentFunnelID + '_funnel_term');
 
-      //
-      // RECUPERATION -- UTMS depuis Cookies
-
+      // Vérification des valeurs des cookies et remplacement des valeurs 'deleted' par des chaînes vides
       if (cookieThisFunnelCampaign === 'deleted') {
         cookieThisFunnelCampaign = '';
       }
@@ -92,24 +93,9 @@ export function sendFunnelTrackingData() {
       if (cookieThisFunnelLanding === 'deleted') {
         cookieThisFunnelLanding = '';
       }
-      /**console.log({
-            CUSTOM_DeviceType: cookieThisFunnelDevice,
-            CUSTOM_LandingURL: cookieThisFunnelLanding,
-            CUSTOM_UserID: userID,
-            CUSTOM_UserEmail: userEmail,
-            CUSTOM_UserFirstName: userFirstName,
-            COOKIE_CourseID: cookieThisFunnelCourseID,
-            COOKIE_Campaign: cookieThisFunnelCampaign,
-            COOKIE_Content: cookieThisFunnelContent,
-            COOKIE_Medium: cookieThisFunnelMedium,
-            COOKIE_Source: cookieThisFunnelSource,
-            COOKIE_Term: cookieThisFunnelTerm,
-          });*/
 
-      //
-      // ENVOI -- Déclenchement du Webhook
-      // previous hook : https://hook.eu1.make.com/o0o4flkk9fm8opzyms8fvjtn6diuic31
-      fetch(' https://hook.eu1.make.com/jwy2aodfw6bybp7gribq53rpqjwpfyuu', {
+      // Envoi des données via un webhook
+      fetch('https://hook.eu1.make.com/jwy2aodfw6bybp7gribq53rpqjwpfyuu', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,11 +103,9 @@ export function sendFunnelTrackingData() {
         body: JSON.stringify({
           CUSTOM_DeviceType: cookieThisFunnelDevice,
           CUSTOM_LandingURL: cookieThisFunnelLanding,
-
           CUSTOM_UserID: userID,
           CUSTOM_UserEmail: userEmail,
           CUSTOM_UserFirstName: userFirstName,
-
           COOKIE_CourseID: cookieThisFunnelCourseID,
           COOKIE_Campaign: cookieThisFunnelCampaign,
           COOKIE_Content: cookieThisFunnelContent,
@@ -130,13 +114,12 @@ export function sendFunnelTrackingData() {
           COOKIE_Term: cookieThisFunnelTerm,
         }),
       });
-      //
-      // VALIDATION -- Création d'un Cookie
+
+      // Création d'un cookie pour indiquer que les données ont été envoyées
       document.cookie = '__initweb_' + currentFunnelID + '_funnel_datas_state=send';
       console.log('Données envoyées & Cookie créé.');
     } else {
-      //
-      // VERIFICATION -- Si les datas ont déjà été envoyé…
+      // Si les données ont déjà été envoyées
       console.log('Statut du Tracking -Source- : Préalablement envoyé. --->  Fin.');
     }
   }

@@ -1,22 +1,28 @@
+// Fonction pour afficher la progression des modules vus par l'utilisateur
 export function showProgression() {
+  // Sélectionne tous les éléments de module dans le chapitre du tableau de bord
   const modulesTotal = Array.from(
     document.querySelectorAll('.mod-cont_toc_chapter_component .mod-cont_toc_module_item')
   );
+
+  // Sélectionne uniquement les modules qui ont été marqués comme "vus" (classe 'is-watched')
   const modulesSeen = Array.from(
     document.querySelectorAll(
       '.mod-cont_toc_chapter_component .mod-cont_toc_module_item:has(.is-watched)'
     )
   );
 
-  // Compter le nombre d'éléments dans le tableau
+  // Compte le nombre total de modules
   const countTotal = modulesTotal.length;
+  // Compte le nombre de modules vus
   const countSeen = modulesSeen.length;
 
-  // Calcul du pourcentage de vidéos vues
+  // Calcule le pourcentage de modules vus
   const percentageSeen = (countSeen / countTotal) * 100;
+  // Convertit le pourcentage en un entier pour l'affichage
   const pourcentagSeenEntier = Math.trunc(percentageSeen);
 
-  // Modification de la largeur de l'élément .progression-status-bar
+  // Modifie la largeur de la barre de progression pour refléter le pourcentage de modules vus
   const progressBar = document.querySelector(
     '.module-hero_gaming_progression_status_bar'
   ) as HTMLElement;
@@ -24,6 +30,7 @@ export function showProgression() {
     progressBar.style.width = pourcentagSeenEntier + '%';
   }
 
+  // Met à jour l'information de progression affichée à l'utilisateur
   const progressInfo = document.querySelector(
     '.module-hero_gaming_progression_status_info'
   ) as HTMLElement;

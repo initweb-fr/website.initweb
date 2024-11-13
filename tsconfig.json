@@ -6,6 +6,6 @@
     "paths": {
       "$utils/*": ["src/utils/*"]
     },
-    "types": ["@finsweet/ts-utils"]
+    "types": ["@finsweet/ts-utils","./node_modules/@types", "./src/types"]
   }
 }

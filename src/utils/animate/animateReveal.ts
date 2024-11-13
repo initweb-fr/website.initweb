@@ -3,10 +3,13 @@ gsap.registerPlugin(ScrollTrigger);
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
+// Fonction pour révéler l'en-tête avec des animations
 export function revealHeader() {
+  // Sélectionne tous les composants d'en-tête avec l'attribut 'animate="section-header"'
   const headerComponents = document.querySelectorAll('[animate="section-header"]');
   if (headerComponents) {
     headerComponents.forEach((headerComponent) => {
+      // Sélectionne les différents éléments de l'en-tête
       const headerTag = headerComponent.querySelector('[animate="header-tag"]');
       const headerTitle = headerComponent.querySelector('[animate="header-title"]') as HTMLElement;
       const headerTitleSplit = new SplitType(headerTitle, {
@@ -26,13 +29,14 @@ export function revealHeader() {
       );
       const headerButtonInfos = headerComponent.querySelector('[animate="header-button-infos"]');
 
+      // Paramètres de l'animation
       const specDuration = 0.6;
       const specBaseMoveY = 8;
       const specBaseOpacity = 0.02;
       const specDelay = specDuration - 0.1;
       const specEase = 'circ.Out';
 
-      // Timeline Creation
+      // Création de la timeline pour les animations
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: headerComponent, // Élément déclencheur
@@ -43,7 +47,7 @@ export function revealHeader() {
         },
       });
 
-      // Animations of Timeline
+      // Ajout des animations à la timeline
       tl.from(
         headerTag,
         { opacity: specBaseOpacity, duration: specDuration, ease: specEase },
@@ -105,13 +109,16 @@ export function revealHeader() {
   }
 }
 
+// Fonction pour révéler le contenu du hub avec des animations
 export function revealHubContent() {
+  // Sélectionne tous les composants de contenu avec l'attribut 'animate="section-content"'
   const contentComponents = document.querySelectorAll('[animate="section-content"]');
   if (contentComponents) {
     contentComponents.forEach((contentComponent) => {
+      // Sélectionne les éléments de contenu du hub
       const contentHubItems = contentComponent.querySelectorAll('[animate="content-element"]');
 
-      // Timeline Creation
+      // Création de la timeline pour les animations
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: contentComponent, // Élément déclencheur
@@ -122,13 +129,14 @@ export function revealHubContent() {
         },
       });
 
+      // Paramètres de l'animation
       const specDuration = 1;
       const specBaseMoveY = 0;
       const specBaseOpacity = 0.02;
       //const specDelay = specDuration - 0.1;
       const specEase = 'circ.Out';
 
-      // Animations of Timeline
+      // Ajout des animations à la timeline
       tl.from(contentHubItems, {
         opacity: specBaseOpacity,
         y: specBaseMoveY,
@@ -140,12 +148,15 @@ export function revealHubContent() {
   }
 }
 
+// Fonction pour révéler le héros de la page d'accueil avec des animations
 export function revealHomeHero() {
+  // Définition du point de rupture pour le mode bureau
   const breakpointDesktop = window.matchMedia('(min-width: 992px)');
 
+  // Fonction pour gérer le redimensionnement de la fenêtre
   const handleResize = () => {
     if (breakpointDesktop.matches) {
-      initRevealHomeHero();
+      initRevealHomeHero(); // Initialiser l'animation si en mode bureau
     } else {
       // Gérer le cas mobile si nécessaire
     }
@@ -154,6 +165,7 @@ export function revealHomeHero() {
   handleResize(); // Appel initial pour configurer l'état correct au chargement
   window.addEventListener('resize', handleResize); // Écouter l'événement de redimensionnement
 
+  // Fonction pour initialiser l'animation du héros de la page d'accueil
   function initRevealHomeHero() {
     const subsectionHomeHero = document.querySelector('[animate="subsection-home-hero"]');
 
@@ -165,7 +177,7 @@ export function revealHomeHero() {
 
         const specTargetWidth = width - 64;
 
-        // Timeline Creation
+        // Création de la timeline pour les animations
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: subsectionHomeHero,
@@ -176,7 +188,7 @@ export function revealHomeHero() {
           },
         });
 
-        // Animations of Timeline
+        // Ajout des animations à la timeline
         tl.to(subsectionBackground, { width: specTargetWidth, x: 32, borderRadius: 64 });
       }
     }
@@ -184,7 +196,9 @@ export function revealHomeHero() {
 }
 
 /**
+// Fonction pour révéler le héros de la formation avec des animations
 export function revealFormaHero() {
+  // Sélection des différents éléments du héros de la formation
   const formaHeroTag = document.querySelector('[animate="forma-hero-tag"]');
   const formaHeroH1 = document.querySelector('[animate="forma-hero-h1"]');
 
@@ -203,6 +217,7 @@ export function revealFormaHero() {
   const formaHeroVideoGradient = document.querySelector('[animate="forma-hero-video-gradient"]');
   const formaHeroVideo = document.querySelector('[animate="forma-hero-video"]');
 
+  // Paramètres de l'animation
   const specDuration = 0.6;
   const specBaseMoveY = 64;
   const specBaseOpacity = 0;
@@ -213,6 +228,7 @@ export function revealFormaHero() {
   const specDelay = specDuration - 0.1;
   const specEase = 'expo.Out';
 
+  // Initialisation des propriétés des éléments
   gsap.set(formaHeroTag, { opacity: specBaseOpacity, y: specBaseMoveY });
   gsap.set(formaHeroH1, { opacity: specBaseOpacity, y: specBaseMoveY });
   gsap.set(formaHeroInfos, { opacity: specBaseOpacity, y: specBaseMoveY });
@@ -231,9 +247,10 @@ export function revealFormaHero() {
   });
   gsap.set(formaHeroVideo, { opacity: specBaseOpacity, y: specBaseMoveY });
 
+  // Création de la timeline pour les animations
   const tl = gsap.timeline();
 
-  // Ajoute des animations à la timeline
+  // Ajout des animations à la timeline
   tl.to(formaHeroTag, {
     duration: specDuration,
     y: specTargetMoveY,
