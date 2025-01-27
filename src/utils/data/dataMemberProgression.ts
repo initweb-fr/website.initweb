@@ -1,14 +1,149 @@
-import { showProgression } from '$utils/display/displayMemberProgression';
+/**
+ * Initializes click event listeners on progress trigger elements to track progress via webhook.
+ */
 
-import { getMemberstackUserInfo } from './dataMember';
+// Export de la fonction trackProgress
+export const trackProgress = (): void => {
+  // Sélection de tous les éléments déclencheurs de progression
+  const triggers = document.querySelectorAll<HTMLElement>('[iw-p-progress-trigger]');
 
-// Déclaration globale pour ajouter une propriété à l'objet Window
-declare global {
-  interface Window {
-    $memberstackDom: any; // Utilisation de 'any' pour éviter les erreurs de typage
-  }
-}
+  // Fonction pour mettre à jour le compteur
+  const updateCount = function (value: number) {
+    // Sélection des éléments de compteur, de barre de progression et d'information de progression
+    const progressCounter = document.querySelectorAll<HTMLElement>('[iw-p-progress-watched-count]');
+    const progressBar = document.querySelectorAll<HTMLElement>('[iw-p-progress-watched-bar]');
+    const progressInfo = document.querySelectorAll<HTMLElement>('[iw-p-progress-watched-percent]');
 
+    // Calcul du pourcentage vu
+    const modulesTotal = Array.from(document.querySelectorAll('[iw-p-progress-watched]'));
+    const modulesTotalCount = modulesTotal.length;
+    const percentageSeen = Math.trunc((value / modulesTotalCount) * 100);
+
+    // Mise à jour des éléments
+    progressCounter.forEach((item) => {
+      item.innerText = `${value} modules`;
+    });
+    progressBar.forEach((item) => {
+      item.style.width = percentageSeen + '%';
+    });
+    progressInfo.forEach((item) => {
+      item.innerText = percentageSeen + '%';
+    });
+  };
+
+  // Récupération du membre actuel
+  window.$memberstackDom
+    .getCurrentMember()
+    .then(({ data: member }) => {
+      if (member) {
+        // Récupération de l'ID du membre et des modules complétés
+        const memberATID = member.customFields['member-atid'];
+        const modulesCompleted = member.customFields['modules-completes-atids'];
+        let modulesCompletedCount = modulesCompleted.length;
+
+        // Partie 1: Vérification des modules déjà complétés
+        // Définition de l'état complété
+        modulesCompleted.forEach((moduleId: string) => {
+          const elements = document.querySelectorAll(`[iw-p-progress-target="${moduleId}"]`);
+          if (elements) {
+            elements.forEach((element) => {
+              element.setAttribute('iw-p-progress-watched', 'true');
+            });
+          }
+        });
+
+        // Mise à jour du compteur
+        updateCount(modulesCompletedCount);
+
+        // Partie 2: Enregistrement des nouveaux modules vérifiés
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', async function (this: HTMLElement) {
+            const targetValue = this.getAttribute('iw-p-progress-target');
+            const targetState = this.getAttribute('iw-p-progress-watched');
+            const triggerType = this.getAttribute('iw-p-progress-trigger');
+
+            if (!targetValue) {
+              console.error('No target value found');
+              return;
+            }
+
+            // Affichage du loader si clic depuis une case à cocher
+            if (triggerType === 'checkbox') {
+              trigger.setAttribute('iw-p-progress-trigger-loader', 'true');
+            }
+
+            // Affichage du loader de la case à cocher correspondante si clic depuis un bouton
+            if (triggerType === 'button') {
+              // Récupération de la case à cocher correspondante
+              const matchingCheckboxes = document.querySelectorAll<HTMLElement>(
+                `[iw-p-progress-trigger="checkbox"][iw-p-progress-target="${targetValue}"]`
+              );
+              matchingCheckboxes.forEach((match) => {
+                match.setAttribute('iw-p-progress-trigger-loader', 'true');
+              });
+            }
+
+            // Construction de l'URL du webhook
+            const webhookUrl = `https://hook.eu1.make.com/ddr72exe2luw83coyqsu2n51kigeb26b?moduleATID=${encodeURIComponent(
+              targetValue
+            )}&memberATID=${memberATID}&targetState=${targetState}`;
+
+            try {
+              // Envoi de la requête au webhook
+              const response = await fetch(webhookUrl);
+              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              if (targetState !== 'true') {
+                trigger.setAttribute('iw-p-progress-watched', 'true');
+                modulesCompletedCount += 1;
+                updateCount(modulesCompletedCount);
+                // Vérification de la case à cocher correspondante si clic depuis un bouton
+                if (triggerType === 'button') {
+                  // Récupération de la case à cocher correspondante
+                  const matchingCheckboxes = document.querySelectorAll<HTMLElement>(
+                    `[iw-p-progress-trigger="checkbox"][iw-p-progress-target="${targetValue}"]`
+                  );
+                  matchingCheckboxes.forEach((match) => {
+                    match.setAttribute('iw-p-progress-watched', 'true');
+                    match.setAttribute('iw-p-progress-trigger-loader', 'false');
+                  });
+                }
+              } else if (targetState === 'true') {
+                trigger.setAttribute('iw-p-progress-watched', 'false');
+                modulesCompletedCount -= 1;
+                updateCount(modulesCompletedCount);
+                // Vérification de la case à cocher correspondante si clic depuis un bouton
+                if (triggerType === 'button') {
+                  // Récupération de la case à cocher correspondante
+                  const matchingCheckboxes = document.querySelectorAll<HTMLElement>(
+                    `[iw-p-progress-trigger="checkbox"][iw-p-progress-target="${targetValue}"]`
+                  );
+                  matchingCheckboxes.forEach((match) => {
+                    match.setAttribute('iw-p-progress-watched', 'false');
+                    match.setAttribute('iw-p-progress-trigger-loader', 'false');
+                  });
+                }
+              }
+
+              trigger.setAttribute('iw-p-progress-trigger-loader', 'false');
+              console.log('Progress updated successfully');
+            } catch (error) {
+              console.error(
+                'Error updating progress:',
+                error instanceof Error ? error.message : String(error)
+              );
+            }
+          });
+        });
+      } else {
+        console.log('No member is currently logged in');
+      }
+    })
+    .catch((error: unknown) => {
+      console.error('Error fetching member data:', error);
+    });
+};
+
+/*
 // Fonction pour surveiller les changements de progression
 export function surveyProgression() {
   // Création d'un observateur de mutations pour surveiller les changements d'attributs
@@ -39,7 +174,8 @@ export function surveyProgression() {
     observer.observe(modulesContainer, config);
   }
 }
-
+*/
+/*
 // Fonction pour mettre à jour la progression des modules
 export async function updateModuleLecture() {
   // Récupération de l'objet memberstack depuis l'objet Window
@@ -187,7 +323,8 @@ export async function updateModuleLecture() {
     );
   });
 }
-
+*/
+/*
 // Fonction pour sauvegarder la progression d'un module vu
 export async function saveModuleSeen() {
   //const value = localStorage.getItem('valueCurrentModule');
@@ -230,4 +367,4 @@ export async function saveModuleSeen() {
       }
     });
   }
-}
+  */
