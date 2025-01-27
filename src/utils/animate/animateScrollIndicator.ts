@@ -3,6 +3,25 @@ gsap.registerPlugin(ScrollTrigger); // Enregistrement du plugin ScrollTrigger de
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 export function animateScrollIndicator() {
+  // Sélectionner tous les éléments .YYY
+  const targets = document.querySelectorAll('.container-xlarge');
+  const elementToAnimate = document.querySelectorAll('.scroll-indicator_wrap');
+
+  // Pour chaque élément .YYY
+  targets.forEach((target) => {
+    gsap.to(elementToAnimate, {
+      width: '6rem', // Vous pouvez ajuster cette valeur selon vos besoins
+      scrollTrigger: {
+        trigger: target,
+        start: 'top center', // Démarre quand le haut de .YYY atteint le centre de la fenêtre
+        end: 'bottom center', // Se termine quand le bas de .YYY quitte le centre de la fenêtre
+        scrub: false, // Animation fluide pendant le défilement
+        // markers: true, // Décommentez pour le débogage
+        toggleActions: 'play reverse play reverse',
+      },
+    });
+  });
+
   const progressCounter = document.querySelector('[data-progress-nr]');
   console.log(progressCounter);
 

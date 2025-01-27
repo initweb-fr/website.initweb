@@ -1,5 +1,6 @@
 // Importation des fonctions nécessaires depuis différents modules
 
+import { animateProgramDD } from '$utils/animate/animateDropDown';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
 import { revealHeader, revealHubContent } from '$utils/animate/animateReveal';
@@ -51,6 +52,7 @@ window.Webflow.push(() => {
   animateNavOnResponsive();
   animateSliderC1OnResponsive();
   animateScrollIndicator();
+  animateProgramDD();
 
   function landingFonctions() {
     getFunnelTrackingData(); // Récupère les données de suivi du tunnel
