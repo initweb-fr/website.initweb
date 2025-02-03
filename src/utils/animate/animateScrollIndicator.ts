@@ -23,7 +23,7 @@ export function animateScrollIndicator() {
   });
 
   const progressCounter = document.querySelector('[data-progress-nr]');
-  console.log(progressCounter);
+  //console.log(progressCounter);
 
   ScrollTrigger.create({
     trigger: document.body,

@@ -5,28 +5,25 @@ import SplitType from 'split-type'; // Importation de la bibliothèque SplitType
 
 // Fonction pour révéler les en-têtes avec des animations
 export function revealHeader() {
-  const headerComponents = document.querySelectorAll('[animate="section-header"]'); // Sélection de tous les éléments avec l'attribut 'animate="section-header"'
+  const headerComponents = document.querySelectorAll('[iw-animate="header"]'); // Sélection de tous les éléments avec l'attribut 'animate="section-header"'
   if (headerComponents) {
     headerComponents.forEach((headerComponent) => {
       // Sélection des différents éléments de l'en-tête
-      const headerTag = headerComponent.querySelector('[animate="header-tag"]');
-      const headerTitle = headerComponent.querySelector('[animate="header-title"]') as HTMLElement;
+      const headerTag = headerComponent.querySelector('[iw-animate="header_tag"]');
+      const headerTitle = headerComponent.querySelector(
+        '[iw-animate="header_title"]'
+      ) as HTMLElement;
       const headerTitleSplit = new SplitType(headerTitle, {
         types: 'lines,words,chars',
         tagName: 'span',
       }); // Division du titre en lignes, mots et caractères
-      const headerText = headerComponent.querySelector('[animate="header-text"]') as HTMLElement;
+      const headerText = headerComponent.querySelector('[iw-animate="header_text"]') as HTMLElement;
       const headerTextSplit = new SplitType(headerText, {
         types: 'lines,words,chars',
         tagName: 'span',
       }); // Division du texte en lignes, mots et caractères
-      const headerButtonPrimary = headerComponent.querySelector(
-        '[animate="header-button-primary"]'
-      );
-      const headerButtonSecondary = headerComponent.querySelector(
-        '[animate="header-button-secondary"]'
-      );
-      const headerButtonInfos = headerComponent.querySelector('[animate="header-button-infos"]');
+      const headerButtons = headerComponent.querySelectorAll('[iw-animate="header_button"]');
+      const headerButtonInfos = headerComponent.querySelector('[iw-animate="header_proof"]');
 
       // Spécifications des animations
       const specDuration = 0.6;
@@ -82,22 +79,13 @@ export function revealHeader() {
           '-=' + specDelay
         )
         .from(
-          headerButtonSecondary,
+          headerButtons,
           {
             opacity: specBaseOpacity,
             y: specBaseMoveY,
             duration: specDuration,
             ease: specEase,
-          },
-          '-=' + specDelay
-        )
-        .from(
-          headerButtonPrimary,
-          {
-            opacity: specBaseOpacity,
-            y: specBaseMoveY,
-            duration: specDuration,
-            ease: specEase,
+            stagger: '0.2',
           },
           '-=' + specDelay
         );

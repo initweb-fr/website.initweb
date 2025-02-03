@@ -1,3 +1,5 @@
+/*
+
 // Fonction pour obtenir les informations de l'utilisateur de Memberstack
 export function getMemberstackUserInfo() {
   // Récupérer le token Memberstack depuis le localStorage
@@ -76,3 +78,4 @@ export function getMemberstackData() {
     }
   });
 }
+*/

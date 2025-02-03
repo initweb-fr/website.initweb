@@ -1,6 +1,6 @@
 // Importation des fonctions nécessaires depuis différents modules
 
-import { animateProgramDD } from '$utils/animate/animateDropDown';
+import { animateAcaPanels } from '$utils/animate/animateAcademy';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
 import { revealHeader, revealHubContent } from '$utils/animate/animateReveal';
@@ -15,7 +15,7 @@ import {
 } from '$utils/data/dataUser';
 import { getUserDevice } from '$utils/data/dataUser';
 import { displayJoinAccess } from '$utils/display/displayJoinAccess';
-import { showProgression } from '$utils/display/displayMemberProgression';
+import {} from '$utils/display/displayMemberProgression';
 import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
 import { toggleFixedModal } from '$utils/display/displaySiteModales';
@@ -35,6 +35,10 @@ declare global {
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'utils/style/site.css';
+  document.head.appendChild(link);
   trackProgress();
   getUserDevice(); // Récupère le type d'appareil de l'utilisateur
   addCurrentPageToNav(); // Ajoute la page actuelle à la navigation
@@ -52,7 +56,6 @@ window.Webflow.push(() => {
   animateNavOnResponsive();
   animateSliderC1OnResponsive();
   animateScrollIndicator();
-  animateProgramDD();
 
   function landingFonctions() {
     getFunnelTrackingData(); // Récupère les données de suivi du tunnel
@@ -64,11 +67,15 @@ window.Webflow.push(() => {
 
   // ---- AFFICHAGE SELON LA PAGE -------------------------------------------------------------------------------------------------------------------
 
-  if (
-    window.location.pathname.includes('/formations') &&
-    !window.location.pathname.includes('/rejoindre')
-  ) {
+  if (window.location.pathname.includes('/formations')) {
     landingFonctions(); // Charge les fonctions des cours
+  }
+  if (window.location.pathname.includes('/academie')) {
+    animateAcaPanels();
+    // Met à jour la lecture du module
+    if (window.location.pathname.includes('/modules')) {
+      sendFunnelTrackingData(); // Envoie les données de suivi du tunnel
+    }
   }
   /** 
   if (window.$memberstackDom) {
@@ -79,13 +86,7 @@ window.Webflow.push(() => {
       if (member) {
         console.log('Membre identifié:', member.id);
 
-        if (window.location.pathname.includes('/academie')) {
-          // Met à jour la lecture du module
-          setTimeout(showProgression, 1000); // Affiche la progression après un délai
-          if (window.location.pathname.includes('/bienvenue')) {
-            sendFunnelTrackingData(); // Envoie les données de suivi du tunnel
-          }
-        }
+        
       } else {
         console.log('Aucun membre connecté');
       }

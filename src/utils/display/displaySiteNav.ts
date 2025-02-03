@@ -1,8 +1,9 @@
 export function addCurrentPageToNav() {
   // Récupère le nom de la page actuelle depuis le LocalStorage
-  const CurrentPageNameUTM = localStorage.getItem('page_current_name');
+  const CurrentPageNameUTM = localStorage.getItem('__initweb_page_name');
+
   // Sélectionne l'élément du DOM qui affichera le nom de la page actuelle
-  const NavPage = document.querySelector('[pageinfo="current-page"]') as HTMLElement;
+  const NavPage = document.querySelector('[iw-pageinfo="current-page"]') as HTMLElement;
 
   // Vérifie si l'élément NavPage existe
   if (NavPage) {
