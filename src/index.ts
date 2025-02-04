@@ -3,7 +3,7 @@
 import { animateAcaPanels } from '$utils/animate/animateAcademy';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
-import { revealHeader, revealHubContent } from '$utils/animate/animateReveal';
+import { revealHeader, revealHubContent, revealTestiExergue } from '$utils/animate/animateReveal';
 import { animateScrollIndicator } from '$utils/animate/animateScrollIndicator';
 import { trackProgress } from '$utils/data/dataMemberProgression';
 import { getFunnelTrackingData, sendFunnelTrackingData } from '$utils/data/dataMemberSource';
@@ -39,6 +39,10 @@ window.Webflow.push(() => {
   link.rel = 'stylesheet';
   link.href = 'utils/style/site.css';
   document.head.appendChild(link);
+
+  //
+  revealTestiExergue();
+  //
   trackProgress();
   getUserDevice(); // Récupère le type d'appareil de l'utilisateur
   addCurrentPageToNav(); // Ajoute la page actuelle à la navigation

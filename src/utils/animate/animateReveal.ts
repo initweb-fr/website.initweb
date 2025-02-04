@@ -5,6 +5,15 @@ import SplitType from 'split-type'; // Importation de la bibliothèque SplitType
 
 // Fonction pour révéler les en-têtes avec des animations
 export function revealHeader() {
+  // Spécifications des animations
+  const specDuration = 0.5;
+  const specBaseMoveYLow = 16;
+  const specBaseMoveYHigh = 64;
+  const specBaseOpacity = 0;
+  const specDelay = specDuration - 0.1;
+  const specDelayHigh = specDuration - 0.1;
+  const specEase = 'circ.Out';
+
   const headerComponents = document.querySelectorAll('[iw-animate="header"]'); // Sélection de tous les éléments avec l'attribut 'animate="section-header"'
   if (headerComponents) {
     headerComponents.forEach((headerComponent) => {
@@ -22,22 +31,16 @@ export function revealHeader() {
         types: 'lines,words,chars',
         tagName: 'span',
       }); // Division du texte en lignes, mots et caractères
-      const headerButtons = headerComponent.querySelectorAll('[iw-animate="header_button"]');
+      const headerButton = headerComponent.querySelector('[iw-animate="header_button"]');
       const headerButtonInfos = headerComponent.querySelector('[iw-animate="header_proof"]');
-
-      // Spécifications des animations
-      const specDuration = 1;
-      //const specBaseMoveY = 8;
-      const specBaseOpacity = 0.1;
-      const specDelay = specDuration - 0.1;
-      const specDelayHigh = specDuration - 0.5;
-      const specEase = 'circ.Out';
 
       // Création d'une timeline GSAP avec ScrollTrigger
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: headerComponent,
           start: 'top 70%',
+          end: 'bottom 30%',
+          markers: true,
         },
       });
 
@@ -55,37 +58,65 @@ export function revealHeader() {
             duration: specDuration,
             ease: specEase,
           },
-          '-=' + specDelayHigh
+          '-=' + specDelay
         )
         .from(
           headerTextSplit.lines,
           {
             opacity: specBaseOpacity,
+            y: specBaseMoveYLow,
             stagger: 0.1,
+            duration: specDuration,
+            ease: specEase,
+          },
+          '-=' + specDelay
+        )
+        .from(
+          headerButtonInfos,
+          {
+            opacity: specBaseOpacity,
+            y: specBaseMoveYLow,
             duration: specDuration,
             ease: specEase,
           },
           '-=' + specDelayHigh
         )
         .from(
-          headerButtonInfos,
+          headerButton,
           {
             opacity: specBaseOpacity,
+            y: specBaseMoveYLow,
             duration: specDuration,
             ease: specEase,
+            stagger: 0.2,
           },
-          '-=' + specDelay
-        )
-        .from(
-          headerButtons,
-          {
-            opacity: specBaseOpacity,
-            duration: specDuration,
-            ease: specEase,
-            stagger: '0.2',
-          },
-          '-=' + specDelay
+          '-=' + specDelayHigh
         );
+    });
+  }
+  const contentComponents = document.querySelectorAll('[iw-animate="content"]');
+  if (contentComponents) {
+    contentComponents.forEach((contentComponent) => {
+      // Sélection des différents éléments de l'en-tête
+      const contentItem = contentComponent.querySelectorAll('[iw-animate="content_item"]');
+      // Création d'une timeline GSAP avec ScrollTrigger
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: contentComponents,
+          start: 'top 70%',
+        },
+      });
+      tl.from(
+        contentItem,
+        {
+          opacity: specBaseOpacity,
+          y: specBaseMoveYHigh,
+          duration: specDuration,
+          ease: specEase,
+          stagger: 0.2,
+        },
+        '-=' + specDelay
+      );
     });
   }
 }
@@ -119,6 +150,39 @@ export function revealHubContent() {
         ease: specEase,
         stagger: 0.2,
       });
+    });
+  }
+}
+
+export function revealTestiExergue() {
+  // Function to check if the viewport width is 767px or less
+  function isMobile() {
+    return window.innerWidth <= 767;
+  }
+  // Split text into individual words
+  const Text = document.querySelector('[iw-animate="text-reveal-opacity"]') as HTMLElement;
+  if (Text) {
+    const layoutText = new SplitType(Text, { types: 'words' });
+    const layoutTL = gsap.timeline();
+
+    // Define different start and end values for mobile devices
+    const startValue = isMobile() ? 'top 35%' : 'top center';
+    const endValue = isMobile() ? 'bottom 90%' : 'bottom center';
+
+    layoutTL.from(layoutText.words, {
+      // Initial opacity for each word
+      opacity: 0.25,
+      // Stagger animation of each word
+      stagger: 0.1,
+      scrollTrigger: {
+        trigger: Text,
+        // Trigger animation when .section_layout484 reaches certain part of the viewport
+        start: startValue,
+        // End animation when .section_layout484 reaches certain part of the viewport
+        end: endValue,
+        // Smooth transition based on scroll position
+        scrub: true,
+      },
     });
   }
 }
