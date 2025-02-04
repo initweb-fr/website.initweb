@@ -189,7 +189,7 @@
       border-bottom:solid 1px var(--border-color--alternate-100);
     }
     [iw-nav-element="nav"].v-submenu2-open .nav_submenu2{
-      max-height: calc(100dvh - 16.5rem - 7.75rem);
+      max-height: calc(100dvh - 16.5rem - 7rem);
       overflow: scroll;
     }
     [iw-nav-element="nav"].v-submenu2-open .nav_submenu2_panel{

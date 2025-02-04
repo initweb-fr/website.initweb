@@ -26,10 +26,11 @@ export function revealHeader() {
       const headerButtonInfos = headerComponent.querySelector('[iw-animate="header_proof"]');
 
       // Spécifications des animations
-      const specDuration = 0.6;
-      const specBaseMoveY = 8;
-      const specBaseOpacity = 0.02;
+      const specDuration = 1;
+      //const specBaseMoveY = 8;
+      const specBaseOpacity = 0.1;
       const specDelay = specDuration - 0.1;
+      const specDelayHigh = specDuration - 0.5;
       const specEase = 'circ.Out';
 
       // Création d'une timeline GSAP avec ScrollTrigger
@@ -50,29 +51,26 @@ export function revealHeader() {
           headerTitleSplit.words,
           {
             opacity: specBaseOpacity,
-            y: specBaseMoveY,
             stagger: 0.1,
             duration: specDuration,
             ease: specEase,
           },
-          '-=' + specDelay
+          '-=' + specDelayHigh
         )
         .from(
           headerTextSplit.lines,
           {
             opacity: specBaseOpacity,
-            y: specBaseMoveY,
             stagger: 0.1,
             duration: specDuration,
             ease: specEase,
           },
-          '-=' + specDelay
+          '-=' + specDelayHigh
         )
         .from(
           headerButtonInfos,
           {
             opacity: specBaseOpacity,
-            y: specBaseMoveY,
             duration: specDuration,
             ease: specEase,
           },
@@ -82,7 +80,6 @@ export function revealHeader() {
           headerButtons,
           {
             opacity: specBaseOpacity,
-            y: specBaseMoveY,
             duration: specDuration,
             ease: specEase,
             stagger: '0.2',
