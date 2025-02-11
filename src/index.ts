@@ -3,7 +3,7 @@
 import { animateAcaPanels } from '$utils/animate/animateAcademy';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
-import { revealHeader, revealHubContent, revealTestiExergue } from '$utils/animate/animateReveal';
+import { revealElements } from '$utils/animate/animateReveal';
 import { animateScrollIndicator } from '$utils/animate/animateScrollIndicator';
 import { trackProgress } from '$utils/data/dataMemberProgression';
 import { getFunnelTrackingData, sendFunnelTrackingData } from '$utils/data/dataMemberSource';
@@ -20,6 +20,7 @@ import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
 import { toggleFixedModal } from '$utils/display/displaySiteModales';
 import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
+import { initializeDates } from '$utils/display/displayTimeline';
 import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
 import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
 // Déclaration globale pour étendre l'objet Window avec des propriétés spécifiques
@@ -41,15 +42,14 @@ window.Webflow.push(() => {
   document.head.appendChild(link);
 
   //
-  revealTestiExergue();
+  initializeDates();
+  revealElements();
   //
   trackProgress();
   getUserDevice(); // Récupère le type d'appareil de l'utilisateur
   addCurrentPageToNav(); // Ajoute la page actuelle à la navigation
   manageNewsBanner(); // Gère l'affichage de la bannière d'actualités
   saveCurrentPreviousPage(); // Sauvegarde la page actuelle et la précédente
-  revealHeader(); // Affiche l'en-tête
-  revealHubContent(); // Affiche le contenu du hub
   manageUTM(); // Gère les paramètres UTM
   saveUserData(); // Sauvegarde les données utilisateur
   addUserData(); // Ajoute des données utilisateur

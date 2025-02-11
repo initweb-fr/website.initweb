@@ -3,188 +3,119 @@ gsap.registerPlugin(ScrollTrigger); // Enregistrement du plugin ScrollTrigger de
 import ScrollTrigger from 'gsap/ScrollTrigger'; // Importation du plugin ScrollTrigger de GSAP
 import SplitType from 'split-type'; // Importation de la bibliothèque SplitType pour diviser le texte en lignes, mots et caractères
 
-// Fonction pour révéler les en-têtes avec des animations
-export function revealHeader() {
-  // Spécifications des animations
-  const specDuration = 0.5;
+export function revealElements() {
+  const specDuration = 1;
   const specBaseMoveYLow = 16;
-  const specBaseMoveYHigh = 64;
-  const specBaseOpacity = 0;
-  const specDelay = specDuration - 0.1;
-  const specDelayHigh = specDuration - 0.1;
-  const specEase = 'circ.Out';
+  const specStaggerWords = 0.05;
+  const specStaggerLines = 0.1;
+  const specBaseOpacity0 = 0;
+  const specBaseOpacity10 = 0.1;
+  const specEase = 'power2.out';
 
-  const headerComponents = document.querySelectorAll('[iw-animate="header"]'); // Sélection de tous les éléments avec l'attribut 'animate="section-header"'
-  if (headerComponents) {
-    headerComponents.forEach((headerComponent) => {
-      // Sélection des différents éléments de l'en-tête
-      const headerTag = headerComponent.querySelector('[iw-animate="header_tag"]');
-      const headerTitle = headerComponent.querySelector(
-        '[iw-animate="header_title"]'
-      ) as HTMLElement;
-      const headerTitleSplit = new SplitType(headerTitle, {
-        types: 'lines,words,chars',
-        tagName: 'span',
-      }); // Division du titre en lignes, mots et caractères
-      const headerText = headerComponent.querySelector('[iw-animate="header_text"]') as HTMLElement;
-      const headerTextSplit = new SplitType(headerText, {
-        types: 'lines,words,chars',
-        tagName: 'span',
-      }); // Division du texte en lignes, mots et caractères
-      const headerButton = headerComponent.querySelector('[iw-animate="header_button"]');
-      const headerButtonInfos = headerComponent.querySelector('[iw-animate="header_proof"]');
+  const animatedElements = document.querySelectorAll('[iw-animate-style]');
 
-      // Création d'une timeline GSAP avec ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: headerComponent,
-          start: 'top 70%',
-          end: 'bottom 30%',
-          markers: true,
-        },
-      });
+  animatedElements.forEach((element) => {
+    const specStyle = element.getAttribute('iw-animate-style');
+    const specDelay = parseFloat(element.getAttribute('iw-animate-delay') || '0') / 1000;
+    let elementSlice: SplitType | undefined;
 
-      // Ajout des animations à la timeline
-      tl.from(
-        headerTag,
-        { opacity: specBaseOpacity, duration: specDuration, ease: specEase },
-        '-=' + specDelay
-      )
-        .from(
-          headerTitleSplit.words,
+    const scrollTriggerConfig = {
+      trigger: element,
+      start: 'top 85%',
+      toggleActions: 'play none ',
+    };
+
+    // Initialiser SplitType si nécessaire
+    if (specStyle?.includes('words')) {
+      elementSlice = new SplitType(element as HTMLElement, { types: 'words' });
+    } else if (specStyle?.includes('lines')) {
+      elementSlice = new SplitType(element as HTMLElement, { types: 'lines' });
+    }
+
+    switch (specStyle) {
+      case 'slide-up':
+        gsap.fromTo(
+          element,
+          { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
           {
-            opacity: specBaseOpacity,
-            stagger: 0.1,
             duration: specDuration,
+            y: 0,
+            opacity: 1,
             ease: specEase,
-          },
-          '-=' + specDelay
-        )
-        .from(
-          headerTextSplit.lines,
-          {
-            opacity: specBaseOpacity,
-            y: specBaseMoveYLow,
-            stagger: 0.1,
-            duration: specDuration,
-            ease: specEase,
-          },
-          '-=' + specDelay
-        )
-        .from(
-          headerButtonInfos,
-          {
-            opacity: specBaseOpacity,
-            y: specBaseMoveYLow,
-            duration: specDuration,
-            ease: specEase,
-          },
-          '-=' + specDelayHigh
-        )
-        .from(
-          headerButton,
-          {
-            opacity: specBaseOpacity,
-            y: specBaseMoveYLow,
-            duration: specDuration,
-            ease: specEase,
-            stagger: 0.2,
-          },
-          '-=' + specDelayHigh
+            delay: specDelay,
+            scrollTrigger: scrollTriggerConfig,
+          }
         );
-    });
-  }
-  const contentComponents = document.querySelectorAll('[iw-animate="content"]');
-  if (contentComponents) {
-    contentComponents.forEach((contentComponent) => {
-      // Sélection des différents éléments de l'en-tête
-      const contentItem = contentComponent.querySelectorAll('[iw-animate="content_item"]');
-      // Création d'une timeline GSAP avec ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: contentComponents,
-          start: 'top 70%',
-        },
-      });
-      tl.from(
-        contentItem,
-        {
-          opacity: specBaseOpacity,
-          y: specBaseMoveYHigh,
-          duration: specDuration,
-          ease: specEase,
-          stagger: 0.2,
-        },
-        '-=' + specDelay
-      );
-    });
-  }
-}
+        break;
 
-// Fonction pour révéler le contenu du hub avec des animations
-export function revealHubContent() {
-  const contentComponents = document.querySelectorAll('[animate="section-content"]'); // Sélection de tous les éléments avec l'attribut 'animate="section-content"'
-  if (contentComponents) {
-    contentComponents.forEach((contentComponent) => {
-      const contentHubItems = contentComponent.querySelectorAll('[animate="content-element"]'); // Sélection des éléments de contenu
+      case 'fade-in':
+        gsap.fromTo(
+          element,
+          { opacity: specBaseOpacity0 },
+          {
+            duration: specDuration,
+            opacity: 1,
+            ease: specEase,
+            delay: specDelay,
+            scrollTrigger: scrollTriggerConfig,
+          }
+        );
+        break;
 
-      // Création d'une timeline GSAP avec ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: contentComponent,
-          start: 'top 70%',
-        },
-      });
+      case 'words-slide-up':
+        if (elementSlice?.words) {
+          gsap.fromTo(
+            elementSlice.words,
+            { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
+            {
+              duration: specDuration,
+              y: 0,
+              opacity: 1,
+              stagger: specStaggerWords,
+              ease: specEase,
+              delay: specDelay,
+              scrollTrigger: scrollTriggerConfig,
+            }
+          );
+        }
+        break;
 
-      // Spécifications des animations
-      const specDuration = 1;
-      const specBaseMoveY = 0;
-      const specBaseOpacity = 0.02;
-      const specEase = 'circ.Out';
-
-      // Ajout des animations à la timeline
-      tl.from(contentHubItems, {
-        opacity: specBaseOpacity,
-        y: specBaseMoveY,
-        duration: specDuration,
-        ease: specEase,
-        stagger: 0.2,
-      });
-    });
-  }
-}
-
-export function revealTestiExergue() {
-  // Function to check if the viewport width is 767px or less
-  function isMobile() {
-    return window.innerWidth <= 767;
-  }
-  // Split text into individual words
-  const Text = document.querySelector('[iw-animate="text-reveal-opacity"]') as HTMLElement;
-  if (Text) {
-    const layoutText = new SplitType(Text, { types: 'words' });
-    const layoutTL = gsap.timeline();
-
-    // Define different start and end values for mobile devices
-    const startValue = isMobile() ? 'top 35%' : 'top center';
-    const endValue = isMobile() ? 'bottom 90%' : 'bottom center';
-
-    layoutTL.from(layoutText.words, {
-      // Initial opacity for each word
-      opacity: 0.25,
-      // Stagger animation of each word
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: Text,
-        // Trigger animation when .section_layout484 reaches certain part of the viewport
-        start: startValue,
-        // End animation when .section_layout484 reaches certain part of the viewport
-        end: endValue,
-        // Smooth transition based on scroll position
-        scrub: true,
-      },
-    });
-  }
+      case 'lines-slide-up':
+        if (elementSlice?.lines) {
+          gsap.fromTo(
+            elementSlice.lines,
+            { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
+            {
+              duration: specDuration,
+              y: 0,
+              opacity: 1,
+              stagger: specStaggerLines,
+              ease: specEase,
+              delay: specDelay,
+              scrollTrigger: scrollTriggerConfig,
+            }
+          );
+        }
+        break;
+      case 'lines-fade-in':
+        if (elementSlice?.lines) {
+          gsap.fromTo(
+            elementSlice.lines,
+            { y: specBaseMoveYLow, opacity: specBaseOpacity10 },
+            {
+              duration: specDuration,
+              y: 0,
+              opacity: 1,
+              stagger: specStaggerLines,
+              ease: specEase,
+              delay: specDelay,
+              scrollTrigger: scrollTriggerConfig,
+            }
+          );
+        }
+        break;
+    }
+  });
 }
 
 // Fonction pour révéler le héros de la page d'accueil avec des animations
