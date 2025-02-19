@@ -19,11 +19,24 @@ export function revealElements() {
     const specDelay = parseFloat(element.getAttribute('iw-animate-delay') || '0') / 1000;
     let elementSlice: SplitType | undefined;
 
-    const scrollTriggerConfig = {
-      trigger: element,
-      start: 'top 85%',
-      toggleActions: 'play none ',
+    // Vérifier si l'animation doit être instantanée
+    const isInstant = element.hasAttribute('iw-animate-instant');
+
+    // Configuration de base pour l'animation
+    const baseConfig = {
+      duration: specDuration,
+      ease: specEase,
+      delay: specDelay,
     };
+
+    // Configuration du scrollTrigger uniquement si ce n'est pas instantané
+    const scrollTriggerConfig = isInstant
+      ? undefined
+      : {
+          trigger: element,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        };
 
     // Initialiser SplitType si nécessaire
     if (specStyle?.includes('words')) {
@@ -38,11 +51,9 @@ export function revealElements() {
           element,
           { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
           {
-            duration: specDuration,
+            ...baseConfig,
             y: 0,
             opacity: 1,
-            ease: specEase,
-            delay: specDelay,
             scrollTrigger: scrollTriggerConfig,
           }
         );
@@ -53,10 +64,8 @@ export function revealElements() {
           element,
           { opacity: specBaseOpacity0 },
           {
-            duration: specDuration,
+            ...baseConfig,
             opacity: 1,
-            ease: specEase,
-            delay: specDelay,
             scrollTrigger: scrollTriggerConfig,
           }
         );
@@ -68,12 +77,10 @@ export function revealElements() {
             elementSlice.words,
             { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
             {
-              duration: specDuration,
+              ...baseConfig,
               y: 0,
               opacity: 1,
               stagger: specStaggerWords,
-              ease: specEase,
-              delay: specDelay,
               scrollTrigger: scrollTriggerConfig,
             }
           );
@@ -86,12 +93,10 @@ export function revealElements() {
             elementSlice.lines,
             { y: specBaseMoveYLow, opacity: specBaseOpacity0 },
             {
-              duration: specDuration,
+              ...baseConfig,
               y: 0,
               opacity: 1,
               stagger: specStaggerLines,
-              ease: specEase,
-              delay: specDelay,
               scrollTrigger: scrollTriggerConfig,
             }
           );
@@ -103,12 +108,10 @@ export function revealElements() {
             elementSlice.lines,
             { y: specBaseMoveYLow, opacity: specBaseOpacity10 },
             {
-              duration: specDuration,
+              ...baseConfig,
               y: 0,
               opacity: 1,
               stagger: specStaggerLines,
-              ease: specEase,
-              delay: specDelay,
               scrollTrigger: scrollTriggerConfig,
             }
           );
@@ -116,141 +119,12 @@ export function revealElements() {
         break;
     }
   });
+
+  // Forcer une mise à jour de ScrollTrigger
+  ScrollTrigger.refresh();
+
+  // Attendre que tout soit chargé pour rafraîchir ScrollTrigger
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
 }
-
-// Fonction pour révéler le héros de la page d'accueil avec des animations
-
-/**
-export function revealFormaHero() {
-  const formaHeroTag = document.querySelector('[animate="forma-hero-tag"]');
-  const formaHeroH1 = document.querySelector('[animate="forma-hero-h1"]');
-
-  const formaHeroInfos = document.querySelector('[animate="forma-hero-infos"]');
-  const formaHeroStars = document.querySelector('[animate="forma-hero-stars"]');
-  const formaHeroButtonSecondary = document.querySelector(
-    '[animate="forma-hero-button-secondary"]'
-  );
-  const formaHeroButtonPrimary = document.querySelector('[animate="forma-hero-button-primary"]');
-
-  const formaHeroLogos = document.querySelector('[animate="forma-hero-logos"]');
-
-  const formaHeroVideoAmorce = document.querySelector('[animate="forma-hero-video-amorce"]');
-  const formaHeroVideoTags = document.querySelectorAll('[animate="forma-hero-video-tags"]');
-
-  const formaHeroVideoGradient = document.querySelector('[animate="forma-hero-video-gradient"]');
-  const formaHeroVideo = document.querySelector('[animate="forma-hero-video"]');
-
-  const specDuration = 0.6;
-  const specBaseMoveY = 64;
-  const specBaseOpacity = 0;
-  const specBaseScaleX = 0;
-  const specTargetMoveY = 0;
-  const specTargetOpacity = 1;
-  const specTargetScaleX = 1;
-  const specDelay = specDuration - 0.1;
-  const specEase = 'expo.Out';
-
-  gsap.set(formaHeroTag, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroH1, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroInfos, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroStars, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroButtonSecondary, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroButtonPrimary, { opacity: specBaseOpacity, y: specBaseMoveY });
-  gsap.set(formaHeroLogos, { opacity: specBaseOpacity });
-  gsap.set(formaHeroVideoAmorce, { opacity: specBaseOpacity, y: specBaseMoveY });
-  formaHeroVideoTags.forEach((formaHeroVideoTag) => {
-    gsap.set(formaHeroVideoTag, { opacity: specBaseOpacity, y: specBaseMoveY });
-  });
-  gsap.set(formaHeroVideoGradient, {
-    scaleX: specBaseScaleX,
-    opacity: specBaseOpacity,
-    y: specBaseMoveY,
-  });
-  gsap.set(formaHeroVideo, { opacity: specBaseOpacity, y: specBaseMoveY });
-
-  const tl = gsap.timeline();
-
-  tl.to(formaHeroTag, {
-    duration: specDuration,
-    y: specTargetMoveY,
-    opacity: specTargetOpacity,
-    ease: specEase,
-  })
-    .to(
-      formaHeroH1,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-
-    .to(
-      formaHeroInfos,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroStars,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroButtonSecondary,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroButtonPrimary,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroLogos,
-      { duration: specDuration, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroVideo,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=' + specDelay
-    )
-    .to(
-      formaHeroVideoGradient,
-      {
-        duration: specDuration,
-        y: specTargetMoveY,
-        ease: specEase,
-      },
-      '-=' + specDuration
-    )
-    .to(
-      formaHeroVideoGradient,
-      {
-        duration: specDuration * 3,
-        opacity: specTargetOpacity,
-        scaleX: specTargetScaleX,
-        ease: specEase,
-      },
-      '-=0'
-    )
-    .to(
-      formaHeroVideoAmorce,
-      { duration: specDuration, y: specTargetMoveY, opacity: specTargetOpacity, ease: specEase },
-      '-=1'
-    );
-  formaHeroVideoTags.forEach((formaHeroVideoTag) => {
-    tl.to(
-      formaHeroVideoTag,
-      {
-        duration: specDuration,
-        stagger: 0.1,
-        y: specTargetMoveY,
-        opacity: specTargetOpacity,
-        ease: specEase,
-      },
-      '-=' + specDelay
-    );
-  });
-
-  tl.play();
-}
-
-**/

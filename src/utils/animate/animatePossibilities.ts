@@ -21,7 +21,7 @@ function animateSliderC1() {
 
   if (selectors && slides && timeframes) {
     let currentSlide = 1;
-    let interval;
+    let interval: NodeJS.Timeout;
 
     // Fonction pour réinitialiser toutes les barres de progression
     function resetAllTimeframes() {

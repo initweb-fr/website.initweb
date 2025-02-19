@@ -1,87 +1,104 @@
-// Importation des fonctions nécessaires depuis différents modules
-
+// Importation des fonctions d'animation
 import { animateAcaPanels } from '$utils/animate/animateAcademy';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
 import { revealElements } from '$utils/animate/animateReveal';
 import { animateScrollIndicator } from '$utils/animate/animateScrollIndicator';
+// Importation des fonctions de gestion des données
 import { trackProgress } from '$utils/data/dataMemberProgression';
 import { getFunnelTrackingData, sendFunnelTrackingData } from '$utils/data/dataMemberSource';
 import {
   addUserData,
+  getUserDevice,
   manageUTM,
   saveCurrentPreviousPage,
   saveUserData,
 } from '$utils/data/dataUser';
-import { getUserDevice } from '$utils/data/dataUser';
+// Importation des fonctions d'affichage
 import { displayJoinAccess } from '$utils/display/displayJoinAccess';
 import {} from '$utils/display/displayMemberProgression';
+import { setupScrollBehavior } from '$utils/display/displayPage';
 import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
 import { toggleFixedModal } from '$utils/display/displaySiteModales';
 import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
 import { initializeDates } from '$utils/display/displayTimeline';
+// Importation des fonctions de sliders
 import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
+// Importation des fonctions spéciales
 import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
-// Déclaration globale pour étendre l'objet Window avec des propriétés spécifiques
+
+// Déclaration des types globaux
 declare global {
   interface Window {
     $memberstackReady?: boolean; // Indicateur de disponibilité de Memberstack
-    fsAttributes: any[]; // Attributs personnalisés pour le CMS
-    $memberstackDom: any; // DOM spécifique à Memberstack
+    fsAttributes: Array<unknown>; // Attributs personnalisés pour le CMS
+    $memberstackDom: {
+      getCurrentMember: () => Promise<{
+        data: {
+          id: string;
+        } | null;
+      }>;
+    }; // DOM spécifique à Memberstack
   }
 }
 
-// Initialisation de Webflow si non déjà fait
-
+// Initialisation de Webflow
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  // Ajout du CSS personnalisé
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'utils/style/site.css';
   document.head.appendChild(link);
 
-  //
+  // Fonctions d'initialisation générales
+  setupScrollBehavior();
   initializeDates();
   revealElements();
-  //
+
+  // Fonctions de gestion des données utilisateur
   trackProgress();
-  getUserDevice(); // Récupère le type d'appareil de l'utilisateur
-  addCurrentPageToNav(); // Ajoute la page actuelle à la navigation
-  manageNewsBanner(); // Gère l'affichage de la bannière d'actualités
-  saveCurrentPreviousPage(); // Sauvegarde la page actuelle et la précédente
-  manageUTM(); // Gère les paramètres UTM
-  saveUserData(); // Sauvegarde les données utilisateur
-  addUserData(); // Ajoute des données utilisateur
-  toggleFixedModal(); // Active/désactive la modal fixe
-  instaHideGoogleAuth(); // Masque le bouton Google Auth sur Instagram
-  manageDropdowns(); // Gère les menus déroulants
-  displayJoinAccess(); // Affiche l'accès à l'inscription
+  getUserDevice();
+  saveCurrentPreviousPage();
+  manageUTM();
+  saveUserData();
+  addUserData();
+
+  // Fonctions d'interface utilisateur
+  addCurrentPageToNav();
+  manageNewsBanner();
+  toggleFixedModal();
+  instaHideGoogleAuth();
+  manageDropdowns();
+  displayJoinAccess();
+
+  // Fonctions d'animation
   animateNavOnResponsive();
   animateSliderC1OnResponsive();
   animateScrollIndicator();
 
+  // Fonctions spécifiques aux pages de formation
   function landingFonctions() {
-    getFunnelTrackingData(); // Récupère les données de suivi du tunnel
-    SplideFormaSituationA(); // Initialise le slider pour la situation A
-    SplideFormaProgramA(); // Initialise le slider pour le programme A
+    getFunnelTrackingData();
+    SplideFormaSituationA();
+    SplideFormaProgramA();
   }
 
-  //trackProgress();
-
-  // ---- AFFICHAGE SELON LA PAGE -------------------------------------------------------------------------------------------------------------------
-
+  // Gestion des routes spécifiques
   if (window.location.pathname.includes('/formations')) {
-    landingFonctions(); // Charge les fonctions des cours
+    landingFonctions();
   }
+
   if (window.location.pathname.includes('/academie')) {
     animateAcaPanels();
-    // Met à jour la lecture du module
     if (window.location.pathname.includes('/modules')) {
-      sendFunnelTrackingData(); // Envoie les données de suivi du tunnel
+      sendFunnelTrackingData();
     }
   }
+
   /** 
+  // Code commenté pour la gestion future de Memberstack
   if (window.$memberstackDom) {
     const memberstack = window.$memberstackDom;
 
@@ -89,8 +106,6 @@ window.Webflow.push(() => {
       const member = result.data;
       if (member) {
         console.log('Membre identifié:', member.id);
-
-        
       } else {
         console.log('Aucun membre connecté');
       }
