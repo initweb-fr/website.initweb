@@ -1,5 +1,16 @@
 # @initstudio/initweb
 
+## 0.1.0
+
+### Minor Changes
+
+- 14f4269: Update v1
+
+### Patch Changes
+
+- 640ed22: Update Code for v2
+- bec6350: Update Code
+
 ## 0.0.16
 
 ### Patch Changes
