@@ -14,46 +14,46 @@ export function animateSliderC1OnResponsive() {
 }
 
 function animateSliderC1() {
-  const selectors = document.querySelectorAll('[iw-slider-c1-element="selector"]');
-  const slides = document.querySelectorAll('[iw-slider-c1-element="visual"]');
-  const timeframes = document.querySelectorAll('[iw-slider-c1-element="timeframe"]');
+  const selectors = document.querySelectorAll('[iw-element="possibilities_selector"]');
+  const visuals = document.querySelectorAll('[iw-element="possibilities_visual"]');
+  const timelines = document.querySelectorAll('[iw-element="possibilities_timeline"]');
   const slideDuration = 10000; // Durée en millisecondes
 
-  if (selectors && slides && timeframes) {
+  if (selectors && visuals && timelines) {
     let currentSlide = 1;
     let interval: NodeJS.Timeout;
 
     // Fonction pour réinitialiser toutes les barres de progression
-    function resetAllTimeframes() {
-      timeframes.forEach((timeframe) => {
-        timeframe.style.transition = 'none';
-        timeframe.style.width = '0%';
+    function resetAllTimelines() {
+      timelines.forEach((timeline) => {
+        timeline.style.transition = 'none';
+        timeline.style.width = '0%';
       });
     }
 
     // Fonction pour gérer la barre de progression
     // Fonction pour démarrer la progression
     function startProgress(index) {
-      resetAllTimeframes();
-      const timeframe = timeframes[index];
+      resetAllTimelines();
+      const timeline = timelines[index];
 
       // Force un reflow pour assurer que la transition sera appliquée
-      timeframe.offsetHeight;
+      timeline.offsetHeight;
 
       // Applique la transition et démarre la progression
-      timeframe.style.transition = `width ${slideDuration}ms linear`;
-      timeframe.style.width = '100%';
+      timeline.style.transition = `width ${slideDuration}ms linear`;
+      timeline.style.width = '100%';
     }
 
     // Fonction pour afficher une slide spécifique
     function showSlide(index: number) {
       // Retirer la classe active de toutes les slides et boutons
-      slides.forEach((slide) => slide.setAttribute('iw-slider-c1-status', 'hidden'));
-      selectors.forEach((selector) => selector.setAttribute('iw-slider-c1-status', 'clear'));
+      visuals.forEach((visual) => visual.setAttribute('iw-possibilities-status', 'hidden'));
+      selectors.forEach((selector) => selector.setAttribute('iw-possibilities-status', 'clear'));
 
       // Ajouter la classe active à la slide et au bouton courant
-      slides[index].setAttribute('iw-slider-c1-status', 'visible');
-      selectors[index].setAttribute('iw-slider-c1-status', 'selected');
+      visuals[index].setAttribute('iw-possibilities-status', 'visible');
+      selectors[index].setAttribute('iw-possibilities-status', 'selected');
       currentSlide = index;
 
       // Démarrer la progression pour cette slide
@@ -62,7 +62,7 @@ function animateSliderC1() {
 
     // Fonction pour passer à la slide suivante
     function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
+      currentSlide = (currentSlide + 1) % visuals.length;
       showSlide(currentSlide);
     }
 
