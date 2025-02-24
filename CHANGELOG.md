@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.1.1
+
+### Patch Changes
+
+- 8fde295: Update Code to launch BootCamp
+
 ## 0.1.0
 
 ### Minor Changes
