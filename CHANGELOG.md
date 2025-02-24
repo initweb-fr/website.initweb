@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.2.0
+
+### Minor Changes
+
+- 9e361fc: Update Code
+
 ## 0.1.1
 
 ### Patch Changes
