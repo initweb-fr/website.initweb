@@ -4,6 +4,7 @@ import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
 import { revealElements } from '$utils/animate/animateReveal';
 import { animateScrollIndicator } from '$utils/animate/animateScrollIndicator';
+import { animateMarqueeReviews } from '$utils/animate/animateSlider';
 // Importation des fonctions de gestion des données
 import { trackProgress } from '$utils/data/dataMemberProgression';
 import { getFunnelTrackingData, sendFunnelTrackingData } from '$utils/data/dataMemberSource';
@@ -77,6 +78,7 @@ window.Webflow.push(() => {
   animateNavOnResponsive();
   animateSliderC1OnResponsive();
   animateScrollIndicator();
+  animateMarqueeReviews();
 
   // Fonctions spécifiques aux pages de formation
   function landingFonctions() {

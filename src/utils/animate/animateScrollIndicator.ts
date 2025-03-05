@@ -36,7 +36,9 @@ export function animateScrollIndicator() {
       // Nouvelle logique pour le formatage des nombres
       const formattedProgress = progress === 100 ? '100' : progress.toString().padStart(3, '0');
 
-      progressCounter.textContent = formattedProgress;
+      if (progressCounter) {
+        progressCounter.textContent = formattedProgress;
+      }
     },
   });
 }
