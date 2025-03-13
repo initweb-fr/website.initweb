@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.3.1
+
+### Patch Changes
+
+- ae4b1bf: Update Tracking Progression System
+
 ## 0.3.0
 
 ### Minor Changes
