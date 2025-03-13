@@ -17,7 +17,6 @@ import {
 } from '$utils/data/dataUser';
 // Importation des fonctions d'affichage
 import { displayJoinAccess } from '$utils/display/displayJoinAccess';
-import {} from '$utils/display/displayMemberProgression';
 import { setupScrollBehavior } from '$utils/display/displayPage';
 import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';

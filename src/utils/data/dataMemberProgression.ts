@@ -10,6 +10,36 @@ export const trackProgress = () => {
     counter.forEach((item) => {
       item.innerText = `${value} modules`;
     });
+
+    const modulesTotal = Array.from(document.querySelectorAll('[iw-p-progress-watched]'));
+    const modulesSeen = Array.from(document.querySelectorAll('[iw-p-progress-watched="true"]'));
+
+    // Compte le nombre total de modules
+    const countTotal = modulesTotal.length;
+    // Compte le nombre de modules vus
+    const countSeen = modulesSeen.length;
+
+    // Calcule le pourcentage de modules vus
+    const percentageSeen = (countSeen / countTotal) * 100;
+    // Convertit le pourcentage en un entier pour l'affichage
+    const pourcentagSeenEntier = Math.trunc(percentageSeen);
+
+    // Modifie la largeur de la barre de progression pour refléter le pourcentage de modules vus
+    const progressBar = document.querySelector('[iw-p-progress-watched-bar]') as HTMLElement;
+    console.log(progressBar);
+    if (progressBar) {
+      progressBar.style.width = pourcentagSeenEntier + '%';
+      console.log(progressBar);
+    }
+
+    // Met à jour l'information de progression affichée à l'utilisateur
+    const progressInfo = document.querySelector<HTMLElement>(
+      '[iw-p-progress-watched-percent]'
+    ) as HTMLElement;
+    if (progressInfo) {
+      progressInfo.textContent = pourcentagSeenEntier + '%';
+      console.log(progressInfo);
+    }
   };
   window.$memberstackDom
     .getCurrentMember()
