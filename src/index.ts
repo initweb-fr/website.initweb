@@ -1,5 +1,5 @@
 // Importation des fonctions d'animation
-import { animateAcaPanels } from '$utils/animate/animateAcademy';
+import { animateAcaPanels, scrollToCurrentLink } from '$utils/animate/animateAcademy';
 import { animateNavOnResponsive } from '$utils/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
 import { revealElements } from '$utils/animate/animateReveal';
@@ -23,10 +23,6 @@ import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
 import { toggleFixedModal } from '$utils/display/displaySiteModales';
 import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
 import { initializeDates } from '$utils/display/displayTimeline';
-// Importation des fonctions de sliders
-import { SplideFormaProgramA, SplideFormaSituationA } from '$utils/sliders/slidersFormation';
-// Importation des fonctions spéciales
-import { instaHideGoogleAuth } from '$utils/special/specialOnInstagram';
 
 // Déclaration des types globaux
 declare global {
@@ -69,7 +65,6 @@ window.Webflow.push(() => {
   addCurrentPageToNav();
   manageNewsBanner();
   toggleFixedModal();
-  instaHideGoogleAuth();
   manageDropdowns();
   displayJoinAccess();
 
@@ -82,8 +77,6 @@ window.Webflow.push(() => {
   // Fonctions spécifiques aux pages de formation
   function landingFonctions() {
     getFunnelTrackingData();
-    SplideFormaSituationA();
-    SplideFormaProgramA();
   }
 
   // Gestion des routes spécifiques
@@ -93,6 +86,7 @@ window.Webflow.push(() => {
 
   if (window.location.pathname.includes('/academie')) {
     animateAcaPanels();
+    scrollToCurrentLink();
     if (window.location.pathname.includes('/modules')) {
       sendFunnelTrackingData();
     }

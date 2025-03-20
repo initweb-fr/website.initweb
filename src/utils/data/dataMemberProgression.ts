@@ -26,10 +26,10 @@ export const trackProgress = () => {
 
     // Modifie la largeur de la barre de progression pour refléter le pourcentage de modules vus
     const progressBar = document.querySelector('[iw-p-progress-watched-bar]') as HTMLElement;
-    console.log(progressBar);
+    //console.log(progressBar);
     if (progressBar) {
       progressBar.style.width = pourcentagSeenEntier + '%';
-      console.log(progressBar);
+      //console.log(progressBar);
     }
 
     // Met à jour l'information de progression affichée à l'utilisateur
@@ -38,7 +38,7 @@ export const trackProgress = () => {
     ) as HTMLElement;
     if (progressInfo) {
       progressInfo.textContent = pourcentagSeenEntier + '%';
-      console.log(progressInfo);
+      //console.log(progressInfo);
     }
   };
   window.$memberstackDom
@@ -63,7 +63,7 @@ export const trackProgress = () => {
             const targetState = this.getAttribute('iw-p-progress-watched');
             const triggerType = this.getAttribute('iw-p-progress-trigger');
             if (!targetValue) {
-              console.error('No target value found');
+              //console.error('No target value found');
               return;
             }
             if (triggerType === 'checkbox') {
@@ -111,7 +111,7 @@ export const trackProgress = () => {
                 }
               }
               trigger.setAttribute('iw-p-progress-trigger-loader', 'false');
-              console.log('Progress updated successfully');
+              //console.log('Progress updated successfully');
             } catch (error) {
               console.error(
                 'Error updating progress:',
@@ -121,7 +121,7 @@ export const trackProgress = () => {
           });
         });
       } else {
-        console.log('No member is currently logged in');
+        //console.log('No member is currently logged in');
       }
     })
     .catch((error) => {
