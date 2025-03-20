@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.3.2
+
+### Patch Changes
+
+- 90c45fc: Ajout du système de scroll auto pour les liens du TOC
+
 ## 0.3.1
 
 ### Patch Changes
