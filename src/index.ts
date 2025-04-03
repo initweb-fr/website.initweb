@@ -42,6 +42,7 @@ declare global {
 // Initialisation de Webflow
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  console.log('Hello tout le monde');
   // Ajout du CSS personnalisé
   const link = document.createElement('link');
   link.rel = 'stylesheet';
