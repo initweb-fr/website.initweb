@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.3.3
+
+### Patch Changes
+
+- 4b7767a: Test de la console
+
 ## 0.3.2
 
 ### Patch Changes
