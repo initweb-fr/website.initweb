@@ -1,0 +1,30 @@
+[iw-modal-element=modal-item] {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+}
+[iw-modal-element=modal-item].iw-modal-active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+[iw-modal-element=modal-content] {
+  transform: translateY(calc(100% + 1.5rem));
+  transition-duration: .6s ease-out-expo;
+  transition-delay: 0.1s;
+}
+[iw-modal-element=modal-item].iw-modal-active [iw-modal-element=modal-content] {
+  transform: translateY(0%);
+}
+
+[iw-modal-element=modal-overlay] {
+  opacity: 0;
+  pointer-events: none;
+  transition-duration: .3s;
+}
+[iw-modal-element=modal-item].iw-modal-active  [iw-modal-element=modal-overlay] {
+  opacity: .9;
+  pointer-events: auto;
+  
+}

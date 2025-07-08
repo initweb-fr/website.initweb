@@ -1,0 +1,21 @@
+[iw-tab-element="tab-content-list"] {
+   overflow: hidden;
+}
+
+[iw-tab-element="tab-content"] {
+    display: none;
+    visibility: hidden;
+}
+[iw-tab-element="tab-content"].iw-tab-active {
+    display: flex;
+    visibility: visible;
+}
+
+[iw-tab-element="tab-toggle"] {
+    opacity: 0.3;
+    transition: all 0.3s ease-in-out;
+}
+[iw-tab-element="tab-toggle"].iw-tab-active {
+    opacity: 1;
+}
+

@@ -20,9 +20,17 @@ import { displayJoinAccess } from '$utils/display/displayJoinAccess';
 import { setupScrollBehavior } from '$utils/display/displayPage';
 import { manageNewsBanner } from '$utils/display/displaySiteBanners';
 import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
-import { toggleFixedModal } from '$utils/display/displaySiteModales';
 import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
 import { initializeDates } from '$utils/display/displayTimeline';
+import { animateFormLabels } from '$utils/v3/animate/animateForm';
+import { fillFormData, saveFormData, saveNavigationData } from '$utils/v3/data/manageUserDatas';
+// Importation des fonctions V3
+import { toggleDropdownV3 } from '$utils/v3/display/displaySiteDropdowns';
+import { toggleModalV3 } from '$utils/v3/display/displaySiteModales';
+import { displaySiteTab } from '$utils/v3/display/displaySiteTab';
+import { checkLinks } from '$utils/v3/internal/checkLinks';
+import { animateReviewsSlider } from '$utils/v3/sliders/slidersReviews';
+import { animateUtilitiesSlider } from '$utils/v3/sliders/slidersUtilities';
 
 // Déclaration des types globaux
 declare global {
@@ -42,12 +50,39 @@ declare global {
 // Initialisation de Webflow
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  console.log('Hello tout le monde');
-  // Ajout du CSS personnalisé
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'utils/style/site.css';
-  document.head.appendChild(link);
+  // ------------------------------------------------------------
+  // Fonctionnalités pour l'ACADÉMIE V3
+  // ------------------------------------------------------------
+  if (
+    window.location.href.includes('academie-initweb-v3') ||
+    window.location.href.includes('aca.initweb.fr')
+  ) {
+    saveNavigationData();
+    saveFormData();
+    fillFormData();
+  }
+  // ------------------------------------------------------------
+  // Fonctionnalités pour le SITE V3
+  // ------------------------------------------------------------
+  else if (
+    window.location.href.includes('site-initweb-v3') ||
+    window.location.href.includes('www.initweb.fr')
+  ) {
+    // Fonctionnalités pour le site
+    toggleDropdownV3();
+    toggleModalV3();
+    displaySiteTab();
+    saveNavigationData();
+    saveFormData();
+    fillFormData();
+    animateFormLabels();
+    animateReviewsSlider();
+    animateUtilitiesSlider();
+
+    if (window.location.href.includes('site-initweb-v3')) {
+      checkLinks();
+    }
+  }
 
   // Fonctions d'initialisation générales
   setupScrollBehavior();
@@ -55,17 +90,10 @@ window.Webflow.push(() => {
   revealElements();
 
   // Fonctions de gestion des données utilisateur
-  trackProgress();
-  getUserDevice();
-  saveCurrentPreviousPage();
-  manageUTM();
-  saveUserData();
-  addUserData();
 
   // Fonctions d'interface utilisateur
   addCurrentPageToNav();
   manageNewsBanner();
-  toggleFixedModal();
   manageDropdowns();
   displayJoinAccess();
 

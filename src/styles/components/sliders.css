@@ -1,0 +1,28 @@
+.splide__sr{
+    display: none;
+    visibility: hidden;
+}
+.splide__slide.reviews-slider{
+    transition: all 0.3s ease-in-out;
+}
+.splide__slide.reviews-slider:not(.is-visible){
+    opacity:0.3;
+}
+.splide__slide.reviews-slider.is-visible{
+    opacity:1;
+}
+.splide__slide.reviews-slider .card-review_infos{
+    transition: all 0.3s ease-in-out;
+}
+
+.splide__slide.reviews-slider .card-review_action{
+    display: flex;
+    height: 0 !important;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+.splide__slide.reviews-slider:hover .card-review_action{
+    display: flex;
+    height: auto;
+    opacity: 1;
+}

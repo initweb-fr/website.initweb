@@ -1,0 +1,21 @@
+.form_field-label {
+    top:auto;
+    color: #6b7280;
+    background-color: #fff;
+    transition: all 0.1s ease-in-out;
+}
+.form_field-input {
+    border-color: #6b7280;
+    color: #020712;
+    transition: all 0.1s ease-in-out;
+}
+
+.form_field-label.iw-form-input-active {
+    top: -0.25Rem;
+    font-size: .5rem;
+    color: #020712;
+}
+.form_field-input.iw-form-input-active {
+    border-color: #020712;
+    color: #020712;
+  }
