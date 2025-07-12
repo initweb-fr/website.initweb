@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from '$utils/cookie/cookieUtility';
+import { getCookie, setCookie } from '$utils/-global/cookieUtility';
 
 // --------- Fonctions gérant la sauvegarde des données
 // ------------------------------------------------------

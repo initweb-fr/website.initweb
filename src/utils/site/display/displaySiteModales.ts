@@ -42,7 +42,6 @@ export function toggleModalV3() {
     function closeModal() {
       globalFixedWrapper.removeChild(modalItem);
       modalItem.classList.remove('iw-modal-active');
-      console.log('closeModal');
       document.body.style.overflow = 'visible';
     }
 

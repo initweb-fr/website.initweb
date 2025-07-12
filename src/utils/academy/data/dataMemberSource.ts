@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from '$utils/cookie/cookieUtility';
+import { getCookie, setCookie } from '$utils/-global/cookieUtility';
 
 // ---------- TRACKING SOURCE ----------
 // Fonction pour obtenir les données de suivi du funnel
@@ -62,7 +62,7 @@ export function sendFunnelTrackingData() {
           // Récupération des informations de l'utilisateur
           const userID = member.id;
           const userEmail = member.auth.email;
-          const userFirstName = member.customFields['first-name'];
+          const userFirstName = member.customFields['firstName'];
 
           // Récupération des informations du funnel depuis les cookies
           const cookieThisFunnelCourseID = getCookie('__initweb_' + currentFunnelID + '_funnel_id');

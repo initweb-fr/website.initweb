@@ -2,6 +2,9 @@
     display: none;
     visibility: hidden;
 }
+.splide__slide{
+    transition: all 0.3s ease-in-out;
+}
 .splide__slide.reviews-slider{
     transition: all 0.3s ease-in-out;
 }
@@ -25,4 +28,11 @@
     display: flex;
     height: auto;
     opacity: 1;
+}
+
+.splide__slide:not(.is-visible){
+opacity:0.3;
+}
+.splide__slide.is-visible{
+  opacity:1;
 }

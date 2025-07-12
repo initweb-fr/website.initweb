@@ -1,49 +1,36 @@
 // Importation des fonctions d'animation
-import { animateAcaPanels, scrollToCurrentLink } from '$utils/animate/animateAcademy';
-import { animateNavOnResponsive } from '$utils/animate/animateNav';
-import { animateSliderC1OnResponsive } from '$utils/animate/animatePossibilities';
-import { revealElements } from '$utils/animate/animateReveal';
-import { animateScrollIndicator } from '$utils/animate/animateScrollIndicator';
-import { animateMarqueeReviews } from '$utils/animate/animateSlider';
-// Importation des fonctions de gestion des données
-import { trackProgress } from '$utils/data/dataMemberProgression';
-import { getFunnelTrackingData, sendFunnelTrackingData } from '$utils/data/dataMemberSource';
-import {
-  addUserData,
-  getUserDevice,
-  manageUTM,
-  saveCurrentPreviousPage,
-  saveUserData,
-} from '$utils/data/dataUser';
+import { animateNavOnResponsive } from '$utils/_archives/animate/animateNav';
+import { animateSliderC1OnResponsive } from '$utils/_archives/animate/animatePossibilities';
+import { revealElements } from '$utils/_archives/animate/animateReveal';
+import { animateScrollIndicator } from '$utils/_archives/animate/animateScrollIndicator';
+import { animateMarqueeReviews } from '$utils/_archives/animate/animateSlider';
 // Importation des fonctions d'affichage
-import { displayJoinAccess } from '$utils/display/displayJoinAccess';
-import { setupScrollBehavior } from '$utils/display/displayPage';
-import { manageNewsBanner } from '$utils/display/displaySiteBanners';
-import { manageDropdowns } from '$utils/display/displaySiteDropdowns';
-import { addCurrentPageToNav } from '$utils/display/displaySiteNav';
-import { initializeDates } from '$utils/display/displayTimeline';
-import { animateFormLabels } from '$utils/v3/animate/animateForm';
-import { fillFormData, saveFormData, saveNavigationData } from '$utils/v3/data/manageUserDatas';
+import { displayJoinAccess } from '$utils/_archives/display/displayJoinAccess';
+import { setupScrollBehavior } from '$utils/_archives/display/displayPage';
+import { manageNewsBanner } from '$utils/_archives/display/displaySiteBanners';
+import { manageDropdowns } from '$utils/_archives/display/displaySiteDropdowns';
+import { addCurrentPageToNav } from '$utils/_archives/display/displaySiteNav';
+import { initializeDates } from '$utils/_archives/display/displayTimeline';
+// Importation des fonctions de gestion des données
+import {
+  getFunnelTrackingData,
+  sendFunnelTrackingData,
+} from '$utils/academy/data/dataMemberSource';
+import { animateFormLabels } from '$utils/site/animate/animateForm';
+import { animateNav } from '$utils/site/animate/animateNav';
+import { fillFormData, saveFormData, saveNavigationData } from '$utils/site/data/manageUserDatas';
 // Importation des fonctions V3
-import { toggleDropdownV3 } from '$utils/v3/display/displaySiteDropdowns';
-import { toggleModalV3 } from '$utils/v3/display/displaySiteModales';
-import { displaySiteTab } from '$utils/v3/display/displaySiteTab';
-import { checkLinks } from '$utils/v3/internal/checkLinks';
-import { animateReviewsSlider } from '$utils/v3/sliders/slidersReviews';
-import { animateUtilitiesSlider } from '$utils/v3/sliders/slidersUtilities';
+import { toggleDropdownV3 } from '$utils/site/display/displaySiteDropdowns';
+import { toggleModalV3 } from '$utils/site/display/displaySiteModales';
+import { displaySiteTab } from '$utils/site/display/displaySiteTab';
+import { checkLinks } from '$utils/site/internal/checkLinks';
+import { animateReviewsSlider } from '$utils/site/sliders/slidersReviews';
+import { animateTargetsSlider } from '$utils/site/sliders/slidersTargets';
 
 // Déclaration des types globaux
 declare global {
   interface Window {
-    $memberstackReady?: boolean; // Indicateur de disponibilité de Memberstack
     fsAttributes: Array<unknown>; // Attributs personnalisés pour le CMS
-    $memberstackDom: {
-      getCurrentMember: () => Promise<{
-        data: {
-          id: string;
-        } | null;
-      }>;
-    }; // DOM spécifique à Memberstack
   }
 }
 
@@ -77,10 +64,11 @@ window.Webflow.push(() => {
     fillFormData();
     animateFormLabels();
     animateReviewsSlider();
-    animateUtilitiesSlider();
+    animateTargetsSlider();
 
     if (window.location.href.includes('site-initweb-v3')) {
       checkLinks();
+      animateNav();
     }
   }
 
@@ -114,8 +102,6 @@ window.Webflow.push(() => {
   }
 
   if (window.location.pathname.includes('/academie')) {
-    animateAcaPanels();
-    scrollToCurrentLink();
     if (window.location.pathname.includes('/modules')) {
       sendFunnelTrackingData();
     }
