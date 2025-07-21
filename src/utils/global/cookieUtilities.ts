@@ -1,3 +1,10 @@
+/**
+ * 🍪 Gestion des cookies navigateur
+ *
+ * Fonctions simples pour créer, lire et supprimer des cookies.
+ * Utilisé pour stocker les préférences utilisateur et données temporaires.
+ */
+
 // Fonctions utilitaires pour gérer les cookies
 export function setCookie(nom: string, valeur: string, jours = 365) {
   const d = new Date();

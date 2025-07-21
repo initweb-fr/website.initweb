@@ -1,6 +1,15 @@
+import { config } from 'dotenv';
 import * as esbuild from 'esbuild';
 import { readdirSync } from 'fs';
 import { join, sep } from 'path';
+
+// Charger les variables d'environnement depuis .env
+config();
+
+// Vérifier que les variables sont chargées
+console.log("🔧 Variables d'environnement chargées:");
+console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Définie' : '❌ Manquante');
+console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? '✅ Définie' : '❌ Manquante');
 
 // Config output
 const BUILD_DIRECTORY = 'dist';
@@ -30,6 +39,8 @@ const context = await esbuild.context({
   inject: LIVE_RELOAD ? ['./bin/live-reload.js'] : undefined,
   define: {
     SERVE_ORIGIN: JSON.stringify(SERVE_ORIGIN),
+    'process.env.SUPABASE_URL': JSON.stringify(process.env.SUPABASE_URL),
+    'process.env.SUPABASE_ANON_KEY': JSON.stringify(process.env.SUPABASE_ANON_KEY),
   },
 });
 

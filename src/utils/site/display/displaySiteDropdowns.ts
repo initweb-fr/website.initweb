@@ -1,32 +1,36 @@
-export function toggleDropdownV3() {
-  const ddParents = document.querySelectorAll(
-    '[iw-dd-element=dd-parent]'
-  ) as NodeListOf<HTMLElement>;
-  ddParents.forEach((ddParent) => {
-    const ddItems = ddParent.querySelectorAll('[iw-dd-element=dd-item]');
+/**
+ * 🔽 Gestion des dropdowns du site
+ *
+ * Gère l'ouverture/fermeture des menus déroulants.
+ * Un seul dropdown peut être ouvert à la fois.
+ */
 
-    const openFirst = ddParent.getAttribute('iw-dd-openfirst') === 'true';
-    if (openFirst) {
-      ddItems[0]?.classList.add('iw-dd-active');
-    }
+// Fonction pour gérer les dropdowns sur la page
+export function manageDropdowns() {
+  // Sélectionne tous les éléments ayant l'attribut 'element="dropdown_list"'
+  const dropdownsLists = document.querySelectorAll('[element="dropdown_list"]');
 
-    ddItems.forEach((ddItem) => {
-      const ddToggle = ddItem.querySelector('[iw-dd-element=dd-toggle]') as HTMLElement;
+  // Parcourt chaque liste de dropdowns
+  dropdownsLists.forEach((dropdownsList) => {
+    // Sélectionne tous les éléments dropdown dans la liste actuelle
+    const dropdowns = dropdownsList.querySelectorAll('[element="dropdown"]');
 
-      if (!ddToggle) return;
+    // Parcourt chaque dropdown
+    dropdowns.forEach((dropdown) => {
+      // Sélectionne l'élément toggle du dropdown actuel
+      const dropdownToggle = dropdown.querySelector('[element="dropdown_toggle"]');
 
-      ddToggle.addEventListener('click', () => {
-        // Vérifier si le dropdown cliqué est déjà actif
-        const isCurrentlyActive = ddItem.classList.contains('iw-dd-active');
+      // Vérifie si l'élément toggle existe
+      if (dropdownToggle) {
+        // Ajoute un écouteur d'événement de clic sur l'élément toggle
+        dropdownToggle.addEventListener('click', () => {
+          // Supprime l'attribut status="open" de tous les dropdowns
+          dropdowns.forEach((d) => d.removeAttribute('status'));
 
-        // Désactiver tous les dropdowns
-        ddItems.forEach((el) => el.classList.remove('iw-dd-active'));
-
-        // Activer le dropdown cliqué seulement s'il n'était pas déjà actif
-        if (!isCurrentlyActive) {
-          ddItem.classList.add('iw-dd-active');
-        }
-      });
+          // Ajoute l'attribut status="open" uniquement sur le dropdown cliqué
+          dropdown.setAttribute('status', 'open');
+        });
+      }
     });
   });
 }

@@ -1,7 +1,6 @@
 export function scrollToCurrentLink() {
   // Sélectionner le lien actif (avec la classe w--current)
   const currentLink = document.querySelector('.aca_toc_module_link.w--current');
-  console.log(currentLink);
 
   // Vérifier si un lien actif existe
   if (currentLink) {

@@ -1,3 +1,10 @@
+/**
+ * 🪟 Gestion des modales du site
+ *
+ * Gère l'ouverture/fermeture des fenêtres modales.
+ * Supporte les overlays, animations et fermeture par clic.
+ */
+
 // Gère l'ouverture et la fermeture des modales fixes
 export function toggleModalV3() {
   const globalFixedWrapper = document.querySelector(

@@ -26,16 +26,17 @@ function animateSliderC1() {
     // Fonction pour réinitialiser toutes les barres de progression
     function resetAllTimelines() {
       timelines.forEach((timeline) => {
-        timeline.style.transition = 'none';
-        timeline.style.width = '0%';
+        const timelineElement = timeline as HTMLElement;
+        timelineElement.style.transition = 'none';
+        timelineElement.style.width = '0%';
       });
     }
 
     // Fonction pour gérer la barre de progression
     // Fonction pour démarrer la progression
-    function startProgress(index) {
+    function startProgress(index: number) {
       resetAllTimelines();
-      const timeline = timelines[index];
+      const timeline = timelines[index] as HTMLElement;
 
       // Force un reflow pour assurer que la transition sera appliquée
       timeline.offsetHeight;

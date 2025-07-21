@@ -1,31 +1,27 @@
 // Importation des fonctions d'animation
-import { animateNavOnResponsive } from '$utils/_archives/animate/animateNav';
-import { animateSliderC1OnResponsive } from '$utils/_archives/animate/animatePossibilities';
-import { revealElements } from '$utils/_archives/animate/animateReveal';
-import { animateScrollIndicator } from '$utils/_archives/animate/animateScrollIndicator';
-import { animateMarqueeReviews } from '$utils/_archives/animate/animateSlider';
-// Importation des fonctions d'affichage
-import { displayJoinAccess } from '$utils/_archives/display/displayJoinAccess';
-import { setupScrollBehavior } from '$utils/_archives/display/displayPage';
-import { manageNewsBanner } from '$utils/_archives/display/displaySiteBanners';
-import { manageDropdowns } from '$utils/_archives/display/displaySiteDropdowns';
-import { addCurrentPageToNav } from '$utils/_archives/display/displaySiteNav';
-import { initializeDates } from '$utils/_archives/display/displayTimeline';
 // Importation des fonctions de gestion des données
-import {
-  getFunnelTrackingData,
-  sendFunnelTrackingData,
-} from '$utils/academy/data/dataMemberSource';
+import { createInputsFromCookies, fillFormDatas } from '$utils/global/forms/fill';
+import { saveFormDatas } from '$utils/global/forms/save';
+import { setPendingPlan } from '$utils/site/access/plans';
 import { animateFormLabels } from '$utils/site/animate/animateForm';
-import { animateNav } from '$utils/site/animate/animateNav';
-import { fillFormData, saveFormData, saveNavigationData } from '$utils/site/data/manageUserDatas';
-// Importation des fonctions V3
-import { toggleDropdownV3 } from '$utils/site/display/displaySiteDropdowns';
+import { animateNavOnResponsive } from '$utils/site/animate/animateNav';
+import { animateSliderC1OnResponsive } from '$utils/site/animate/animatePossibilities';
+import { revealElements } from '$utils/site/animate/animateReveal';
+import { animateMarqueeReviews } from '$utils/site/animate/animateSlider';
+// Importation des fonctions d'affichage
+import { displayJoinAccess } from '$utils/site/display/displayJoinAccess';
+import { setupScrollBehavior } from '$utils/site/display/displayPage';
+import { manageNewsBanner } from '$utils/site/display/displaySiteBanners';
+import { manageDropdowns } from '$utils/site/display/displaySiteDropdowns';
 import { toggleModalV3 } from '$utils/site/display/displaySiteModales';
+import { addCurrentPageToNav } from '$utils/site/display/displaySiteNav';
 import { displaySiteTab } from '$utils/site/display/displaySiteTab';
+import { initializeDates } from '$utils/site/display/displayTimeline';
+// Importation des fonctions V3
 import { checkLinks } from '$utils/site/internal/checkLinks';
 import { animateReviewsSlider } from '$utils/site/sliders/slidersReviews';
 import { animateTargetsSlider } from '$utils/site/sliders/slidersTargets';
+import { initFunnelDatasTransmission, saveFunnelDatasSite } from '$utils/site/tracking/funnel';
 
 // Déclaration des types globaux
 declare global {
@@ -37,38 +33,34 @@ declare global {
 // Initialisation de Webflow
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  // ------------------------------------------------------------
-  // Fonctionnalités pour l'ACADÉMIE V3
-  // ------------------------------------------------------------
   if (
-    window.location.href.includes('academie-initweb-v3') ||
-    window.location.href.includes('aca.initweb.fr')
-  ) {
-    saveNavigationData();
-    saveFormData();
-    fillFormData();
-  }
-  // ------------------------------------------------------------
-  // Fonctionnalités pour le SITE V3
-  // ------------------------------------------------------------
-  else if (
     window.location.href.includes('site-initweb-v3') ||
     window.location.href.includes('www.initweb.fr')
   ) {
     // Fonctionnalités pour le site
-    toggleDropdownV3();
     toggleModalV3();
     displaySiteTab();
-    saveNavigationData();
-    saveFormData();
-    fillFormData();
+
+    // Fonctionnalités de tracking
+    saveFunnelDatasSite();
+    initFunnelDatasTransmission();
+
+    // Fonctionnalités de gestion des plans
+    setPendingPlan();
+
+    // Fonctionnalités de gestion des données utilisateur
+    saveFormDatas();
+    fillFormDatas();
+    createInputsFromCookies();
+
+    // Fonctions d'animation
     animateFormLabels();
     animateReviewsSlider();
     animateTargetsSlider();
 
+    // Fonctions d'interface utilisateur
     if (window.location.href.includes('site-initweb-v3')) {
       checkLinks();
-      animateNav();
     }
   }
 
@@ -88,24 +80,7 @@ window.Webflow.push(() => {
   // Fonctions d'animation
   animateNavOnResponsive();
   animateSliderC1OnResponsive();
-  animateScrollIndicator();
   animateMarqueeReviews();
-
-  // Fonctions spécifiques aux pages de formation
-  function landingFonctions() {
-    getFunnelTrackingData();
-  }
-
-  // Gestion des routes spécifiques
-  if (window.location.pathname.includes('/formations')) {
-    landingFonctions();
-  }
-
-  if (window.location.pathname.includes('/academie')) {
-    if (window.location.pathname.includes('/modules')) {
-      sendFunnelTrackingData();
-    }
-  }
 
   /** 
   // Code commenté pour la gestion future de Memberstack

@@ -57,7 +57,9 @@
     "@memberstack/dom": "^1.9.40",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
+    "@supabase/supabase-js": "^2.51.0",
     "@vimeo/player": "^2.24.0",
+    "dotenv": "^17.2.0",
     "gsap": "^3.12.5",
     "split-type": "^0.3.4"
   },
