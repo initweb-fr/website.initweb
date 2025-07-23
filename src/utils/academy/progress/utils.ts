@@ -28,17 +28,12 @@
 // ===============================
 
 /**
- * Marque les leçons déjà faites comme cochées
- * @param lessonIds - Liste des IDs des leçons faites
+ * Marque les leçons complétées dans le DOM
+ * @param lessonATIDs - Liste des ATID des leçons faites
  */
-export function markCompletedLessons(lessonIds: string[]) {
-  // On ne log plus chaque étape, juste l'action globale si besoin
-  // console.log('🎯 Marquage des leçons:', lessonIds);
-
-  lessonIds.forEach((id: string) => {
-    // Trouver tous les éléments avec cet ID de leçon
-    const elements = document.querySelectorAll(`[iw-progress-target="${id}"]`);
-    elements.forEach((el) => {
+export function markCompletedLessons(lessonATIDs: string[]) {
+  lessonATIDs.forEach((lessonATID) => {
+    document.querySelectorAll(`[iw-progress-target-atid="${lessonATID}"]`).forEach((el) => {
       el.setAttribute('iw-progress-watched', 'true');
     });
   });
@@ -49,14 +44,12 @@ export function markCompletedLessons(lessonIds: string[]) {
 // ===============================
 
 /**
- * Compte combien de leçons sont faites
- * @returns {total, completed, percentage} - Les statistiques
+ * Calcule les statistiques de progression
+ * @param completedCount - Nombre de leçons faites
+ * @returns {total, completed, percentage}
  */
-
 export function getProgressStats(completedCount: number) {
-  const triggers = document.querySelectorAll('[iw-progress-trigger]');
-  const total = triggers.length;
-
+  const total = document.querySelectorAll('[iw-progress-trigger]').length;
   return {
     total,
     completed: completedCount,
@@ -65,11 +58,9 @@ export function getProgressStats(completedCount: number) {
 }
 
 /**
- * Affiche les statistiques dans la console
- * @param stats - Les statistiques à afficher
+ * Affiche la progression globale dans la console
  */
 export function logProgress(stats: { completed: number; total: number; percentage: number }) {
-  // On garde un seul log utile pour la progression globale
   console.log(`📊 Progression: ${stats.completed}/${stats.total} (${stats.percentage}%)`);
 }
 
@@ -79,14 +70,9 @@ export function logProgress(stats: { completed: number; total: number; percentag
 
 /**
  * Affiche un loader sur un élément
- * @param element - L'élément à loader
- * @param lessonId - L'ID de la leçon
  */
 export function showLoader(element: Element, lessonId: string) {
-  // Marquer l'élément comme en cours de chargement
   element.setAttribute('iw-progress-trigger-loader', 'true');
-
-  // Si c'est un bouton, loader aussi les checkboxes associées
   if (element.getAttribute('iw-progress-trigger') === 'button') {
     document
       .querySelectorAll(`[iw-progress-trigger="checkbox"][iw-progress-target="${lessonId}"]`)
@@ -96,14 +82,9 @@ export function showLoader(element: Element, lessonId: string) {
 
 /**
  * Cache le loader sur un élément
- * @param element - L'élément à déloader
- * @param lessonId - L'ID de la leçon
  */
 export function hideLoader(element: Element, lessonId: string) {
-  // Marquer l'élément comme plus en cours de chargement
   element.setAttribute('iw-progress-trigger-loader', 'false');
-
-  // Si c'est un bouton, déloader aussi les checkboxes associées
   if (element.getAttribute('iw-progress-trigger') === 'button') {
     document
       .querySelectorAll(`[iw-progress-trigger="checkbox"][iw-progress-target="${lessonId}"]`)
@@ -116,14 +97,11 @@ export function hideLoader(element: Element, lessonId: string) {
 // ===============================
 
 /**
- * Change l'apparence d'une leçon (cochée/décochée)
- * @param lessonId - L'ID de la leçon
- * @param isCompleted - true = cochée, false = décochée
+ * Met à jour l'apparence d'une leçon (cochée/décochée)
  */
 export function updateLessonState(lessonId: string, isCompleted: boolean) {
-  // Trouver tous les éléments avec cet ID et changer leur apparence
   document
-    .querySelectorAll(`[iw-progress-target="${lessonId}"]`)
+    .querySelectorAll(`[iw-progress-target-atid="${lessonId}"]`)
     .forEach((el) => el.setAttribute('iw-progress-watched', isCompleted ? 'true' : 'false'));
 }
 
@@ -132,20 +110,74 @@ export function updateLessonState(lessonId: string, isCompleted: boolean) {
 // ===============================
 
 /**
- * Écoute les clics sur tous les éléments de progression
- * @param memberId - L'ID du membre connecté
- * @param onProgressClick - La fonction à appeler quand on clique
+ * Ajoute les listeners sur tous les éléments de progression
  */
 export function setupClickListeners(
   memberId: string,
   onProgressClick: (element: Element, memberId: string) => Promise<void>
 ) {
-  // Trouver tous les éléments cliquables
   document.querySelectorAll('[iw-progress-trigger]').forEach((element) => {
-    // Ajouter un écouteur de clic
     element.addEventListener('click', async function (this: Element) {
-      // Appeler la fonction de gestion du clic
       await onProgressClick(this, memberId);
     });
   });
+}
+
+// ===============================
+// FONCTIONS UTILITAIRES
+// ===============================
+
+/**
+ * Mémorise la dernière leçon visitée pour le cours
+ */
+export function trackLastLessons(courseIWID: string) {
+  localStorage.setItem(`__iw_${courseIWID}_lastlessonurl`, window.location.pathname || '');
+  localStorage.setItem(
+    `__iw_${courseIWID}_lastlessoniwid`,
+    localStorage.getItem(`__iw_currentlesson_iwid`) || ''
+  );
+}
+
+// Types utiles pour la progression
+export type CompletedLesson = {
+  lessonIWID: string;
+  lessonATID: string;
+  title: string;
+  completedAt: string;
+};
+export type CompletedLessonsList = {
+  lessons: CompletedLesson[];
+  count: number;
+};
+
+/**
+ * Récupère la liste des leçons complétées pour un cours depuis Memberstack
+ */
+export async function getCompletedLessonsList(
+  member: Record<string, unknown>,
+  courseIWID: string
+): Promise<CompletedLessonsList> {
+  const memberJSON = member?.memberJSON || {};
+  type CourseProgress = {
+    [key: string]: unknown;
+    lessonCompleted?: Record<string, { lessonATID?: string; title?: string; completedAt: string }>;
+  };
+  const courseProgress = memberJSON[courseIWID] as CourseProgress | undefined;
+  const lessonCompletedRaw = courseProgress?.lessonCompleted as Record<string, unknown> | undefined;
+  if (!lessonCompletedRaw) {
+    return { lessons: [], count: 0 };
+  }
+  const lessons: CompletedLesson[] = Object.entries(lessonCompletedRaw).map(([lessonIWID, v]) => {
+    const lesson = v as { lessonATID?: string; title?: string; completedAt: string };
+    return {
+      lessonIWID,
+      lessonATID: lesson.lessonATID || '',
+      title: lesson.title || '',
+      completedAt: lesson.completedAt,
+    };
+  });
+  return {
+    lessons,
+    count: lessons.length,
+  };
 }

@@ -15,8 +15,12 @@ declare global {
           customFields?: Record<string, unknown>;
         } | null;
       }>;
-      updateMemberJSON: (data: Record<string, unknown>) => Promise<void>;
-      updateMember: (data: { customFields: Record<string, unknown> }) => Promise<void>;
+      getMemberJSON: () => Promise<unknown>;
+      updateMemberJSON: (data: unknown) => Promise<void>;
+      updateMember: (data: {
+        customFields?: Record<string, unknown>;
+        memberJSON?: unknown;
+      }) => Promise<void>;
     };
   }
 }

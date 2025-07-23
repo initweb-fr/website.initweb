@@ -1,4 +1,4 @@
-import { getMemberData } from '$utils/academy/members/data';
+import { getMemberDatas } from '$utils/academy/members/data';
 import { getCookie } from '$utils/global/cookieUtilities';
 
 import { getFunnelDatas } from '../../global/tracking/utils';
@@ -12,7 +12,7 @@ export async function sendFunnelDatasToWebhook(): Promise<void> {
   // Infos du Funnel
   const funnelDatas = getFunnelDatas();
   // Infos de l'utilisateur
-  const userData = await getMemberData();
+  const userData = await getMemberDatas();
   const userDataMSID = userData?.memberstack?.data?.id;
   const userDataEmail = userData?.memberstack?.data?.auth?.email;
   const userDataFirstName = userData?.memberstack?.data?.auth?.firstName;

@@ -20,7 +20,7 @@ type UTMParams = {
 
 export function saveDeviceInfos() {
   const screenWidth = window.innerWidth;
-  console.log('screenWidth', screenWidth);
+  //console.log('screenWidth', screenWidth);
 
   if (screenWidth > 992) {
     setCookie('__iw-user_device_type', 'computer');

@@ -21,65 +21,22 @@
 // - utils.ts : Pour changer l'apparence des éléments
 // ===============================
 
-import { getMemberData } from '../members/data';
-import { updateMemberstackProgression } from './memberstack';
-import { getCompletedLessonsBySBID, saveProgress } from './supabase';
+import { getMemberDatas } from '../members/data';
 import {
+  getCompletedLessonsList,
   getProgressStats,
   hideLoader,
   logProgress,
   markCompletedLessons,
   setupClickListeners,
   showLoader,
+  trackLastLessons,
   updateLessonState,
 } from './utils';
 
 // ===============================
-// FONCTIONS UTILITAIRES
+// TYPES
 // ===============================
-
-function trackLastLessons(courseIWID: string) {
-  const currentLessonURL = window.location.pathname;
-  const currentLessonIWID = localStorage.getItem(`__iw_currentlesson_iwid`);
-  localStorage.setItem(`__iw_${courseIWID}_lastlessonurl`, currentLessonURL || '');
-  localStorage.setItem(`__iw_${courseIWID}_lastlessoniwid`, currentLessonIWID || '');
-  return;
-}
-
-/**
- * Génère le JSON de progression à partir des leçons complétées
- * @param completedLessons - Liste des leçons complétées
- * @param courseIWID - ID de la formation
- * @returns Le JSON de progression
- */
-function generateProgressionJSON(completedLessons: any[], courseIWID: string, stats: any) {
-  // On tente de retrouver l'URL de la leçon dans le DOM (si présent)
-  const lastLessonIWID = localStorage.getItem(`__iw_${courseIWID}_lastlessoniwid`);
-  const lastLessonURL = localStorage.getItem(`__iw_${courseIWID}_lastlessonurl`);
-  const courseStats = stats;
-
-  const lessonCompleted: Record<string, any> = {};
-  completedLessons.forEach((completion) => {
-    const lessonIWID = completion.lesson['xx-item-iwid'];
-    const lessonTitle = completion.lesson.title;
-    const lessonCompletedAt = completion.completed_at;
-    if (lessonIWID && lessonCompletedAt) {
-      lessonCompleted[lessonIWID] = {
-        title: lessonTitle,
-        completedAt: lessonCompletedAt,
-      };
-    }
-  });
-
-  return {
-    [courseIWID || 'unknown']: {
-      lastLessonURL: lastLessonURL,
-      lastLessonIWID: lastLessonIWID,
-      courseStats: courseStats,
-      lessonCompleted: lessonCompleted,
-    },
-  };
-}
 
 // ===============================
 // DÉMARRAGE DU SYSTÈME
@@ -92,60 +49,32 @@ function generateProgressionJSON(completedLessons: any[], courseIWID: string, st
 export async function initProgressTracking() {
   try {
     // 1. Récupérer les infos du membre connecté
-    const member = await getMemberData();
-    const memberMSID = member?.memberstack?.data?.id;
-    const memberSBID = member?.supabase?.id;
-
+    const member = await getMemberDatas();
+    const memberMSID = member?.memberDATAS?.id;
     if (!memberMSID) {
       console.log('❌ Aucun membre MS connecté');
       return;
     }
-
-    // Vérifier qu'on a un memberSBID pour la sauvegarde
-    if (!memberSBID) {
+    const courseIWID = localStorage.getItem('__iw_currentlesson_course-iwid');
+    if (!courseIWID) {
+      console.log('❌ Aucun cours sélectionné');
       return;
     }
+    trackLastLessons(courseIWID);
 
-    const courseIWID = localStorage.getItem('__iw_currentlesson_course-iwid');
-    trackLastLessons(courseIWID || '');
-
-    // Récupérer le contenu du champ "progression" dans Memberstack
-    const memberMS = member?.memberstack;
-    const memberMSCustomFields = (memberMS?.data as { customFields?: { progression?: unknown } })
-      ?.customFields;
-
-    // 2. Utiliser memberSBID pour récupérer les leçons complétées
-    const completedLessonsData = await getCompletedLessonsBySBID(memberSBID);
-
-    // Extraire les leçons et le count depuis la structure retournée
+    // 2. Récupérer la progression depuis Memberstack
+    const completedLessonsData = await getCompletedLessonsList(member, courseIWID);
     const completedLessons = completedLessonsData.lessons || [];
     const completedCount = completedLessonsData.count || 0;
-
-    // Calcul du pourcentage de complétion
     const stats = getProgressStats(completedCount);
+    const lessonATIDs = completedLessons.map((lesson) => lesson.lessonATID).filter(Boolean);
 
-    // 3. Générer le JSON de progression
-    const progressionJSON = generateProgressionJSON(
-      completedLessons,
-      courseIWID || 'unknown',
-      stats
-    );
-
-    // 4. Marquer les leçons déjà faites (depuis la base de données)
-    // Utiliser lesson_id pour marquer les éléments dans le DOM
-    const lessonIWIDs = completedLessons
-      .filter((lesson) => lesson.lesson_id)
-      .map((lesson) => lesson.lesson_id);
-
-    markCompletedLessons(lessonIWIDs);
-
-    // 5. Afficher les statistiques (ex: 5/10 leçons faites)
+    // 3. Marquer les leçons complétées dans le DOM
+    markCompletedLessons(lessonATIDs);
     logProgress(stats);
 
-    // 6. Écouter les clics sur les leçons (utiliser memberSBID)
-    setupClickListeners(memberSBID, handleClick);
-
-    // Log final pour indiquer que le système est prêt
+    // 4. Installer les listeners sur les éléments interactifs
+    setupClickListeners(memberMSID, handleClick);
     console.log('✅ Système de progression démarré');
   } catch (error) {
     console.error('❌ Erreur au démarrage:', error);
@@ -161,49 +90,94 @@ export async function initProgressTracking() {
  * @param element - L'élément cliqué (bouton ou checkbox)
  * @param memberId - L'ID du membre connecté
  */
-async function handleClick(element: Element, memberId: string) {
-  // Récupérer l'ID de la leçon depuis l'élément cliqué
-  const lessonId = element.getAttribute('iw-progress-target');
+async function handleClick(element: Element) {
+  // Récupérer les infos de la leçon
+  const lessonATID = element.getAttribute('iw-progress-target-atid') || '';
+  const lessonIWID = element.getAttribute('iw-progress-target-iwid') || '';
+  const lessonTitle = element.getAttribute('data-lesson-title') || '';
+
   const isWatched = element.getAttribute('iw-progress-watched') === 'true';
+  if (!lessonATID || !lessonIWID) return;
 
-  if (!lessonId) return;
-
-  // Afficher un loader (petit indicateur de chargement)
-  showLoader(element, lessonId);
+  showLoader(element, lessonATID);
 
   try {
-    // Inverser l'état : si c'était fait, maintenant c'est pas fait, et vice versa
+    let action = '';
     const isCompleted = !isWatched;
+    updateLessonState(lessonATID, isCompleted);
 
-    // 1. Changer l'apparence immédiatement (pour que l'utilisateur voie le changement)
-    updateLessonState(lessonId, isCompleted);
+    // 1. Lire le JSON complet depuis Memberstack
+    const member = await getMemberDatas();
+    const memberJSON = member?.memberJSON || {};
+    const memberATID = member?.memberDATAS?.customFields?.['member-atid'] || '';
 
-    // 2. Sauvegarder dans la base de données
-    const success = await saveProgress(memberId, lessonId, isCompleted);
+    //console.log('data', data);
+    const courseIWID = localStorage.getItem('__iw_currentlesson_course-iwid') || 'unknown';
+    console.log('[STEP 1] memberJSON initial:', JSON.stringify(memberJSON, null, 2));
 
-    if (success) {
-      // 3. Mettre à jour Memberstack avec la nouvelle progression
-      const courseIWID = localStorage.getItem('__iw_currentlesson_course-iwid');
-      const updatedLessonsData = await getCompletedLessonsBySBID(memberId);
-      const updatedLessons = updatedLessonsData.lessons || [];
-      const updatedStats = getProgressStats(updatedLessons.length);
-      const newProgressionJSON = generateProgressionJSON(
-        updatedLessons,
-        courseIWID || 'unknown',
-        updatedStats
-      );
+    // 2. Ajouter ou retirer la leçon courante
+    const courseProgress = (memberJSON[courseIWID] as Record<string, unknown>) || {};
+    const lessonCompletedRaw =
+      (courseProgress['lessonCompleted'] as Record<
+        string,
+        { completedAt: string; lessonATID: string; title: string }
+      >) || {};
 
-      const memberstackSuccess = await updateMemberstackProgression(newProgressionJSON);
-      if (!memberstackSuccess) {
-        console.warn('⚠️ Échec synchronisation Memberstack');
-      }
+    if (isCompleted) {
+      lessonCompletedRaw[lessonIWID] = {
+        lessonATID: lessonATID,
+        title: lessonTitle,
+        completedAt: new Date().toISOString(),
+      };
+      action = 'add';
     } else {
-      // Si la sauvegarde échoue, on remet l'apparence comme avant
-      updateLessonState(lessonId, !isCompleted);
-      console.error('❌ Erreur de sauvegarde');
+      delete lessonCompletedRaw[lessonIWID];
+      action = 'remove';
     }
+
+    // Reconstruire le JSON du cours
+    const lastLessonIWID = localStorage.getItem(`__iw_${courseIWID}_lastlessoniwid`);
+    const lastLessonURL = localStorage.getItem(`__iw_${courseIWID}_lastlessonurl`);
+    const completedCount = Object.keys(lessonCompletedRaw).length;
+    const stats = getProgressStats(completedCount);
+    const courseStats = { ...stats, completed: completedCount };
+
+    const newCourseProgress = {
+      lastLessonURL,
+      lastLessonIWID,
+      courseStats,
+      lessonCompleted: lessonCompletedRaw,
+    };
+
+    const mergedJSON = {
+      ...memberJSON,
+      [courseIWID]: newCourseProgress,
+    };
+    console.log('[STEP 2] memberJSON modifié:', JSON.stringify(mergedJSON, null, 2));
+
+    // 3. Sauvegarder dans Memberstack
+    await (
+      window.$memberstackDom as unknown as {
+        updateMemberJSON: (args: { json: Record<string, unknown> }) => Promise<void>;
+      }
+    ).updateMemberJSON({ json: mergedJSON });
+    console.log('[STEP 3] memberJSON envoyé à Memberstack:', JSON.stringify(mergedJSON, null, 2));
+    // 4. Envoyer l'information à Airtable
+    await sendProgressionWebhook(lessonATID, memberATID, action);
   } finally {
-    // Cacher le loader
-    hideLoader(element, lessonId);
+    hideLoader(element, lessonATID);
+  }
+}
+
+async function sendProgressionWebhook(lessonATID: string, memberATID: string, action: string) {
+  try {
+    await fetch('https://hook.eu1.make.com/5y4mpe9zdd7ubmsyt12u3ojtpcaoht5r', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lesson_atid: lessonATID, member_atid: memberATID, action: action }),
+    });
+    console.log('✅ Webhook progression envoyé');
+  } catch (error) {
+    console.warn('⚠️ Erreur envoi webhook progression:', error);
   }
 }

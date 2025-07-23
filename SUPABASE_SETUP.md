@@ -13,8 +13,8 @@
 Créez un fichier `.env` à la racine du projet avec :
 
 ```env
-SUPABASE_URL=https://votre-projet.supabase.co
-SUPABASE_ANON_KEY=votre_clé_anon_supabase_ici
+SUPABASE_URL=https://<ton-projet>.supabase.co
+SUPABASE_ANON_KEY=<ta-clé-anon-public>
 ```
 
 ### 2. Structure de la base de données
