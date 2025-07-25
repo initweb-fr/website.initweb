@@ -1,8 +1,7 @@
 // Importation des fonctions d'animation
 // Importation des fonctions de gestion des données
-import { createInputsFromCookies, fillFormDatas } from '$utils/global/forms/fill';
-import { saveFormDatas } from '$utils/global/forms/save';
-import { setPendingPlan } from '$utils/site/access/plans';
+import { fillUserLocalDatas } from '$utils/--global/tracking/user/fillUserLocalDatas';
+import { saveUserLocalDatas } from '$utils/--global/tracking/user/saveUserLocalDatas';
 import { animateFormLabels } from '$utils/site/animate/animateForm';
 import { animateNavOnResponsive } from '$utils/site/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/site/animate/animatePossibilities';
@@ -21,7 +20,7 @@ import { initializeDates } from '$utils/site/display/displayTimeline';
 import { checkLinks } from '$utils/site/internal/checkLinks';
 import { animateReviewsSlider } from '$utils/site/sliders/slidersReviews';
 import { animateTargetsSlider } from '$utils/site/sliders/slidersTargets';
-import { initFunnelDatasTransmission, saveFunnelDatasSite } from '$utils/site/tracking/funnel';
+import { initFunnelDatas, initTransmitFunnelDatas } from '$utils/site/tracking/funnel';
 
 // Déclaration des types globaux
 declare global {
@@ -42,16 +41,12 @@ window.Webflow.push(() => {
     displaySiteTab();
 
     // Fonctionnalités de tracking
-    saveFunnelDatasSite();
-    initFunnelDatasTransmission();
-
-    // Fonctionnalités de gestion des plans
-    setPendingPlan();
+    initFunnelDatas();
+    initTransmitFunnelDatas();
 
     // Fonctionnalités de gestion des données utilisateur
-    saveFormDatas();
-    fillFormDatas();
-    createInputsFromCookies();
+    saveUserLocalDatas();
+    fillUserLocalDatas();
 
     // Fonctions d'animation
     animateFormLabels();

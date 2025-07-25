@@ -1,14 +1,11 @@
-import { getCurrentPlan } from '$utils/academy/access/plans';
+import { saveFunnelDatas } from '$utils/--global/tracking/funnel/saveFunnelDatas';
+import { fillUserLocalDatas } from '$utils/--global/tracking/user/fillUserLocalDatas';
+import { saveUserLocalDatas } from '$utils/--global/tracking/user/saveUserLocalDatas';
 import { animateAcaPanels } from '$utils/academy/animate/animatePanels';
 import { animateSchemes } from '$utils/academy/animate/animateSchemes';
 import { scrollToCurrentLink } from '$utils/academy/animate/animateTOC';
 import { initProgressTracking } from '$utils/academy/progress/tracker';
-import {
-  initFunnelDatasTransmission,
-  saveFunnelDatasAcademy,
-} from '$utils/academy/tracking/funnel';
-import { createInputsFromCookies, fillFormDatas } from '$utils/global/forms/fill';
-import { saveFormDatas } from '$utils/global/forms/save';
+import { sendFunnelDatasToWebhook } from '$utils/academy/tracking/transmit';
 
 declare global {
   interface Window {
@@ -29,15 +26,11 @@ declare global {
 window.Webflow ||= [];
 window.Webflow.push(() => {
   // Fonctionnalités de tracking
-  saveFunnelDatasAcademy();
+  saveFunnelDatas();
 
   // Fonctionnalités de gestion des données utilisateur
-  fillFormDatas();
-  createInputsFromCookies();
-  saveFormDatas();
-
-  // Fonctionnalités de gestion des plans
-  getCurrentPlan();
+  saveUserLocalDatas();
+  fillUserLocalDatas();
 
   // Fonctions d'animation
   animateSchemes();
@@ -48,8 +41,7 @@ window.Webflow.push(() => {
   if (window.location.pathname.includes('/formations/modules')) {
     scrollToCurrentLink();
   }
-
   if (window.location.pathname.includes('/bienvenue')) {
-    initFunnelDatasTransmission();
+    sendFunnelDatasToWebhook();
   }
 });

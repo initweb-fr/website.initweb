@@ -1,7 +1,6 @@
+import { getCookie, setCookie } from '$utils/--global/cookieUtilities';
+import { getFunnelDatas } from '$utils/--global/tracking/funnel/getFunnelDatas';
 import { getMemberDatas } from '$utils/academy/members/data';
-import { getCookie } from '$utils/global/cookieUtilities';
-
-import { getFunnelDatas } from '../../global/tracking/utils';
 
 /**
  * Envoie les données du funnel via webhook
@@ -13,15 +12,20 @@ export async function sendFunnelDatasToWebhook(): Promise<void> {
   const funnelDatas = getFunnelDatas();
   // Infos de l'utilisateur
   const userData = await getMemberDatas();
-  const userDataMSID = userData?.memberstack?.data?.id;
-  const userDataEmail = userData?.memberstack?.data?.auth?.email;
-  const userDataFirstName = userData?.memberstack?.data?.auth?.firstName;
+  const userDataMSID = userData?.memberDATAS?.id;
+  const userDataEmail = userData?.memberDATAS?.auth?.email;
+  const userDataFirstName = userData?.memberDATAS?.customFields?.['first-name'] || '';
+  const userDataLastName = userData?.memberDATAS?.customFields?.['last-name'] || '';
   // Infos du cours
-  const courseID = getCookie('__iw-coursefunnel_onboarding_iwid');
+  const courseID = getCookie('__iw-funnel_course_iwid');
+  const courseStatusDatas = getCookie('__iw-funnel_course_' + courseID + '_datas_status');
   console.log('funnelDatas', funnelDatas);
   console.log('userData', userData);
   console.log('courseId', courseID);
-
+  // Si courseStatusDatas a pour valeur "saved", on arrête la fonction
+  if (courseStatusDatas === 'sent') {
+    return;
+  }
   try {
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -29,20 +33,31 @@ export async function sendFunnelDatasToWebhook(): Promise<void> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        CUSTOM_DeviceType: funnelDatas.deviceType.device_type,
-        CUSTOM_LandingURL: funnelDatas.currentPagePath.currentPagePath,
-        CUSTOM_UserID: userDataMSID,
-        CUSTOM_UserEmail: userDataEmail,
-        CUSTOM_UserFirstName: userDataFirstName,
-        COOKIE_CourseID: courseID,
-        COOKIE_UTM_Campaign: funnelDatas.utmParams.utm_campaign,
-        COOKIE_UTM_Content: funnelDatas.utmParams.utm_content,
-        COOKIE_UTM_Medium: funnelDatas.utmParams.utm_medium,
-        COOKIE_UTM_Source: funnelDatas.utmParams.utm_source,
-        COOKIE_UTM_Term: funnelDatas.utmParams.utm_term,
+        //
+        FUNNEL_Device_Support: funnelDatas.userDevice.deviceSupport,
+        FUNNEL_Device_Lang: funnelDatas.userDevice.deviceLang,
+        //
+        FUNNEL_Page_Current: funnelDatas.userNavigation.currentPage,
+        FUNNEL_Page_Previous: funnelDatas.userNavigation.previousPage,
+        //
+        FUNNEL_UTM_Campaign: funnelDatas.userUTM.utmCampaign,
+        FUNNEL_UTM_Content: funnelDatas.userUTM.utmContent,
+        FUNNEL_UTM_Medium: funnelDatas.userUTM.utmMedium,
+        FUNNEL_UTM_Source: funnelDatas.userUTM.utmSource,
+        FUNNEL_UTM_Term: funnelDatas.userUTM.utmTerm,
+        //
+        FUNNEL_CourseID: courseID,
+        //
+        USER_MSID: userDataMSID,
+        USER_Email: userDataEmail,
+        USER_FirstName: userDataFirstName,
+        USER_LastName: userDataLastName,
       }),
     });
-
+    // Si la réponse est OK, on met à jour le status du cours
+    if (response.ok) {
+      setCookie('__iw-funnel_course_' + courseID + '_datas_status', 'sent');
+    }
     if (!response.ok) {
       throw new Error(`Erreur HTTP: ${response.status}`);
     }
