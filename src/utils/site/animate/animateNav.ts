@@ -11,7 +11,7 @@ export function animateNavOnResponsive() {
   const handleResize = () => {
     if (breakpointDesktop.matches) {
     } else {
-      animateNavOnMobile();
+      openNavOnMobile();
       // Pas d'animation pour les écrans plus petits
     }
   };
@@ -19,26 +19,71 @@ export function animateNavOnResponsive() {
   handleResize(); // Appel initial de la fonction de redimensionnement
   window.addEventListener('resize', handleResize); // Ajout d'un écouteur d'événement pour le redimensionnement de la fenêtre
 }
-function animateNavOnMobile() {
-  const navWrapper = document.querySelector('[iw-nav-element="nav"]');
-  const navMobileOpen = document.querySelector('[iw-nav-element="button-open"]');
-  const navMobileClose = document.querySelector(
-    '[iw-nav-element="button-close"], [iw-nav-element="overlay"]'
-  );
-
+function openNavOnMobile() {
+  // Sélection du NavWrapper
+  const navWrapper = document.querySelector('[iw-nav-element="nav"]') as HTMLElement;
+  if (!navWrapper) return;
+  //Sélection des éléments
+  const navMenu = navWrapper.querySelector('[iw-nav-element="nav-menu"]') as HTMLElement;
+  const navMobileOpen = navWrapper.querySelector('[iw-nav-element="button-open"]') as HTMLElement;
+  const navMobileClose = navWrapper.querySelector('[iw-nav-element="button-close"]') as HTMLElement;
+  if (!navMobileOpen || !navMobileClose || !navMenu) return;
   // Initialisation
-  navMobileOpen?.classList.add('v-visible');
-  navMobileClose?.classList.remove('v-visible');
+  navMobileOpen.style.display = 'flex';
+  navMobileClose.style.display = 'none';
+  navMenu.style.display = 'none';
+
+  function openNav() {
+    //Paramètres du Wrapper
+    navWrapper.classList.add('v-menu-open');
+    //Paramètres des Boutons
+    navMobileOpen.style.display = 'none';
+    navMobileClose.style.display = 'flex';
+    //Paramètres du Menu
+    navMenu.style.display = 'flex';
+  }
+
+  function closeNav() {
+    //Paramètres du Wrapper
+    navWrapper.classList.remove('v-menu-open');
+    //Paramètres des Boutons
+    navMobileOpen.style.display = 'flex';
+    navMobileClose.style.display = 'none';
+    //Paramètres du Menu
+    navMenu.style.display = 'none';
+  }
 
   // Ouverture du Menu
   navMobileOpen?.addEventListener('click', () => {
-    console.log('test');
-    navWrapper?.classList.add('v-menu-open');
+    openNav();
   });
 
   // Fermeture du Menu
   navMobileClose?.addEventListener('click', () => {
-    console.log('close');
-    navWrapper?.classList.remove('v-menu-open');
+    closeNav();
+  });
+}
+
+export function animateNavDropDownOnResponsive() {
+  const navDropdowns = document.querySelectorAll('.nav_dd');
+  navDropdowns.forEach((navDropdown) => {
+    const navDropdownCloseBtn = navDropdown.querySelector('.nav_dd_back_button');
+    const navDropdownToggle = navDropdown.querySelector('.nav_dd_button');
+    // const navDropdownPanel = navDropdown.querySelector('.nav_dd_panel');
+    console.log(navDropdownCloseBtn);
+    if (navDropdownCloseBtn && navDropdown) {
+      navDropdownCloseBtn.addEventListener('click', function () {
+        console.log('clic');
+        (navDropdownToggle as HTMLElement)?.click();
+        /*
+        navDropdown?.setAttribute('style', '');
+
+        navDropdownsToggle?.classList.remove('w--open');
+        navDropdownsToggle?.setAttribute('aria-expanded', 'false');
+
+        navDropdownsPanel?.classList.remove('w--open');
+        */
+      });
+    }
   });
 }

@@ -5,26 +5,30 @@
 .splide__slide{
     transition: all 0.3s ease-in-out;
 }
-.splide__slide.reviews-slider{
+.splide__arrow:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+.splide__slide.v-reviews-cards{
     transition: all 0.3s ease-in-out;
 }
-.splide__slide.reviews-slider:not(.is-visible){
+.splide__slide.v-reviews-cards:not(.is-visible){
     opacity:0.3;
 }
-.splide__slide.reviews-slider.is-visible{
+.splide__slide.v-reviews-cards.is-visible{
     opacity:1;
 }
-.splide__slide.reviews-slider .card-review_infos{
+.splide__slide.v-reviews-cards .card-review_infos{
     transition: all 0.3s ease-in-out;
 }
 
-.splide__slide.reviews-slider .card-review_action{
+.splide__slide.v-reviews-cards .card-review_action{
     display: flex;
     height: 0 !important;
     opacity: 0;
     transition: all 0.3s ease-in-out;
 }
-.splide__slide.reviews-slider:hover .card-review_action{
+.splide__slide.v-reviews-cards:hover .card-review_action{
     display: flex;
     height: auto;
     opacity: 1;
@@ -35,4 +39,10 @@ opacity:0.3;
 }
 .splide__slide.is-visible{
   opacity:1;
+}
+
+/* Cas particulier pour les sliders marquee */
+/* ************************************************** */
+.splide__slide.v-reviews-marquee:not(.is-visible){
+    opacity:1;
 }

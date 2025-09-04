@@ -1,35 +1,37 @@
 
 
-[iw-dd-element="dd-item"] {
-  
+/* Default */
+[iw-element="dropdown"] {
 }
-
-[id-dd-element="dd-content"] {
-  display: none !important;
+[iw-element="dropdown-content"] {
+  display: none;
 }
-
-[iw-dd-element="dd-item"].iw-dd-active [iw-dd-element="dd-content"] {
-  display: flex;
-}
-
-[iw-dd-element="dd-visual"] {
+[iw-element="dropdown-visual"] {
   opacity: 0;
   transition-duration: 1s;
 }
-
-[iw-dd-element="dd-item"].iw-dd-active [iw-dd-element="dd-visual"] {
-  opacity: 1;
-}
-
-[iw-dd-element="dd-icon-plus"] {
+[iw-element="dropdown-icon-plus"] {
   display:flex;
 }
-[iw-dd-element="dd-icon-minus"] {
+[iw-element="dropdown-icon-minus"] {
   display:none;
 }
-[iw-dd-element="dd-item"].iw-dd-active [iw-dd-element="dd-icon-plus"] {
-  display:none;
-}
-[iw-dd-element="dd-item"].iw-dd-active [iw-dd-element="dd-icon-minus"] {
-  display:flex;
-}
+
+/* Active */
+
+[iw-element="dropdown"][iw-status="active"] {
+  [iw-element="dropdown-content"] {
+    display: flex;
+  }
+  [iw-element="dropdown-visual"] {
+    opacity: 1;
+  }
+  [iw-element="dropdown-icon-plus"] {
+    display:none;
+  }
+
+  [iw-element="dropdown-icon-minus"] {
+    display:flex;
+  }
+} 
+

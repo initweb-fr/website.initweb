@@ -1,9 +1,14 @@
 // Importation des fonctions d'animation
 // Importation des fonctions de gestion des données
+import Lenis from 'lenis';
+
 import { fillUserLocalDatas } from '$utils/--global/tracking/user/fillUserLocalDatas';
 import { saveUserLocalDatas } from '$utils/--global/tracking/user/saveUserLocalDatas';
 import { animateFormLabels } from '$utils/site/animate/animateForm';
-import { animateNavOnResponsive } from '$utils/site/animate/animateNav';
+import {
+  animateNavDropDownOnResponsive,
+  animateNavOnResponsive,
+} from '$utils/site/animate/animateNav';
 import { animateSliderC1OnResponsive } from '$utils/site/animate/animatePossibilities';
 import { revealElements } from '$utils/site/animate/animateReveal';
 import { animateMarqueeReviews } from '$utils/site/animate/animateSlider';
@@ -18,8 +23,8 @@ import { displaySiteTab } from '$utils/site/display/displaySiteTab';
 import { initializeDates } from '$utils/site/display/displayTimeline';
 // Importation des fonctions V3
 import { checkLinks } from '$utils/site/internal/checkLinks';
-import { animateReviewsSlider } from '$utils/site/sliders/slidersReviews';
-import { animateTargetsSlider } from '$utils/site/sliders/slidersTargets';
+import { sliderReviewsCards, sliderReviewsMarquee } from '$utils/site/sliders/slidersReviews';
+import { sliderTargetsCards } from '$utils/site/sliders/slidersTargets';
 import { initFunnelDatas, initTransmitFunnelDatas } from '$utils/site/tracking/funnel';
 
 // Déclaration des types globaux
@@ -28,6 +33,16 @@ declare global {
     fsAttributes: Array<unknown>; // Attributs personnalisés pour le CMS
   }
 }
+// Initialize Lenis
+const lenis = new Lenis();
+
+// Use requestAnimationFrame to continuously update the scroll
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
 
 // Initialisation de Webflow
 window.Webflow ||= [];
@@ -50,8 +65,9 @@ window.Webflow.push(() => {
 
     // Fonctions d'animation
     animateFormLabels();
-    animateReviewsSlider();
-    animateTargetsSlider();
+    sliderReviewsCards();
+    sliderReviewsMarquee();
+    sliderTargetsCards();
 
     // Fonctions d'interface utilisateur
     if (window.location.href.includes('site-initweb-v3')) {
@@ -74,6 +90,7 @@ window.Webflow.push(() => {
 
   // Fonctions d'animation
   animateNavOnResponsive();
+  animateNavDropDownOnResponsive();
   animateSliderC1OnResponsive();
   animateMarqueeReviews();
 

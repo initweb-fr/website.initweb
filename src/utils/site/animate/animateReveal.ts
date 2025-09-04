@@ -3,8 +3,24 @@ gsap.registerPlugin(ScrollTrigger); // Enregistrement du plugin ScrollTrigger de
 import ScrollTrigger from 'gsap/ScrollTrigger'; // Importation du plugin ScrollTrigger de GSAP
 import SplitType from 'split-type'; // Importation de la bibliothèque SplitType pour diviser le texte en lignes, mots et caractères
 
+/*
+Mémo rapide des valeurs possibles pour l'attribut "iw-animate-style" :
+
+- "slide-up"         : Fait glisser l'élément vers le haut avec une animation de fondu.
+- "slide-down"       : Fait glisser l'élément vers le bas avec une animation de fondu.
+- "fade-in"          : Fait apparaître l'élément progressivement (opacité).
+- "words"            : Anime chaque mot séparément (nécessite SplitType).
+- "lines"            : Anime chaque ligne séparément (nécessite SplitType).
+- "words-slide-up"   : Fait glisser chaque mot vers le haut avec un effet de fondu.
+- "lines-slide-up"   : Fait glisser chaque ligne vers le haut avec un effet de fondu.
+- "words-fade-in"    : Fait apparaître chaque mot progressivement.
+- "lines-fade-in"    : Fait apparaître chaque ligne progressivement.
+
+Astuce : Vous pouvez combiner certains styles avec les attributs "iw-animate-delay" (en ms) et "iw-animate-instant" pour personnaliser le comportement.
+*/
+
 export function revealElements() {
-  const specDuration = 1;
+  const specDuration = 0.6;
   const specBaseMoveYLow = 16;
   const specStaggerWords = 0.05;
   const specStaggerLines = 0.1;

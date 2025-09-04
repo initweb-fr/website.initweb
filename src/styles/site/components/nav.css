@@ -1,0 +1,37 @@
+@media (max-width: 991px) {
+    /* NAV - Initialisation */
+    [iw-nav-element="button-open"]{
+        display:none;
+      }
+      [iw-nav-element="button-close"]{
+        display:none;
+      }
+    [iw-nav-element="button-open"].v-visible{
+      display:flex;
+    }
+    [iw-nav-element="button-close"].v-visible{
+      display:flex;
+    }
+    [iw-nav-element="nav"]{
+      display:flex;
+    }
+    [iw-nav-element="overlay"]{
+      display:none;
+    }
+    /* NAV - Animation */
+    [iw-nav-element="nav"].v-menu-open{
+      display:flex;
+    }
+    [iw-nav-element="nav"].v-menu-open [iw-nav-element="button-open"]{
+      display:none;
+    }
+    [iw-nav-element="nav"].v-menu-open [iw-nav-element="button-close"]{
+      display:flex;
+    }
+    [iw-nav-element="nav"].v-menu-open [iw-nav-element="overlay"]{
+      display:none;
+    }
+    [iw-nav-element="nav"].v-menu-open [iw-nav-element="nav-menu"]{
+      display:flex;
+    }
+}

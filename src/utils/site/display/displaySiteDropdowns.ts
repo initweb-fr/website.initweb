@@ -1,34 +1,36 @@
-/**
- * 🔽 Gestion des dropdowns du site
- *
- * Gère l'ouverture/fermeture des menus déroulants.
- * Un seul dropdown peut être ouvert à la fois.
- */
-
-// Fonction pour gérer les dropdowns sur la page
 export function manageDropdowns() {
-  // Sélectionne tous les éléments ayant l'attribut 'element="dropdown_list"'
-  const dropdownsLists = document.querySelectorAll('[element="dropdown_list"]');
+  // 1. Sélectionne toutes les listes de Dropdowns
+  const dropdownsLists = document.querySelectorAll('[iw-element="dropdown-list"]');
 
-  // Parcourt chaque liste de dropdowns
   dropdownsLists.forEach((dropdownsList) => {
-    // Sélectionne tous les éléments dropdown dans la liste actuelle
-    const dropdowns = dropdownsList.querySelectorAll('[element="dropdown"]');
+    // 2. Sélectionne tous les Dropdowns dans la liste actuelle
+    const dropdowns = dropdownsList.querySelectorAll('[iw-element="dropdown"]');
 
-    // Parcourt chaque dropdown
+    // Ouvre par défaut le premier dropdown de la liste, s'il existe
+    if (dropdowns.length > 0) {
+      dropdowns[0].setAttribute('iw-status', 'active');
+    }
+
     dropdowns.forEach((dropdown) => {
-      // Sélectionne l'élément toggle du dropdown actuel
-      const dropdownToggle = dropdown.querySelector('[element="dropdown_toggle"]');
+      // 3. Sélectionne l'élément "Toggle" & l'élément "Content" du dropdown actuel
+      const dropdownToggle = dropdown.querySelector('[iw-element="dropdown-toggle"]');
+      const dropdownContent = dropdown.querySelector('[iw-element="dropdown-content"]');
 
-      // Vérifie si l'élément toggle existe
-      if (dropdownToggle) {
-        // Ajoute un écouteur d'événement de clic sur l'élément toggle
+      if (dropdownToggle && dropdownContent) {
+        // 4. Ajoute un écouteur d'événement de clic sur l'élément "Toggle"
         dropdownToggle.addEventListener('click', () => {
-          // Supprime l'attribut status="open" de tous les dropdowns
-          dropdowns.forEach((d) => d.removeAttribute('status'));
+          // Si le dropdown est déjà actif, on le ferme et on arrête l'exécution
+          if (dropdown.getAttribute('iw-status') === 'active') {
+            dropdown.removeAttribute('iw-status');
+            return;
+          }
+          // Supprime l'attribut status="active" de tous les dropdowns
+          dropdowns.forEach((openedDropdown) => {
+            openedDropdown.removeAttribute('iw-status');
+          });
 
-          // Ajoute l'attribut status="open" uniquement sur le dropdown cliqué
-          dropdown.setAttribute('status', 'open');
+          // Ajoute l'attribut status="active" uniquement sur le dropdown cliqué
+          dropdown.setAttribute('iw-status', 'active');
         });
       }
     });
