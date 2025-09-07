@@ -21,9 +21,8 @@ export function sliderTargetsCards() {
       waitForTransition: true,
       breakpoints: {
         991: {
-          autoScroll: {
-            speed: 0.8,
-          },
+          arrows: false,
+          pagination: false,
         },
       },
     }).mount();

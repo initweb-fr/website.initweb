@@ -17,7 +17,6 @@
 // 3. On sauvegarde dans la base de données
 //
 // FICHIERS UTILISÉS :
-// - supabase.ts : Pour sauvegarder les données
 // - utils.ts : Pour changer l'apparence des éléments
 // ===============================
 
