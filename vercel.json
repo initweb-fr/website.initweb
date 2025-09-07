@@ -1,0 +1,8 @@
+{
+  "buildCommand": "echo 'Vercel deployment disabled'",
+  "outputDirectory": "dist",
+  "installCommand": "echo 'Vercel deployment disabled'",
+  "framework": null,
+  "functions": {},
+  "routes": []
+}
