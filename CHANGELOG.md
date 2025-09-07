@@ -1,5 +1,11 @@
 # @initstudio/initweb
 
+## 0.3.4
+
+### Patch Changes
+
+- 83074b1: first draft for v3
+
 ## 0.3.3
 
 ### Patch Changes
